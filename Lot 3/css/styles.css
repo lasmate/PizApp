@@ -25,7 +25,7 @@
     --shadow-inset: inset 0 2px 8px rgba(0,0,0,0.06);
 }
 
-.HeroCard{height:80vh;width:90vw;margin:3vh auto;background:var(--color-bg);border-radius:var(--radius-lg)}
+.HeroCard{height:80vh;width:90vw;margin:3vh auto;background:var(--color-bg);border-radius:var(--radius-lg);overflow: scroll;scrollbar-width: none; /* Firefox */ -ms-overflow-style: none; /* IE 10+ */}
 .LandingText{text-align:center;padding:2vh 2vw}
 
 /* Center content inside HeroCard and style headings */
@@ -51,3 +51,89 @@ nav{display:flex;gap:1.25rem;align-items:center;padding:.75rem 1rem;background:v
 .nav-item .icon-circle{width:1.2rem;height:1.2rem;border-radius:50%;background:var(--muted-3);display:inline-grid;place-items:center;font-size:.7rem}
 .nav-item.active{background:rgba(107,181,45,.12);box-shadow:var(--shadow-inset)}
 .nav-item.active .icon-circle{background:var(--color-accent);color:#fff}
+
+/* Grille de produits */
+.product-grid {
+    display: grid;
+    
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    background: #ece7f6;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    margin-top: 2rem;
+}
+
+.product-card {
+    background: #f6f3fa;
+    border-radius: 1.2rem;
+    box-shadow: 0 2px 8px #d1cbe6;
+    padding: 1.2rem 1rem 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    min-height: 210px;
+}
+
+.product-header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 0.7rem;
+}
+.product-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--color-accent-2);
+}
+.product-subhead {
+    font-size: 0.95rem;
+    color: var(--muted-3);
+}
+
+.product-image-placeholder {
+    width: 60px;
+    height: 60px;
+    background: #e0d6f3;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0.7rem 0 1.2rem 0;
+    box-shadow: 0 1px 4px #d1cbe6;
+}
+
+.add-to-cart {
+    background: #7c5fe6;
+    color: #fff;
+    border: none;
+    border-radius: 0.7rem;
+    padding: 0.5rem 1.2rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: auto;
+    transition: background 0.2s;
+}
+.add-to-cart:hover {
+    background: #5a3fcf;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .product-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media (max-width: 600px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.HeroCard::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
