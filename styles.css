@@ -1,0 +1,156 @@
+:root {
+    --ColoT: #00262B;
+    --ColoM: #D9D9D9;
+    --ColoA: #00833A;
+    --ColoB: #6BB52D;
+}
+
+.HeroCard{
+    height: 80vh;
+    width: 90vw;
+    background-color: var(--ColoM);
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 25px;
+}
+.LandingText{
+    text-align: center;
+    padding: 2vh 2vw;
+}
+
+/* Center content inside HeroCard and style headings */
+.HeroCard{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+}
+
+.HeroCard h1{
+    color: var(--ColoA);
+    font-size: 3rem;
+    margin: 0;
+}
+
+.HeroCard h3{
+    color: #16363A;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Form layout inside hero */
+.connect-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.input-box{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0,0,0,0.03);
+    padding: 0.35rem 0.5rem;
+    border-radius: 6px;
+}
+
+.input-box input[type="email"],
+.input-box input[type="password"],
+.input-box input[type="text"]{
+    border: none;
+    background: transparent;
+    padding: 0.5rem 0.6rem;
+    outline: none;
+    width: 180px;
+}
+
+.input-icon{
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.05);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+}
+
+.primary-btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--ColoA);
+    color: white;
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+}
+
+.primary-btn .btn-icon{
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.08);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+}
+nav{
+    
+    width:100%;
+    background:var(--ColoM);
+    position: relative;
+    align-items: center;
+}
+.nav-item{
+    width: 20vw;
+    height:10vh;
+    display: inline;
+    color:var(--ColoT);
+    border-radius: 25px;
+}
+h1{
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: var(--ColoM);
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+}
+.nav-item{
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0.9rem;
+    background: transparent;
+    color: var(--ColoT);
+    border-radius: 999px; /* pill */
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.nav-item .icon-circle{
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.06);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+}
+
+.nav-item.active{
+    background: rgba(107,181,45,0.12); /* subtle green-ish pill */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06) inset;
+}
+
+.nav-item.active .icon-circle{
+    background: var(--ColoA);
+    color: white;
+}
