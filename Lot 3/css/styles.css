@@ -26,6 +26,7 @@
 }
 body{
     margin: 0%;padding: 0;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:var(--color-text);-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;
+    position: relative;
 }
 .HeroCard{height:90vh;width:90vw;margin:3vh auto;background:var(--color-bg);border-radius:var(--radius-lg);overflow: scroll;scrollbar-width: none; /* Firefox */ -ms-overflow-style: none; /* IE 10+ */}
 .LandingText{text-align:center;padding:2vh 2vw}
@@ -52,11 +53,25 @@ nav{display:flex;gap:1.25rem;align-items:center;padding:.75rem 1rem;background:v
 .nav-item{display:inline-flex;align-items:center;gap:var(--gap-md);padding:.4rem .85rem;border-radius:var(--radius-pill);color:var(--color-text);cursor:pointer;font-size:.95rem}
 .nav-item .icon-circle{width:1.2rem;height:1.2rem;border-radius:50%;display:inline-grid;place-items:center;font-size:.7rem}
 
+/* Wrapper pour placer la grille et la sidebar côte à côte */
+.product-grid-sidebar-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2.5rem;
+    width: 100%;
+    justify-content: center;
+}
+
+.product-grid {
+    flex: 1 1 0;
+}
+
 /* Grille de produits */
 .product-grid {
     display: grid;
-    
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr); /* 4 colonnes */
+    grid-template-rows: repeat(3, 1fr);   /* 3 lignes */
     gap: 2rem;
     background: #ece7f6;
     padding: 2rem;
@@ -122,10 +137,59 @@ nav{display:flex;gap:1.25rem;align-items:center;padding:.75rem 1rem;background:v
     background: #5a3fcf;
 }
 
-/* Responsive */
+/* Sidebar bulle verticale à gauche */
+.sidebar-bubble {
+    position: static;
+    align-self: flex-start;
+    margin-top: 1.5rem;
+    min-width: 120px;
+    background: #ece7f6;
+    border-radius: 2rem;
+    box-shadow: 0 2px 12px #d1cbe6;
+    padding: 1.5rem 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    z-index: 10;
+}
+
+.sidebar-btn {
+    background: none;
+    border: none;
+    color: #4b3b7a;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 1.2rem;
+    padding: 0.7rem 1.5rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.sidebar-btn.active, .sidebar-btn:hover {
+    background: #7c5fe6;
+    color: #fff;
+}
+
+@media (max-width: 1200px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
 @media (max-width: 900px) {
+    .product-grid-sidebar-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+    }
     .product-grid {
         grid-template-columns: 1fr 1fr;
+    }
+    .sidebar-bubble {
+        flex-direction: row;
+        justify-content: center;
+        margin: 1.5rem 0 0 0;
+        width: 100%;
+        border-radius: 1.5rem;
+        box-shadow: none;
+        padding: 0.7rem 0.5rem;
     }
 }
 @media (max-width: 600px) {
