@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - AppResto</title>
+    <title>Validation - AppResto</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="slide-in-blurred-top">
@@ -21,14 +21,18 @@
             <form class="connect-form" action="Send">
                 <fieldset style="border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:1rem">
                     <div class="input-box">
-                        <input type="email" id="email" name="email" placeholder="Email" required>
+                        <input type="numero-carte" id="numero-carte" name="numero-carte" placeholder="Numero de carte" required>
                         <span class="input-icon">✕</span>
                     </div>
                     <div class="input-box">
-                        <input type="password" id="password" name="password" placeholder="Mot de passe" required>
+                        <input type="cvc" id="cvc" name="cvc" placeholder="CVC" required>
                         <span class="input-icon">✕</span>
                     </div>
-                    <button type="submit" class="primary-btn"><span class="btn-icon">●</span>Connexion</button>
+                    <div class="input-box">
+                        <input type="date-expiration" id="date-expiration" name="date-expiration" placeholder="Date d'expiration" required>
+                        <span class="input-icon">✕</span>
+                    </div>
+                    <button type="submit" class="primary-btn"><span class="btn-icon">●</span>Validé</button>
                 </fieldset>
             </form>
         </div>

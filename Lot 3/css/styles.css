@@ -215,13 +215,13 @@ nav{display:flex;gap:1.25rem;align-items:center;padding:.75rem 1rem;background:v
 /* Bouton flottant panier en bas à droite de HeroCard */
 .cart-fab {
     position: absolute;
-    bottom: -4rem;
-    right: -3rem;
+    bottom: -2vh;
+    right: -2vw;
     background: #7c5fe6;
     border: none;
     border-radius: 25%;
-    width: 128px;
-    height: 128px;
+    width: 10vw;
+    height: 10vh;
     box-shadow: 0 2px 12px #d1cbe6;
     display: flex;
     align-items: center;
