@@ -59,7 +59,7 @@ nav{display:flex;gap:1.25rem;align-items:center;padding:.75rem 1rem;background:v
     flex-direction: row;
     align-items: flex-start;
     gap: 2.5rem;
-    width: 100%;
+    width: 90%;
     justify-content: center;
 }
 
@@ -71,7 +71,7 @@ nav{display:flex;gap:1.25rem;align-items:center;padding:.75rem 1rem;background:v
 .product-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* 4 colonnes */
-    grid-template-rows: repeat(3, 1fr);   /* 3 lignes */
+
     gap: 2rem;
     background: #ece7f6;
     padding: 2rem;
