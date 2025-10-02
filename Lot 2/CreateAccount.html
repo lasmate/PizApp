@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer un compte - AppResto</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="slide-in-blurred-top">
+    <nav>
+        <div class="nav-item" onclick="location.href='connexion.html'"><span class="icon-circle">★</span>Connexion</div>
+        <div class="nav-item" onclick="location.href='index.html'"><span class="icon-circle">○</span>Acceuil</div>
+        <div class="nav-item active" onclick="location.href='CreateAccount.html'"><span class="icon-circle">○</span>Creer Un Compte</div>
+    </nav>
+
+    <div class="HeroCard">
+        <div class="LandingText">
+            <h1>AppResto</h1>
+            <h3>Votre Premier stop pour un creux</h3>
+        </div>
+
+        <form class="connect-form" action="#" method="post">
+            <fieldset style="border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:1rem">
+                <div style="display:flex;gap:1rem">
+                    <div class="input-box">
+                        <input type="text" name="nom" placeholder="Nom" required>
+                        <span class="input-icon">✕</span>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" name="prenom" placeholder="Prenom" required>
+                        <span class="input-icon">✕</span>
+                    </div>
+                </div>
+
+                <div class="input-box">
+                    <input type="email" name="email" placeholder="Email" required>
+                    <span class="input-icon">✕</span>
+                </div>
+
+                <div style="display:flex;gap:1rem">
+                    <div class="input-box">
+                        <input type="password" name="password" placeholder="Mot de passe" required>
+                        <span class="input-icon">✕</span>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="password2" placeholder="Verifiez votre mot de passe" required>
+                        <span class="input-icon">✕</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="primary-btn"><span class="btn-icon">★</span>Connexion</button>
+            </fieldset>
+        </form>
+
+    </div>
+</body>
+</html>
