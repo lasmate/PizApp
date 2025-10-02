@@ -12,3 +12,4 @@ function renderProductCard($title, $subhead, $image) {
         <button class="add-to-cart">Ajouter Au Panier</button>
     </div>';
 }
+?>
