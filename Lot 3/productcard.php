@@ -1,4 +1,7 @@
 <?php
+include_once 'navbar.php';
+renderNavbar('');
+
 function renderProductCard($title, $subhead, $image) {
     return '
     <div class="product-card">

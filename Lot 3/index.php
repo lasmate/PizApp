@@ -1,3 +1,7 @@
+<?php
+include_once 'navbar.php';
+renderNavbar('index');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +11,7 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="slide-in-blurred-top">
- <div class="HeroCard">
+    <div class="HeroCard">
         <div class="LandingText">
         <h1>AppResto</h1>
         <h3>Votre premier stop pour un creux</h3>

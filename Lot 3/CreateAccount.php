@@ -37,11 +37,10 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="slide-in-blurred-top">
-    <nav>
-        <div class="nav-item" onclick="location.href='connexion.php'"><span class="icon-circle"><img src="img/input_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Connexion</div>
-        <div class="nav-item" onclick="location.href='index.php'"><span class="icon-circle"><img src="img/cottage_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Acceuil</div>
-        <div class="nav-item active" onclick="location.href='CreateAccount.php'"><span class="icon-circle"><img src="img/group_add_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Creer Un Compte</div>
-    </nav>
+    <?php
+    include_once 'navbar.php';
+    renderNavbar('inscription');
+    ?>
 
     <div class="HeroCard">
         <div class="LandingText">

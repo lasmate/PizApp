@@ -1,3 +1,7 @@
+<?php
+include_once 'navbar.php';
+renderNavbar('productlist');
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,11 +11,6 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="slide-in-blurred-top">
-    <nav>
-        <div class="nav-item active" onclick="location.href='connexion.php'"><span class="icon-circle"><img src="img/input_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Connexion</div>
-        <div class="nav-item" onclick="location.href='index.php'"><span class="icon-circle"><img src="img/cottage_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Acceuil</div>
-        <div class="nav-item" onclick="location.href='inscription.php'"><span class="icon-circle"><img src="img/group_add_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Inscription</div>
-    </nav>
     <div class="HeroCard" style="overflow: hidden;">
         <div class="product-grid-sidebar-wrapper">
                <div class="LandingText">
