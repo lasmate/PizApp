@@ -13,8 +13,8 @@
         <h3>Votre premier stop pour un creux</h3>
         </div>
         <div class="HeroActions">
-            <a class="nav-item" href="Connexion.html" role="button" aria-label="Aller à la page de connexion"><span class="icon-circle"><img src="img/input_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Connexion</a>
-            <a class="nav-item" href="CreateAccount.html" role="button" aria-label="Créer un compte"><span class="icon-circle"><img src="img/group_add_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Créer un compte</a>
+            <a class="nav-item" href="Connexion.php" role="button" aria-label="Aller à la page de connexion"><span class="icon-circle"><img src="img/input_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Connexion</a>
+            <a class="nav-item" href="CreateAccount.php" role="button" aria-label="Créer un compte"><span class="icon-circle"><img src="img/group_add_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Créer un compte</a>
         </div>
     </div>
 </body>

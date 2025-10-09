@@ -1,3 +1,26 @@
+<?php
+include 'ConnexionBDD.php';
+session_start();
+$message = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $password = $_POST['password'];
+    $sql = "SELECT * FROM utilisateur WHERE email_utilisateur='$email'";
+    $result = mysqli_query($conn, $sql);
+    if ($row = mysqli_fetch_assoc($result)) {
+        if (password_verify($password, $row['mot_de_passe_utilisateur'])) {
+            $_SESSION['user_id'] = $row['iduser'];
+            $_SESSION['user_login'] = $row['login_utilisateur'];
+            header('Location: productlist.php');
+            exit();
+        } else {
+            $message = "<span style='color:red'>Mot de passe incorrect.</span>";
+        }
+    } else {
+        $message = "<span style='color:red'>Aucun compte trouvé avec cet email.</span>";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +31,9 @@
 </head>
 <body class="slide-in-blurred-top">
     <nav>
-        <div class="nav-item active" onclick="location.href='connexion.html'"><span class="icon-circle"><img src="img/input_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Connexion</div>
-        <div class="nav-item" onclick="location.href='index.html'"><span class="icon-circle"><img src="img/cottage_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Acceuil</div>
-        <div class="nav-item" onclick="location.href='CreateAccount.html'"><span class="icon-circle"><img src="img/group_add_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Inscription</div>
+        <div class="nav-item active" onclick="location.href='connexion.php'"><span class="icon-circle"><img src="img/input_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Connexion</div>
+        <div class="nav-item" onclick="location.href='index.php'"><span class="icon-circle"><img src="img/cottage_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Acceuil</div>
+        <div class="nav-item" onclick="location.href='CreateAccount.php'"><span class="icon-circle"><img src="img/group_add_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Inscription</div>
     </nav>
     <div class="HeroCard">
         <div class="LandingText">
@@ -18,7 +41,8 @@
         <h3>Votre premier stop pour un creux</h3>
         </div>
         <div>
-            <form class="connect-form" action="Send">
+            <?php if (!empty($message)) echo '<div style="margin-bottom:1rem">'.$message.'</div>'; ?>
+            <form class="connect-form" action="" method="post">
                 <fieldset style="border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:1rem">
                     <div class="input-box">
                         <input type="email" id="email" name="email" placeholder="Email" required>

@@ -1,3 +1,33 @@
+<?php
+    include 'ConnexionBDD.php';
+    $message = '';
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $nom = mysqli_real_escape_string($conn, $_POST['nom']);
+        $prenom = mysqli_real_escape_string($conn, $_POST['prenom']);
+        $email = mysqli_real_escape_string($conn, $_POST['email']);
+        $password = $_POST['password'];
+        $password2 = $_POST['password2'];
+
+        if ($password !== $password2) {
+            $message = "<span style='color:red'>Les mots de passe ne correspondent pas.</span>";
+        } else {
+            // Vérifier si l'email existe déjà
+            $check = mysqli_query($conn, "SELECT * FROM utilisateur WHERE email_utilisateur='$email'");
+            if (mysqli_num_rows($check) > 0) {
+                $message = "<span style='color:red'>Cet email est déjà utilisé.</span>";
+            } else {
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                $login = $nom . '_' . $prenom;
+                $sql = "INSERT INTO utilisateur (login_utilisateur, email_utilisateur, mot_de_passe_utilisateur) VALUES ('$login', '$email', '$hashed_password')";
+                if (mysqli_query($conn, $sql)) {
+                    $message = "<span style='color:green'>Compte créé avec succès !</span>";
+                } else {
+                    $message = "<span style='color:red'>Erreur lors de la création du compte.</span>";
+                }
+            }
+        }
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +38,9 @@
 </head>
 <body class="slide-in-blurred-top">
     <nav>
-        <div class="nav-item" onclick="location.href='connexion.html'"><span class="icon-circle"><img src="img/input_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Connexion</div>
-        <div class="nav-item" onclick="location.href='index.html'"><span class="icon-circle"><img src="img/cottage_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Acceuil</div>
-        <div class="nav-item active" onclick="location.href='CreateAccount.html'"><span class="icon-circle"><img src="img/group_add_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Creer Un Compte</div>
+        <div class="nav-item" onclick="location.href='connexion.php'"><span class="icon-circle"><img src="img/input_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Connexion</div>
+        <div class="nav-item" onclick="location.href='index.php'"><span class="icon-circle"><img src="img/cottage_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Acceuil</div>
+        <div class="nav-item active" onclick="location.href='CreateAccount.php'"><span class="icon-circle"><img src="img/group_add_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Creer Un Compte</div>
     </nav>
 
     <div class="HeroCard">
@@ -18,7 +48,7 @@
             <h1>AppResto</h1>
             <h3>Votre Premier stop pour un creux</h3>
         </div>
-
+        <?php if (!empty($message)) echo '<div style="margin-bottom:1rem">'.$message.'</div>'; ?>
         <form class="connect-form" action="#" method="post">
             <fieldset style="border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:1rem">
                 <div style="display:flex;gap:1rem">
@@ -48,7 +78,10 @@
                     </div>
                 </div>
 
-                <button type="submit" class="primary-btn"><span class="btn-icon">★</span>Connexion</button>
+                <div style="display:flex;gap:1rem;justify-content:center">
+                    <button type="submit" class="primary-btn"><span class="btn-icon">★</span>Créer un compte</button>
+                    <button type="button" class="primary-btn" onclick="location.href='connexion.php'"><span class="btn-icon">★</span>Déjà inscrit ? Se connecter</button>
+                </div>
             </fieldset>
         </form>
 
