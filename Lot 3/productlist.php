@@ -12,7 +12,7 @@
         <div class="nav-item" onclick="location.href='index.php'"><span class="icon-circle"><img src="img/cottage_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Acceuil</div>
         <div class="nav-item" onclick="location.href='inscription.php'"><span class="icon-circle"><img src="img/group_add_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Inscription</div>
     </nav>
-    <div class="HeroCard">
+    <div class="HeroCard" style="overflow: hidden;">
         <div class="product-grid-sidebar-wrapper">
                <div class="LandingText">
             <h1>AppResto</h1>
@@ -70,72 +70,39 @@
                     </div>
                     <button class="add-to-cart">Ajouter Au Panier</button>
                 </div>
-                <div class="product-card">
-                    <div class="product-header">
-                        <span class="product-title">Pizza1</span>
-                        <span class="product-subhead">Subhead</span>
-                    </div>
-                    <div class="product-image-placeholder">
-                        <!-- Placeholder for image -->
-                        <span>🍕</span>
-                    </div>
-                    <button class="add-to-cart">Ajouter Au Panier</button>
-                </div>
-                <div class="product-card">
-                    <div class="product-header">
-                        <span class="product-title">Pizza1</span>
-                        <span class="product-subhead">Subhead</span>
-                    </div>
-                    <div class="product-image-placeholder">
-                        <!-- Placeholder for image -->
-                        <span>🍕</span>
-                    </div>
-                    <button class="add-to-cart">Ajouter Au Panier</button>
-                </div>
-                <div class="product-card">
-                    <div class="product-header">
-                        <span class="product-title">Pizza1</span>
-                        <span class="product-subhead">Subhead</span>
-                    </div>
-                    <div class="product-image-placeholder">
-                        <!-- Placeholder for image -->
-                        <span>🍕</span>
-                    </div>
-                    <button class="add-to-cart">Ajouter Au Panier</button>
-                </div>
-                <div class="product-card">
-                    <div class="product-header">
-                        <span class="product-title">Pizza1</span>
-                        <span class="product-subhead">Subhead</span>
-                    </div>
-                    <div class="product-image-placeholder">
-                        <span>🍕</span>
-                    </div>
-                    <button class="add-to-cart">Ajouter Au Panier</button>
-                </div>
+
+   
 
                
             </div>
         </div>
-        <div class="cart-slideout" id="cartSlideout">
-            <div class="cart-header">
-                <h2>Mon Panier</h2>
-                <button class="close-cart" onclick="toggleCart()">&times;</button>
-            </div>
-            <div class="cart-content">
-                <p>Votre panier est vide.</p>
-                <!-- Ici, les éléments du panier seront ajoutés dynamiquement -->
-            </div>
+        <div class="cart-panel open" style="width: 50vw;height: 50vh; bottom: 0;right: 0; position: absolute;background-color: antiquewhite;z-index: 0;">
+            <button class="cart-btn"><span class="cart-icon">🛒</span>
+                <div class="cart-item">
+                    <span class="item-count">3</span>
+                    <span class="item-name">Pizza1</span>
+                    <span class="item-price">12.99€</span>
+                </div>
+                <div class="cart-item">
+                    <span class="item-count">3</span>
+                    <span class="item-name">Pizza1</span>
+                    <span class="item-price">12.99€</span>
+                </div>
+                <div class="cart-item">
+                    <span class="item-count">3</span>
+                    <span class="item-name">Pizza1</span>
+                    <span class="item-price">12.99€</span>
+                </div>
+                <button class="checkout-btn">Passer à la caisse</button>
+            </button>
+                
         </div>
-        <button class="cart-fab" onclick="toggleCart()" id="cartFab">
-            <img src="img/for_you_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg" alt="Panier" />
-        </button>
-        <script>
-        function toggleCart() {
-            const cart = document.getElementById('cartSlideout');
-            cart.classList.toggle('open');
-        }
-        </script>
-    </div>
+
+        <!-- Small floating toggle to open/close the cart -->
+        <button class="cart-toggle" aria-label="Basculer le panier">🛒</button>
+
+   </div>
+    <!-- Scripts -->
+    <script src="scripts/test.js"></script>
 </body>
 </html>

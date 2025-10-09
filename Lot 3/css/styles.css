@@ -1,302 +1,416 @@
-:root{
-    /* page color palette */
-    --color-text: #00262B;
-    --color-bg: #D9D9D9;
-    --color-accent: #00833A;
-    --color-accent-2: #6BB52D;
+    /* ==================================================
+       Design Tokens (CSS Variables)
+       -------------------------------------------------- */
+    :root {
+        /* Page color palette */
+        --color-text: #00262B;
+        --color-bg: #D9D9D9;
+        --color-accent: #00833A;
+        --color-accent-2: #6BB52D;
 
-    /* muted tints */
-    --muted-1: rgba(0,0,0,0.03);
-    --muted-2: rgba(0,0,0,0.05);
-    --muted-3: rgba(0,0,0,0.06);
-    --muted-4: rgba(0,0,0,0.08);
+        /* Muted tints */
+        --muted-1: rgba(0, 0, 0, 0.03);
+        --muted-2: rgba(0, 0, 0, 0.05);
+        --muted-3: rgba(0, 0, 0, 0.06);
+        --muted-4: rgba(0, 0, 0, 0.08);
 
-    /* sizing */
-    --radius-sm: 6px;
-    --radius-lg: 25px;
-    --radius-pill: 999px;
-    --gap-sm: .5rem;
-    --gap-md: .6rem;
-    --gap-lg: 2.5rem;
-    --input-width: 180px;
-    --btn-padding: .6rem 1.1rem;
+        /* Sizing */
+        --radius-sm: 6px;
+        --radius-lg: 25px;
+        --radius-pill: 999px;
+        --gap-sm: .5rem;
+        --gap-md: .6rem;
+        --gap-lg: 2.5rem;
+        --input-width: 180px;
+        --btn-padding: .6rem 1.1rem;
 
-    /* shadows */
-    --shadow-inset: inset 0 2px 8px rgba(0,0,0,0.06);
-}
-body{
-    margin: 0%;padding: 0;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:var(--color-text);-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;
-    position: relative;
-}
-.HeroCard{height:90vh;width:90vw;margin:3vh auto;background:var(--color-bg);border-radius:var(--radius-lg);overflow: scroll;scrollbar-width: none; /* Firefox */ -ms-overflow-style: none; /* IE 10+ */}
-.LandingText{text-align:center;padding:2vh 2vw}
-
-/* Center content inside HeroCard and style headings */
-.HeroCard{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--gap-lg)}
-
-.HeroCard h1{color:var(--color-accent);font-size:3rem;margin:0}
-.HeroCard h3{color:#16363A;font-weight:500;margin:0}
-
-/* Form layout inside hero */
-.connect-form{display:flex;flex-direction:column;align-items:center;gap:1rem}
-
-.input-box{display:flex;align-items:center;gap:var(--gap-sm);background:var(--muted-1);padding:.35rem .5rem;border-radius:var(--radius-sm)}
-
-.input-box input{border:0;background:transparent;padding:.5rem .6rem;outline:none;width:var(--input-width)}
-
-.input-icon{width:1.6rem;height:1.6rem;border-radius:50%;background:var(--muted-2);display:inline-grid;place-items:center;font-size:.8rem}
-
-.primary-btn{display:inline-flex;align-items:center;gap:var(--gap-md);background:var(--color-accent);color:#fff;padding:var(--btn-padding);border-radius:var(--radius-pill);border:0;cursor:pointer}
-
-.primary-btn .btn-icon{width:1rem;height:1rem;border-radius:50%;background:var(--muted-4);display:inline-grid;place-items:center}
-nav{display:flex;gap:1.25rem;align-items:center;padding:.75rem 1rem;background:var(--color-bg);border-bottom:1px solid rgba(0,0,0,.06)}
-.nav-item{display:inline-flex;align-items:center;gap:var(--gap-md);padding:.4rem .85rem;border-radius:var(--radius-pill);color:var(--color-text);cursor:pointer;font-size:.95rem}
-.nav-item .icon-circle{width:1.2rem;height:1.2rem;border-radius:50%;display:inline-grid;place-items:center;font-size:.7rem}
-
-/* Wrapper pour placer la grille et la sidebar côte à côte */
-.product-grid-sidebar-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 2.5rem;
-    width: 90%;
-    justify-content: center;
-}
-
-.product-grid {
-    flex: 1 1 0;
-}
-
-/* Grille de produits */
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 colonnes */
-
-    gap: 2rem;
-    background: #ece7f6;
-    padding: 2rem;
-    border-radius: 1.5rem;
-    margin-top: 2rem;
-}
-
-.product-card {
-    background: #f6f3fa;
-    border-radius: 1.2rem;
-    box-shadow: 0 2px 8px #d1cbe6;
-    padding: 1.2rem 1rem 1.5rem 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    min-height: 210px;
-}
-
-.product-header {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 0.7rem;
-}
-.product-title {
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: var(--color-accent-2);
-}
-.product-subhead {
-    font-size: 0.95rem;
-    color: var(--muted-3);
-}
-
-.product-image-placeholder {
-    width: 60px;
-    height: 60px;
-    background: #e0d6f3;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    margin: 0.7rem 0 1.2rem 0;
-    box-shadow: 0 1px 4px #d1cbe6;
-}
-
-.add-to-cart {
-    background: #7c5fe6;
-    color: #fff;
-    border: none;
-    border-radius: 0.7rem;
-    padding: 0.5rem 1.2rem;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-top: auto;
-    transition: background 0.2s;
-}
-.add-to-cart:hover {
-    background: #5a3fcf;
-}
-
-/* Sidebar bulle verticale à gauche */
-.sidebar-bubble {
-    position: static;
-    align-self: flex-start;
-    margin-top: 1.5rem;
-    min-width: 120px;
-    background: #ece7f6;
-    border-radius: 2rem;
-    box-shadow: 0 2px 12px #d1cbe6;
-    padding: 1.5rem 0.7rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    z-index: 10;
-}
-
-.sidebar-btn {
-    background: none;
-    border: none;
-    color: #4b3b7a;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border-radius: 1.2rem;
-    padding: 0.7rem 1.5rem;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-}
-.sidebar-btn.active, .sidebar-btn:hover {
-    background: #7c5fe6;
-    color: #fff;
-}
-
-@media (max-width: 1200px) {
-    .product-grid {
-        grid-template-columns: repeat(3, 1fr);
+        /* Shadows */
+        --shadow-inset: inset 0 2px 8px rgba(0, 0, 0, 0.06);
     }
-}
-@media (max-width: 900px) {
-    .product-grid-sidebar-wrapper {
+
+    /* ==================================================
+       Base / Reset
+       -------------------------------------------------- */
+    body {
+        margin: 0%;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--color-text);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        position: relative;
+    }
+
+    /* Simple landing text wrapper */
+    .LandingText {
+        text-align: center;
+        padding: 2vh 2vw;
+    }
+
+    /* ==================================================
+       Hero Card (Landing Section)
+       -------------------------------------------------- */
+    /* Frame, layout and overflow behavior */
+    .HeroCard {
+        /* Frame */
+        height: 90vh;
+        width: 90vw;
+        margin: 3vh auto;
+        background: var(--color-bg);
+        border-radius: var(--radius-lg);
+        /* Overflow + hide scrollbars where possible */
+        overflow-x: hidden;
+        overflow-y: hidden;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE 10+ */
+
+        /* Layout */
+        display: flex;
         flex-direction: column;
-        align-items: stretch;
-    }
-    .product-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-    .sidebar-bubble {
-        flex-direction: row;
+        align-items: center;
         justify-content: center;
-        margin: 1.5rem 0 0 0;
-        width: 100%;
-        border-radius: 1.5rem;
-        box-shadow: none;
-        padding: 0.7rem 0.5rem;
+        gap: var(--gap-lg);
     }
-}
-@media (max-width: 600px) {
+
+    /* Hide scrollbars (WebKit-based browsers) */
+    .HeroCard::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+
+    .HeroCard h1 {
+        color: var(--color-accent);
+        font-size: 3rem;
+        margin: 0;
+    }
+
+    .HeroCard h3 {
+        color: #16363A;
+        font-weight: 500;
+        margin: 0;
+    }
+
+    /* ==================================================
+       Form Elements (Login/Connect)
+       -------------------------------------------------- */
+    .connect-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .input-box {
+        display: flex;
+        align-items: center;
+        gap: var(--gap-sm);
+        background: var(--muted-1);
+        padding: .35rem .5rem;
+        border-radius: var(--radius-sm);
+    }
+
+    .input-box input {
+        border: 0;
+        background: transparent;
+        padding: .5rem .6rem;
+        outline: none;
+        width: var(--input-width);
+    }
+
+    .input-icon {
+        width: 1.6rem;
+        height: 1.6rem;
+        border-radius: 50%;
+        background: var(--muted-2);
+        display: inline-grid;
+        place-items: center;
+        font-size: .8rem;
+    }
+
+    .primary-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--gap-md);
+        background: var(--color-accent);
+        color: #fff;
+        padding: var(--btn-padding);
+        border-radius: var(--radius-pill);
+        border: 0;
+        cursor: pointer;
+    }
+
+    .primary-btn .btn-icon {
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        background: var(--muted-4);
+        display: inline-grid;
+        place-items: center;
+    }
+
+    /* ==================================================
+       Navigation
+       -------------------------------------------------- */
+    nav {
+        display: flex;
+        gap: 1.25rem;
+        align-items: center;
+        padding: .75rem 1rem;
+        background: var(--color-bg);
+        border-bottom: 1px solid rgba(0, 0, 0, .06);
+    }
+
+    .nav-item {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--gap-md);
+        padding: .4rem .85rem;
+        border-radius: var(--radius-pill);
+        color: var(--color-text);
+        cursor: pointer;
+        font-size: .95rem;
+    }
+
+    .nav-item .icon-circle {
+        width: 1.2rem;
+        height: 1.2rem;
+        border-radius: 50%;
+        display: inline-grid;
+        place-items: center;
+        font-size: .7rem;
+    }
+
+    /* ==================================================
+       Catalog Layout (Grid + Sidebar)
+       -------------------------------------------------- */
+    /* Wrapper to place product grid and sidebar side by side */
+    .product-grid-sidebar-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 2.5rem;
+        width: 90%;
+        justify-content: center;
+    }
+
+    /* Product grid (also acts as a flex item of the wrapper) */
     .product-grid {
-        grid-template-columns: 1fr;
+        /* flex sizing when inside the wrapper */
+        flex: 1 1 0;
+
+        /* grid layout for its children */
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* 4 columns */
+        gap: 2rem;
+        background: #ece7f6;
+        padding: 2rem;
+        border-radius: 1.5rem;
+        margin-top: 2rem;
     }
-}
 
-.HeroCard::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-}
-/* ----------------------------------------------
- * Generated by Animista on 2025-9-25 11:22:16
- * Licensed under FreeBSD License.
- * See http://animista.net/license for more info. 
- * w: http://animista.net, t: @cssanimista
- * ---------------------------------------------- */
+    .product-card {
+        background: #f6f3fa;
+        border-radius: 1.2rem;
+        box-shadow: 0 2px 8px #d1cbe6;
+        padding: 1.2rem 1rem 1.5rem 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        min-height: 210px;
+    }
 
-@keyframes slide-in-blurred-top{0%{transform:translateY(-1000px) scaleY(2.5) scaleX(.2);transform-origin:50% 0;filter:blur(40px);opacity:0}100%{transform:translateY(0) scaleY(1) scaleX(1);transform-origin:50% 50%;filter:blur(0);opacity:1}}
-
-.slide-in-blurred-top{animation:slide-in-blurred-top .6s cubic-bezier(.23,1.000,.32,1.000) both}
-
-/* Bouton flottant panier en bas à droite de HeroCard */
-.cart-fab {
-    position: absolute;
-    bottom: -2vh;
-    right: -2vw;
-    background: #7c5fe6;
-    border: none;
-    border-radius: 25%;
-    width: 10vw;
-    height: 10vh;
-    box-shadow: 0 2px 12px #d1cbe6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 30;
-    transition: background 0.2s;
-}
-.cart-fab img {
-    width: 32px;
-    height: 32px;
-}
-.cart-fab:hover {
-    background: #5a3fcf;
-}
-
-/* Slideout panier */
-.cart-slideout {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    width: 0;
-    background: #fff;
-    box-shadow: -4px 0 24px #d1cbe6;
-    border-radius: 1.5rem 0 0 1.5rem;
-    overflow: hidden;
-    z-index: 50;
-    transition: width 0.4s cubic-bezier(.77,0,.18,1);
-    display: flex;
-    flex-direction: column;
-}
-.cart-slideout.open {
-    width: 70%;
-}
-.cart-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.2rem 2rem 1rem 2rem;
-    border-bottom: 1px solid #ece7f6;
-}
-.cart-header h2 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #4b3b7a;
-}
-.close-cart {
-    background: none;
-    border: none;
-    font-size: 2rem;
-    color: #7c5fe6;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-.close-cart:hover {
-    color: #5a3fcf;
-}
-.cart-content {
-    padding: 2rem;
-    flex: 1 1 auto;
-    overflow-y: auto;
-}
-
-.HeroCard {
-    position: relative;
-}
-
-@media (max-width: 900px) {
-    .cart-slideout.open {
+    .product-header {
         width: 100%;
-        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 0.7rem;
     }
-    .cart-fab {
-        right: 1rem;
-        bottom: 1rem;
+
+    .product-title {
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: var(--color-accent-2);
     }
-}
+
+    .product-subhead {
+        font-size: 0.95rem;
+        color: var(--muted-3);
+    }
+
+    .product-image-placeholder {
+        width: 60px;
+        height: 60px;
+        background: #e0d6f3;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0.7rem 0 1.2rem 0;
+        box-shadow: 0 1px 4px #d1cbe6;
+    }
+
+    .add-to-cart {
+        background: #7c5fe6;
+        color: #fff;
+        border: none;
+        border-radius: 0.7rem;
+        padding: 0.5rem 1.2rem;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: auto;
+        transition: background 0.2s;
+    }
+
+    .add-to-cart:hover {
+        background: #5a3fcf;
+    }
+
+    /* Sidebar bubble (vertical at left) */
+    .sidebar-bubble {
+        position: static;
+        align-self: flex-start;
+        margin-top: 1.5rem;
+        min-width: 120px;
+        background: #ece7f6;
+        border-radius: 2rem;
+        box-shadow: 0 2px 12px #d1cbe6;
+        padding: 1.5rem 0.7rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        z-index: 10;
+    }
+
+    .sidebar-btn {
+        background: none;
+        border: none;
+        color: #4b3b7a;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 1.2rem;
+        padding: 0.7rem 1.5rem;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+    }
+
+    .sidebar-btn.active,
+    .sidebar-btn:hover {
+        background: #7c5fe6;
+        color: #fff;
+    }
+
+    /* ==================================================
+       Responsive Breakpoints
+       -------------------------------------------------- */
+    @media (max-width: 1200px) {
+        .product-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (max-width: 900px) {
+        .product-grid-sidebar-wrapper {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .product-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .sidebar-bubble {
+            flex-direction: row;
+            justify-content: center;
+            margin: 1.5rem 0 0 0;
+            width: 100%;
+            border-radius: 1.5rem;
+            box-shadow: none;
+            padding: 0.7rem 0.5rem;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .product-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* ==================================================
+       Animations (via Animista)
+       -------------------------------------------------- */
+    /* ----------------------------------------------
+     * Generated by Animista on 2025-9-25 11:22:16
+     * Licensed under FreeBSD License.
+     * See http://animista.net/license for more info. 
+     * w: http://animista.net, t: @cssanimista
+     * ---------------------------------------------- */
+
+    @keyframes slide-in-blurred-top {
+        0% {
+            transform: translateY(-1000px) scaleY(2.5) scaleX(.2);
+            transform-origin: 50% 0;
+            filter: blur(40px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0) scaleY(1) scaleX(1);
+            transform-origin: 50% 50%;
+            filter: blur(0);
+            opacity: 1;
+        }
+    }
+
+    .slide-in-blurred-top {
+        animation: slide-in-blurred-top .6s cubic-bezier(.23, 1.000, .32, 1.000) both;
+    }
+
+
+    /* ==================================================
+       Cart panel diagonal slide
+       -------------------------------------------------- */
+    .cart-panel {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        /* start hidden off-screen diagonally (down-right) */
+        transform: translate(100%, 100%);
+        transition: transform 380ms cubic-bezier(.22,.61,.36,1);
+        will-change: transform;
+        box-shadow: 0 10px 30px rgba(0,0,0,.18);
+        border-top-left-radius: 16px;
+        overflow: auto;
+    }
+
+    .cart-panel.open {
+        /* slide into view from bottom-right to its anchored corner */
+        transform: translate(0, 0);
+    }
+
+    /* Floating round toggle button */
+    .cart-toggle {
+        position: fixed;
+        bottom: 18px;
+        right: 18px;
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        border: none;
+        background: #7c5fe6;
+        color: #fff;
+        font-size: 24px;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        box-shadow: 0 6px 18px rgba(0,0,0,.22);
+        z-index: 20;
+    }
+
+    .cart-toggle:active {
+        transform: scale(.96);
+    }
+
+
+
