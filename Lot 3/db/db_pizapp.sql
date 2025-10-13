@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : jeu. 25 sep. 2025 à 09:44
--- Version du serveur : 10.4.32-MariaDB
--- Version de PHP : 8.2.12
+-- Host: 127.0.0.1
+-- Generation Time: Oct 13, 2025 at 12:29 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `db_pizapp`
+-- Database: `db_pizapp`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `commande`
+-- Table structure for table `commande`
 --
 
 CREATE TABLE `commande` (
@@ -39,7 +39,7 @@ CREATE TABLE `commande` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `etat`
+-- Table structure for table `etat`
 --
 
 CREATE TABLE `etat` (
@@ -47,10 +47,20 @@ CREATE TABLE `etat` (
   `libetat` text NOT NULL COMMENT 'description de l''état de la commande'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `etat`
+--
+
+INSERT INTO `etat` (`idetet`, `libetat`) VALUES
+(1, 'En préparation'),
+(2, 'Prête'),
+(3, 'Livrée'),
+(4, 'Annulée');
+
 -- --------------------------------------------------------
 
 --
--- Structure de la table `ligne_de_commande`
+-- Table structure for table `ligne_de_commande`
 --
 
 CREATE TABLE `ligne_de_commande` (
@@ -63,19 +73,35 @@ CREATE TABLE `ligne_de_commande` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `produit`
+-- Table structure for table `produit`
 --
 
 CREATE TABLE `produit` (
   `idproduit` int(11) NOT NULL COMMENT 'id du produit',
+  `nomproduit` varchar(255) NOT NULL,
   `libproduit` text DEFAULT NULL COMMENT 'description du produit',
-  `prixproduit` double DEFAULT NULL COMMENT 'prix du produit'
+  `prixproduit` double DEFAULT NULL COMMENT 'prix du produit',
+  `imgproduit` varchar(255) DEFAULT NULL COMMENT 'Lien de l''image'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `produit`
+--
+
+INSERT INTO `produit` (`idproduit`, `nomproduit`, `libproduit`, `prixproduit`, `imgproduit`) VALUES
+(1, 'Pizza Margherita', 'Tomates, mozzarella, basilic', 12.5, 'img/'),
+(2, 'Pizza Pepperoni', 'Pepperoni, mozzarella, sauce tomate', 14.9, 'img/'),
+(3, 'Pizza 4 Fromages', 'Mozzarella, gorgonzola, parmesan, chèvre', 16.5, 'img/'),
+(4, 'Coca Cola', 'Boisson gazeuse 33cl', 2.5, 'img/'),
+(5, 'Tiramisu', 'Dessert italien traditionnel', 6.9, 'img/'),
+(6, 'Salade César', 'Salade, poulet, croûtons, parmesan', 11.5, 'img/'),
+(7, 'Eau Minérale', 'Eau plate 50cl', 1.8, 'img/'),
+(8, 'Panna Cotta', 'Dessert italien aux fruits rouges', 5.9, 'img/');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `utilisateur`
+-- Table structure for table `utilisateur`
 --
 
 CREATE TABLE `utilisateur` (
@@ -86,11 +112,18 @@ CREATE TABLE `utilisateur` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Index pour les tables déchargées
+-- Dumping data for table `utilisateur`
+--
+
+INSERT INTO `utilisateur` (`iduser`, `login_utilisateur`, `email_utilisateur`, `mot_de_passe_utilisateur`) VALUES
+(1, 'lasv_lya', 'LLaa@gmail.com', '$2y$10$mTUKPPADJGEdriuzFhTg5.4iYNT3fEGNclb122l6M3DfwzPiYToCm');
+
+--
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `commande`
+-- Indexes for table `commande`
 --
 ALTER TABLE `commande`
   ADD PRIMARY KEY (`idcommande`),
@@ -98,64 +131,64 @@ ALTER TABLE `commande`
   ADD UNIQUE KEY `idetat` (`idetat`);
 
 --
--- Index pour la table `etat`
+-- Indexes for table `etat`
 --
 ALTER TABLE `etat`
   ADD PRIMARY KEY (`idetet`);
 
 --
--- Index pour la table `ligne_de_commande`
+-- Indexes for table `ligne_de_commande`
 --
 ALTER TABLE `ligne_de_commande`
   ADD PRIMARY KEY (`idcommande`,`idproduit`),
   ADD KEY `idproduit` (`idproduit`);
 
 --
--- Index pour la table `produit`
+-- Indexes for table `produit`
 --
 ALTER TABLE `produit`
   ADD PRIMARY KEY (`idproduit`);
 
 --
--- Index pour la table `utilisateur`
+-- Indexes for table `utilisateur`
 --
 ALTER TABLE `utilisateur`
   ADD PRIMARY KEY (`iduser`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `commande`
+-- AUTO_INCREMENT for table `commande`
 --
 ALTER TABLE `commande`
   MODIFY `idcommande` int(25) NOT NULL AUTO_INCREMENT COMMENT 'id de la commande';
 
 --
--- AUTO_INCREMENT pour la table `etat`
+-- AUTO_INCREMENT for table `etat`
 --
 ALTER TABLE `etat`
-  MODIFY `idetet` int(25) NOT NULL AUTO_INCREMENT COMMENT 'id de l''état de la commande';
+  MODIFY `idetet` int(25) NOT NULL AUTO_INCREMENT COMMENT 'id de l''état de la commande', AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT pour la table `produit`
+-- AUTO_INCREMENT for table `produit`
 --
 ALTER TABLE `produit`
-  MODIFY `idproduit` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id du produit';
+  MODIFY `idproduit` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id du produit', AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT pour la table `utilisateur`
+-- AUTO_INCREMENT for table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `iduser` int(25) NOT NULL AUTO_INCREMENT COMMENT 'id de l''utilisateur';
+  MODIFY `iduser` int(25) NOT NULL AUTO_INCREMENT COMMENT 'id de l''utilisateur', AUTO_INCREMENT=2;
 
 --
--- Contraintes pour les tables déchargées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `commande`
+-- Constraints for table `commande`
 --
 ALTER TABLE `commande`
   ADD CONSTRAINT `commande_ibfk_1` FOREIGN KEY (`idcommande`) REFERENCES `ligne_de_commande` (`idcommande`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -163,7 +196,7 @@ ALTER TABLE `commande`
   ADD CONSTRAINT `commande_ibfk_3` FOREIGN KEY (`idetat`) REFERENCES `etat` (`idetet`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `ligne_de_commande`
+-- Constraints for table `ligne_de_commande`
 --
 ALTER TABLE `ligne_de_commande`
   ADD CONSTRAINT `ligne_de_commande_ibfk_1` FOREIGN KEY (`idproduit`) REFERENCES `produit` (`idproduit`) ON DELETE CASCADE ON UPDATE CASCADE;
