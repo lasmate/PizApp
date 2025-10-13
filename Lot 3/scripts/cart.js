@@ -1,29 +1,43 @@
 /**
- * Cart Panel Management
- * Handles the diagonal sliding cart panel functionality
+ * Cart Modal Management
+ * - Hidden on load
+ * - Small toggle button inside HeroCard bottom-right
+ * - On click: button rolls, modal slides from button position to center diagonally
  */
 
 (function () {
-	const cartPanel = document.querySelector('.cart-panel');
+	const hero = document.querySelector('.HeroCard');
+	const modal = document.querySelector('.cart-modal');
+	const backdrop = document.querySelector('.cart-backdrop');
 	const toggleBtn = document.querySelector('.cart-toggle');
+	const closeBtn = document.querySelector('.cart-close');
 
-	if (!cartPanel || !toggleBtn) return;
+	if (!hero || !modal || !backdrop || !toggleBtn) return;
 
-	// Ensure cart is closed when page loads
-	cartPanel.classList.remove('open');
+	// Ensure closed on load
+	modal.classList.remove('open');
+	backdrop.classList.remove('open');
 
-	function toggleCart(forceState) {
-		const isOpen = cartPanel.classList.contains('open');
-		const nextOpen = typeof forceState === 'boolean' ? forceState : !isOpen;
-		cartPanel.classList.toggle('open', nextOpen);
+	function openCart() {
+		// Trigger roll animation on the button
+		toggleBtn.classList.add('roll');
+		// Start states are already defined in CSS; just flip to open state
+		backdrop.classList.add('open');
+		modal.classList.add('open');
+		// Remove the roll class after animation ends
+		setTimeout(() => toggleBtn.classList.remove('roll'), 450);
 	}
 
-	toggleBtn.addEventListener('click', () => toggleCart());
+	function closeCart() {
+		backdrop.classList.remove('open');
+		modal.classList.remove('open');
+	}
 
-	// Optional: close when clicking outside the panel
-	document.addEventListener('click', (e) => {
-		if (!cartPanel.classList.contains('open')) return;
-		const isClickInside = cartPanel.contains(e.target) || toggleBtn.contains(e.target);
-		if (!isClickInside) toggleCart(false);
+	toggleBtn.addEventListener('click', () => {
+		const isOpen = modal.classList.contains('open');
+		if (isOpen) closeCart(); else openCart();
 	});
+
+	backdrop.addEventListener('click', closeCart);
+	if (closeBtn) closeBtn.addEventListener('click', closeCart);
 })();

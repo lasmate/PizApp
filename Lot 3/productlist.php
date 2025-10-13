@@ -52,30 +52,37 @@ $products = getSampleProducts();
                 ?>
             </div>
         </div>
-        <div class="cart-panel" style="width: 50vw;height: 50vh; bottom: 0;right: 0; position: absolute;background-color: antiquewhite;z-index: 0;">
-            <button class="cart-btn"><span class="cart-icon">🛒</span>
+        <!-- Cart Backdrop and Modal inside HeroCard -->
+        <div class="cart-backdrop" aria-hidden="true"></div>
+        <div class="cart-modal" role="dialog" aria-labelledby="cart-title" aria-modal="true">
+            <div class="cart-modal-header">
+                <h3 id="cart-title">Votre panier</h3>
+                <button class="cart-close" aria-label="Fermer">✕</button>
+            </div>
+            <div class="cart-modal-content">
                 <div class="cart-item">
                     <span class="item-count">3</span>
                     <span class="item-name">Pizza1</span>
                     <span class="item-price">12.99€</span>
                 </div>
                 <div class="cart-item">
-                    <span class="item-count">3</span>
-                    <span class="item-name">Pizza1</span>
-                    <span class="item-price">12.99€</span>
+                    <span class="item-count">2</span>
+                    <span class="item-name">Coca Cola</span>
+                    <span class="item-price">2.50€</span>
                 </div>
                 <div class="cart-item">
-                    <span class="item-count">3</span>
-                    <span class="item-name">Pizza1</span>
-                    <span class="item-price">12.99€</span>
+                    <span class="item-count">1</span>
+                    <span class="item-name">Tiramisu</span>
+                    <span class="item-price">6.90€</span>
                 </div>
+            </div>
+            <div class="cart-modal-footer">
                 <button class="checkout-btn">Passer à la caisse</button>
-            </button>
-                
+            </div>
         </div>
 
-        <!-- Small floating toggle to open/close the cart -->
-        <button class="cart-toggle" aria-label="Basculer le panier">🛒</button>
+        <!-- Small toggle button inside HeroCard (bottom-right) -->
+        <button class="cart-toggle" aria-label="Basculer le panier" title="Ouvrir le panier">🛒</button>
 
    </div>
     <!-- Scripts -->
