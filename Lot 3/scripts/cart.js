@@ -9,8 +9,8 @@
 
 	if (!cartPanel || !toggleBtn) return;
 
-	// Ensure initial state has CSS applied once DOM is ready
-	// The HTML sets cart-panel as open by default; you can change as needed.
+	// Ensure cart is closed when page loads
+	cartPanel.classList.remove('open');
 
 	function toggleCart(forceState) {
 		const isOpen = cartPanel.classList.contains('open');

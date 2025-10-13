@@ -1,6 +1,19 @@
 <?php
+session_start();
+
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: Connexion.php');
+    exit();
+}
+
 include_once 'navbar.php';
+include_once 'productcard.php';
+
 renderNavbar('productlist');
+
+// Get products data
+$products = getSampleProducts();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -25,57 +38,21 @@ renderNavbar('productlist');
                  
         </div>  
             <div class="product-grid">
-                <div class="product-card">
-                    <div class="product-header">
-                        <span class="product-title">Pizza1</span>
-                        <span class="product-subhead">Subhead</span>
-                    </div>
-                    <div class="product-image-placeholder">
-                        <!-- Placeholder for image -->
-                        <span>🍕</span>
-                    </div>
-                    <button class="add-to-cart">Ajouter Au Panier</button>
-                </div>
-                <div class="product-card">
-                    <div class="product-header">
-                        <span class="product-title">Pizza1</span>
-                        <span class="product-subhead">Subhead</span>
-                    </div>
-                    <div class="product-image-placeholder">
-                        <!-- Placeholder for image -->
-                        <span>🍕</span>
-                    </div>
-                    <button class="add-to-cart">Ajouter Au Panier</button>
-                </div>
-                <div class="product-card">
-                    <div class="product-header">
-                        <span class="product-title">Pizza1</span>
-                        <span class="product-subhead">Subhead</span>
-                    </div>
-                    <div class="product-image-placeholder">
-                        <!-- Placeholder for image -->
-                        <span>🍕</span>
-                    </div>
-                    <button class="add-to-cart">Ajouter Au Panier</button>
-                </div>
-                <div class="product-card">
-                    <div class="product-header">
-                        <span class="product-title">Pizza1</span>
-                        <span class="product-subhead">Subhead</span>
-                    </div>
-                    <div class="product-image-placeholder">
-                        <!-- Placeholder for image -->
-                        <span>🍕</span>
-                    </div>
-                    <button class="add-to-cart">Ajouter Au Panier</button>
-                </div>
-
-   
-
-               
+                <?php
+                // Display all products using the productcard component
+                foreach ($products as $product) {
+                    echo renderProductCard(
+                        $product['title'],
+                        $product['subhead'],
+                        $product['image'],
+                        $product['price'],
+                        $product['id']
+                    );
+                }
+                ?>
             </div>
         </div>
-        <div class="cart-panel open" style="width: 50vw;height: 50vh; bottom: 0;right: 0; position: absolute;background-color: antiquewhite;z-index: 0;">
+        <div class="cart-panel" style="width: 50vw;height: 50vh; bottom: 0;right: 0; position: absolute;background-color: antiquewhite;z-index: 0;">
             <button class="cart-btn"><span class="cart-icon">🛒</span>
                 <div class="cart-item">
                     <span class="item-count">3</span>
@@ -104,5 +81,6 @@ renderNavbar('productlist');
     <!-- Scripts -->
     <script src="scripts/main.js"></script>
     <script src="scripts/cart.js"></script>
+    <script src="scripts/product-filters.js"></script>
 </body>
 </html>
