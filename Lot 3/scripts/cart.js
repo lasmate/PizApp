@@ -1,4 +1,8 @@
-// Toggle the cart panel diagonally in/out of view
+/**
+ * Cart Panel Management
+ * Handles the diagonal sliding cart panel functionality
+ */
+
 (function () {
 	const cartPanel = document.querySelector('.cart-panel');
 	const toggleBtn = document.querySelector('.cart-toggle');
@@ -23,4 +27,3 @@
 		if (!isClickInside) toggleCart(false);
 	});
 })();
-

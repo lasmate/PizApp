@@ -102,6 +102,7 @@ renderNavbar('productlist');
 
    </div>
     <!-- Scripts -->
-    <script src="scripts/test.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/cart.js"></script>
 </body>
 </html>

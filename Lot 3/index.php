@@ -21,5 +21,6 @@ renderNavbar('index');
             <a class="nav-item" href="CreateAccount.php" role="button" aria-label="Créer un compte"><span class="icon-circle"><img src="img/group_add_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"></span>Créer un compte</a>
         </div>
     </div>
+    <script src="scripts/main.js"></script>
 </body>
 </html>

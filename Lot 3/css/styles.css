@@ -124,6 +124,18 @@
         display: inline-grid;
         place-items: center;
         font-size: .8rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+        user-select: none;
+    }
+
+    .input-icon:hover {
+        background: var(--muted-3);
+        transform: scale(1.05);
+    }
+
+    .input-icon:active {
+        transform: scale(0.95);
     }
 
     .primary-btn {

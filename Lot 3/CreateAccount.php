@@ -85,5 +85,7 @@
         </form>
 
     </div>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/form-helpers.js"></script>
 </body>
 </html>
