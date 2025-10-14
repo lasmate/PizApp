@@ -1,3 +1,4 @@
+-- Active: 1759755836315@@127.0.0.1@3306@db_pizapp
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
@@ -80,6 +81,7 @@ CREATE TABLE `produit` (
   `idproduit` int(11) NOT NULL COMMENT 'id du produit',
   `nomproduit` varchar(255) NOT NULL,
   `libproduit` text DEFAULT NULL COMMENT 'description du produit',
+  `typeproduit` enum('pizza','boisson','dessert','autre') DEFAULT 'autre' COMMENT 'type du produit',
   `prixproduit` double DEFAULT NULL COMMENT 'prix du produit',
   `imgproduit` varchar(255) DEFAULT NULL COMMENT 'Lien de l''image'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -88,15 +90,15 @@ CREATE TABLE `produit` (
 -- Dumping data for table `produit`
 --
 
-INSERT INTO `produit` (`idproduit`, `nomproduit`, `libproduit`, `prixproduit`, `imgproduit`) VALUES
-(1, 'Pizza Margherita', 'Tomates, mozzarella, basilic', 12.5, 'img/'),
-(2, 'Pizza Pepperoni', 'Pepperoni, mozzarella, sauce tomate', 14.9, 'img/'),
-(3, 'Pizza 4 Fromages', 'Mozzarella, gorgonzola, parmesan, chèvre', 16.5, 'img/'),
-(4, 'Coca Cola', 'Boisson gazeuse 33cl', 2.5, 'img/'),
-(5, 'Tiramisu', 'Dessert italien traditionnel', 6.9, 'img/'),
-(6, 'Salade César', 'Salade, poulet, croûtons, parmesan', 11.5, 'img/'),
-(7, 'Eau Minérale', 'Eau plate 50cl', 1.8, 'img/'),
-(8, 'Panna Cotta', 'Dessert italien aux fruits rouges', 5.9, 'img/');
+INSERT INTO `produit` (`idproduit`, `nomproduit`, `libproduit`, `typeproduit`, `prixproduit`, `imgproduit`) VALUES
+(1, 'Pizza Margherita', 'Tomates, mozzarella, basilic', 'pizza', 12.5, 'img/'),
+(2, 'Pizza Pepperoni', 'Pepperoni, mozzarella, sauce tomate', 'pizza', 14.9, 'img/'),
+(3, 'Pizza 4 Fromages', 'Mozzarella, gorgonzola, parmesan, chèvre', 'pizza', 16.5, 'img/'),
+(4, 'Coca Cola', 'Boisson gazeuse 33cl', 'boisson', 2.5, 'img/'),
+(5, 'Tiramisu', 'Dessert italien traditionnel', 'dessert', 6.9, 'img/'),
+(6, 'Salade César', 'Salade, poulet, croûtons, parmesan', 'autre', 11.5, 'img/'),
+(7, 'Eau Minérale', 'Eau plate 50cl', 'autre', 1.8, 'img/'),
+(8, 'Panna Cotta', 'Dessert italien aux fruits rouges', 'dessert', 5.9, 'img/');
 
 -- --------------------------------------------------------
 
