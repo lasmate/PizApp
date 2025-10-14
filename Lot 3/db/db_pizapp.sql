@@ -79,9 +79,9 @@ CREATE TABLE `ligne_de_commande` (
 
 CREATE TABLE `produit` (
   `idproduit` int(11) NOT NULL COMMENT 'id du produit',
+  `typeproduit` enum('pizza','boisson','dessert','autre') DEFAULT 'autre' COMMENT 'type du produit',
   `nomproduit` varchar(255) NOT NULL,
   `libproduit` text DEFAULT NULL COMMENT 'description du produit',
-  `typeproduit` enum('pizza','boisson','dessert','autre') DEFAULT 'autre' COMMENT 'type du produit',
   `prixproduit` double DEFAULT NULL COMMENT 'prix du produit',
   `imgproduit` varchar(255) DEFAULT NULL COMMENT 'Lien de l''image'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -90,15 +90,73 @@ CREATE TABLE `produit` (
 -- Dumping data for table `produit`
 --
 
-INSERT INTO `produit` (`idproduit`, `nomproduit`, `libproduit`, `typeproduit`, `prixproduit`, `imgproduit`) VALUES
-(1, 'Pizza Margherita', 'Tomates, mozzarella, basilic', 'pizza', 12.5, 'img/'),
-(2, 'Pizza Pepperoni', 'Pepperoni, mozzarella, sauce tomate', 'pizza', 14.9, 'img/'),
-(3, 'Pizza 4 Fromages', 'Mozzarella, gorgonzola, parmesan, chèvre', 'pizza', 16.5, 'img/'),
-(4, 'Coca Cola', 'Boisson gazeuse 33cl', 'boisson', 2.5, 'img/'),
-(5, 'Tiramisu', 'Dessert italien traditionnel', 'dessert', 6.9, 'img/'),
-(6, 'Salade César', 'Salade, poulet, croûtons, parmesan', 'autre', 11.5, 'img/'),
-(7, 'Eau Minérale', 'Eau plate 50cl', 'autre', 1.8, 'img/'),
-(8, 'Panna Cotta', 'Dessert italien aux fruits rouges', 'dessert', 5.9, 'img/');
+INSERT INTO produit (idproduit, typeproduit, nomproduit, libproduit, prixproduit, imgproduit) VALUES
+(NULL, 'Pizza', 'MARGHERITA', 'tomate_fromage_olives_origan', 9.50, img/),
+(NULL, 'Pizza', 'ROMAINE', 'tomate_jambon_fromage_olives_origan', 11.00, img/),
+(NULL, 'Pizza', 'REINE', 'tomate_jambon_champignons_fromage_olives_origan', 11.50, img/),
+(NULL, 'Pizza', 'FORESTIERE', 'tomate_champignons_persillade_crème_fromage_olives_origan', 11.50, img/),
+(NULL, 'Pizza', 'CHORIZO', 'tomate_chorizo_poivrons_fromage_olives_origan', 12.50, img/),
+(NULL, 'Pizza', 'ORIENTALE', 'tomate_merguez_poivrons_fromage_olives_origan', 12.50, img/),
+(NULL, 'Pizza', '4 FROMAGES', 'tomate_chèvre_Roquefort_fromages_olives_origan', 12.50, img/),
+(NULL, 'Pizza', 'SEGUIN', 'tomate_jambon_chèvre_fromage_olives_origan', 12.50, img/),
+(NULL, 'Pizza', 'CALZONE', 'tomate_jambon_champignons_oeuf_fromage_olives_origan', 13.00, img/),
+(NULL, 'Pizza', 'BOLOGNAISE', 'tomate_viande-hachée_champignons_crème_fromage_olives_origan', 12.50, img/),
+(NULL, 'Pizza', 'MEXICAINE', 'tomate_viande-hachée-épicée_oignons_poivrons_maïs_fromage_olives_origan', 12.50, img/),
+(NULL, 'Pizza', 'POULET', 'tomate_poulet_champignons_crème_fromages_olives_origan', 12.50, img/),
+(NULL, 'Pizza', 'ANCHOIS', 'tomate_anchois_câpres_fromage_olives_origan', 12.50, img/),
+(NULL, 'Pizza', 'VEGETARIENNE', 'tomate_champignons_oignons_artichauts_poivrons_fromage_olives_origan', 12.50, img/),
+(NULL, 'Pizza', 'ROQUEFORT', 'tomate_Roquefort_jambon_fromage_olives_origan', 12.00, img/),
+(NULL, 'Pizza', 'FRUITS DE MER', 'tomate_fruits_de_mer_persillade_fromage_olives_origan', 13.50, img/),
+(NULL, 'Pizza', 'CAMPAGNARDE', 'tomate_lardons_oignons_oeuf_crème_fromage_olives_origan', 13.00, img/),
+(NULL, 'Pizza', 'PECHEUR', 'tomate_thon_persillade_crème_fromage_olives_origan', 12.50, img/),
+(NULL, 'Pizza', 'HAWAIENNE', 'crème_jambon_ananas_curry_fromage_olives_origan', 12.50, img/),
+(NULL, 'Pizza', 'FLAMICHE', 'crème_lardons_oignons_fromage_olives_origan', 12.50, img/),
+(NULL, 'Pizza', 'TARTIFLETTE', 'crème_lardons_pomme_de_terre_reblochon_fromage_olives', 13.50, img/),
+(NULL, 'Pizza', 'MONTAGNARDE', 'crème_diot_de_Savoie_oignons_tomme_de_Savoie_pomme_de_terre_fromage_olives_origan', 13.50, img/),
+(NULL, 'Pizza', 'RAVIOLE', 'crème_ravioles_fromage_olives_origan', 13.50, img/),
+(NULL, 'Pizza', 'RAVIOLE SAUMON', 'crème_ravioles_saumon_fromage_olives_origan', 14.00, img/),
+(NULL, 'Pizza', 'MURETINE', 'crème_st_Marcellin_persillade_fromage_olives_origan', 13.00, img/),
+(NULL, 'Pizza', 'RACLETTE', 'crème_raclette_jambon_cru_pomme_de_terre_fromage_olives_origan', 13.50, img/),
+(NULL, 'Pizza', 'SAUMON', 'crème_persillade_saumon_fromage_olives_origan', 13.50, img/),
+(NULL, 'Pizza', 'GRENOBLOISE', 'crème_chèvre_miel_noix_fromage_olives_origan', 13.00, img/),
+(NULL, 'Pizza', 'KEBAB', 'crème_viande_kebab_sauce_kebab_tomate_fraîche_fromage_olives_origan', 13.00, img/),
+(NULL, 'Pizza', 'PIZZA SUCREE', 'crème_Nutella_spéculoos_ou_noix_de_coco', 9.50, img/);
+
+
+INSERT INTO produit (idproduit, typeproduit, nomproduit, libproduit, prixproduit, imgproduit) VALUES
+(NULL, 'Boisson', 'Pepsi', "Boisson iconique au goût frais et intense, c'est une boisson gazeuse délicieuse et rafraîchissante aux extraits végétaux", 2.0, img/),
+(NULL, 'Boisson', 'Pepsi MAX', 'La version sans sucre du Pepsi, tout le plaisir sans les calories, toujours aussi rafraîchissant.', 2.0, img/),
+(NULL, 'Boisson', 'KAS', 'Boisson pétillante aux saveurs fruitées, idéale pour une pause fraîcheur.', 1.8, img/),
+(NULL, 'Boisson', 'Lipton', 'Thé glacé désaltérant, parfait pour se rafraîchir à tout moment de la journée.', 2.0, img/),
+(NULL, 'Boisson', 'Oasis', 'Boisson aux fruits sans bulles, douce et fruitée, pour petits et grands.', 2.0, img/),
+(NULL, 'Boisson', 'Coca-cola', 'La boisson gazeuse la plus célèbre au monde, goût unique et rafraîchissant.', 2.0, img/),
+(NULL, 'Boisson', 'Fanta', 'Boisson pétillante à l’orange, fun et fruitée, pour une explosion de saveurs.', 1.8, img/),
+(NULL, 'Boisson', 'Sprite', 'Boisson gazeuse citron-lime, ultra rafraîchissante et désaltérante.', 1.8, img/),
+(NULL, 'Boisson', 'Nestea', 'Thé glacé au goût subtil, parfait pour une pause fraîcheur.', 2.0, img/),
+(NULL, 'Boisson', 'Minute Maid', 'Jus de fruits savoureux, 100% plaisir, 100% fruits.', 2.0, img/),
+(NULL, 'Boisson', 'Orangina', 'Boisson pétillante à l’orange, pulpeuse et pleine de peps.', 2.0, img/),
+(NULL, 'Boisson', 'Schweppes', 'Boisson gazeuse au goût amer unique, idéale pour l’apéritif.', 2.0, img/),
+(NULL, 'Boisson', 'Ricqles', 'Menthe forte et rafraîchissante, pour un coup de frais instantané.', 2.2, img/),
+(NULL, 'Boisson', 'Perrier', 'Eau minérale gazeuse naturelle, bulles fines et rafraîchissantes.', 1.5, img/),
+(NULL, 'Boisson', 'Pschitt', 'Boisson pétillante au citron ou à l’orange, rétro et désaltérante.', 1.8, img/),
+(NULL, 'Boisson', 'Cacolac', 'Boisson lactée au cacao, douceur et gourmandise à l’état pur.', 2.0, img/),
+(NULL, 'Boisson', 'Granini', 'Jus de fruits premium, saveur intense et naturelle.', 2.2, img/),
+(NULL, 'Boisson', 'Joker', 'Jus de fruits variés, douceur et vitamines pour toute la famille.', 2.0, img/),
+(NULL, 'Boisson', 'Red Bull', 'Boisson énergisante, donne des ailes pour affronter la journée.', 2.5, img/),
+(NULL, 'Boisson', 'Monster', 'Boisson énergisante au goût puissant, pour un maximum d’énergie.', 2.5, img/);
+
+
+INSERT INTO produit (idproduit, typeproduit, nomproduit, libproduit, prixproduit, imgproduit) VALUES
+(NULL, 'Dessert', 'Crème brûlée à la vanille de Madagascar', 'Une crème onctueuse parfumée à la vanille, recouverte d’une fine couche de sucre caramélisé à la flamme.', 7.50, 'img/'),
+(NULL, 'Dessert', 'Moelleux au chocolat cœur fondant', 'Gâteau chaud au chocolat noir intense, avec un cœur coulant et une boule de glace vanille en accompagnement.', 8.90, 'img/'),
+(NULL, 'Dessert', 'Tartelette aux fruits rouges', 'Pâte sablée croustillante garnie d’une crème pâtissière légère et de fruits rouges frais.', 6.80, 'img/'),
+(NULL, 'Dessert', 'Tarte citron meringuée', 'Crème de citron acidulée sur fond de pâte sucrée, recouverte d’une meringue dorée au chalumeau.', 7.20, 'img/'),
+(NULL, 'Dessert', 'Cheesecake au coulis de fruits rouges', 'Cheesecake crémeux à base de fromage frais, sur biscuit croquant, nappé d’un coulis de framboise.', 7.90, 'img/'),
+(NULL, 'Dessert', 'Tiramisu traditionnel italien', 'Biscuit imbibé de café et mascarpone onctueux, saupoudré de cacao pur.', 8.50, 'img/'),
+(NULL, 'Dessert', 'Crumble aux pommes et cannelle', 'Pommes fondantes parfumées à la cannelle, recouvertes d’un crumble doré et croustillant.', 6.50, 'img/'),
+(NULL, 'Dessert', 'Fondant coco et coulis de mangue', 'Petit gâteau moelleux à la noix de coco, accompagné d’un coulis de mangue exotique.', 7.00, 'img/'),
+(NULL, 'Dessert', 'Coupe glacée “Chocolat Intense”', 'Trois boules de glace au chocolat, chantilly maison, éclats de brownie et sauce chocolat chaude.', 9.20, 'img/'),
+(NULL, 'Dessert', 'Panna cotta au miel et éclats de pistache', 'Crème italienne douce et légère, parfumée au miel de fleurs et agrémentée de pistaches croquantes.', 7.40, 'img/');
 
 -- --------------------------------------------------------
 
