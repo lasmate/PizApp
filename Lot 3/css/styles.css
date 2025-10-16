@@ -581,6 +581,17 @@
         margin-right: 8px;
     }
 
+    /* Hidden by default; JS will reveal when cart opens */
+    .checkout-toggle-semicircle {
+        display: none;
+        pointer-events: none;
+    }
+    .cart-modal.open ~ .cart-checkout-toggles .checkout-toggle-semicircle,
+    .checkout-toggle-semicircle.force-show {
+        display: flex;
+        pointer-events: auto;
+    }
+
     .cart-toggle-semicircle:hover,
     .checkout-toggle-semicircle:hover {
         background: var(--color-primary-hover);

@@ -9,7 +9,8 @@
 	const hero = document.querySelector('.HeroCard');
 	const modal = document.querySelector('.cart-modal');
 	const backdrop = document.querySelector('.cart-backdrop');
-	const toggleBtn = document.querySelector('.cart-toggle');
+	// Old round button (may not exist)
+	const legacyToggleBtn = document.querySelector('.cart-toggle');
 	const closeBtn = document.querySelector('.cart-close');
 	const cartItemsContainer = document.getElementById('cart-items-container');
 	const cartTotalPrice = document.getElementById('cart-total-price');
@@ -19,11 +20,12 @@
 	const checkoutToggleSemi = document.querySelector('.checkout-toggle-semicircle');
 	let checkoutModal = document.querySelector('.checkout-modal');
 
-	if (!hero || !modal || !backdrop || !toggleBtn) return;
+	if (!hero || !modal || !backdrop) return;
 
-	// Ensure closed on load
+	// Ensure closed on load and hide checkout toggle by default
 	modal.classList.remove('open');
 	backdrop.classList.remove('open');
+	if (checkoutToggleSemi) checkoutToggleSemi.style.display = 'none';
 
 	// Create checkout modal if not present - full structure (header, content, footer)
 	if (!checkoutModal) {
@@ -228,12 +230,14 @@
 	 * Update cart badge count
 	 */
 	function updateCartBadge(count) {
-		let badge = toggleBtn.querySelector('.cart-badge');
+		const badgeHost = legacyToggleBtn || cartToggleSemi;
+		if (!badgeHost) return;
+		let badge = badgeHost.querySelector('.cart-badge');
 		if (count > 0) {
 			if (!badge) {
 				badge = document.createElement('span');
 				badge.className = 'cart-badge';
-				toggleBtn.appendChild(badge);
+				badgeHost.appendChild(badge);
 			}
 			badge.textContent = count;
 		} else {
@@ -263,14 +267,15 @@
 	// ========== MODAL ANIMATIONS ==========
 
 	function openCart() {
-		// Trigger roll animation on the button
-		toggleBtn.classList.add('roll');
-		// Start states are already defined in CSS; just flip to open state
+		// Trigger roll animation on whichever toggle exists
+		const btn = legacyToggleBtn || cartToggleSemi;
+		if (btn) {
+			btn.classList.add('roll');
+			setTimeout(() => btn.classList.remove('roll'), 450);
+		}
 		backdrop.classList.add('open');
 		modal.classList.add('open');
-		// Remove the roll class after animation ends
-		setTimeout(() => toggleBtn.classList.remove('roll'), 450);
-		
+		if (checkoutToggleSemi) checkoutToggleSemi.style.display = 'flex';
 		// Update cart display when opening
 		updateCartDisplay();
 	}
@@ -278,14 +283,17 @@
 	function closeCart() {
 		backdrop.classList.remove('open');
 		modal.classList.remove('open');
+		if (checkoutToggleSemi) checkoutToggleSemi.style.display = 'none';
 	}
 
 	// ========== EVENT LISTENERS ==========
 
-	toggleBtn.addEventListener('click', () => {
-		const isOpen = modal.classList.contains('open');
-		if (isOpen) closeCart(); else openCart();
-	});
+	if (legacyToggleBtn) {
+		legacyToggleBtn.addEventListener('click', () => {
+			const isOpen = modal.classList.contains('open');
+			if (isOpen) closeCart(); else openCart();
+		});
+	}
 
 	backdrop.addEventListener('click', closeCart);
 	if (closeBtn) closeBtn.addEventListener('click', closeCart);
@@ -311,18 +319,27 @@
 	// Cart toggle event
 	if (cartToggleSemi && modal) {
 		cartToggleSemi.addEventListener('click', () => {
-			modal.classList.toggle('open');
-			// Close checkout if open
-			if (checkoutModal) checkoutModal.classList.remove('open');
+			const isOpen = modal.classList.contains('open');
+			if (isOpen) {
+				closeCart();
+			} else {
+				// Close checkout if open first
+				if (checkoutModal) checkoutModal.classList.remove('open');
+				openCart();
+			}
 		});
 	}
 
 	// Checkout toggle event
 	if (checkoutToggleSemi && checkoutModal) {
 		checkoutToggleSemi.addEventListener('click', () => {
+			const willOpen = !checkoutModal.classList.contains('open');
 			checkoutModal.classList.toggle('open');
-			// Close cart if open
-			modal.classList.remove('open');
+			// Close cart if opening checkout
+			if (willOpen) {
+				modal.classList.remove('open');
+				backdrop.classList.remove('open');
+			}
 		});
 	}
 
