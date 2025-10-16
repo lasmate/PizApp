@@ -268,12 +268,16 @@
 
         /* grid layout for its children */
         display: grid;
-        grid-template-columns: repeat(4, 1fr); /* 4 columns */
-        gap: 2rem;
+        /* Compact, fixed-width cards that wrap and stay moderate in size */
+        grid-template-columns: repeat(auto-fill, minmax(200px, 240px));
+        justify-content: center; /* center rows when last line has fewer columns */
+        gap: 1.25rem;
         background: var(--bg-purple-light);
-        padding: 2rem;
+        padding: 1.25rem;
         border-radius: var(--radius-2xl);
         margin-top: 0; /* Remove margin-top since we have padding on HeroCard */
+        max-width: 1100px; /* prevent cards from growing too large on wide screens */
+        width: 100%;
         max-height: fit-content; /* Allow natural height */
     }
 
@@ -281,13 +285,13 @@
         background: var(--bg-purple-lighter);
         border-radius: var(--radius-xl);
         box-shadow: var(--shadow-medium);
-        padding: 1.2rem 1rem 1.5rem 1rem;
+        padding: 0.9rem 0.85rem 1rem 0.85rem;
         display: flex;
         flex-direction: column;
         align-items: center;
         position: relative;
-        min-height: 210px;
-        aspect-ratio: 1; /* Force square aspect ratio */
+        min-height: 0; /* let aspect-ratio drive height */
+        aspect-ratio: 6 / 5; /* slightly shorter than square */
         width: 100%; /* Take full grid cell width */
         box-sizing: border-box;
     }
@@ -302,39 +306,40 @@
 
     .product-title {
         font-weight: bold;
-        font-size: 1.1rem;
+        font-size: 1rem;
         color: var(--color-accent-2);
     }
 
     .product-subhead {
-        font-size: 0.95rem;
+        font-size: 0.85rem;
         color: var(--muted);
     }
 
     .product-image-placeholder {
-        width: 60px;
-        height: 60px;
+        width: 48px;
+        height: 48px;
         background: var(--bg-purple-accent);
         border-radius: var(--radius-circle);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2rem;
-        margin: 0.7rem 0 1.2rem 0;
+        font-size: 1.6rem;
+        margin: 0.5rem 0 0.9rem 0;
         box-shadow: var(--shadow-light);
     }
 
     .product-price {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: bold;
         color: var(--color-accent);
-        margin: 0.5rem 0;
+        margin: 0.35rem 0;
         text-align: center;
     }
 
     .add-to-cart {
-        padding: 0.5rem 1.2rem;
+        padding: 0.45rem 0.9rem;
         margin-top: auto;
+        font-size: 0.95rem;
     }
 
     /* Sidebar bubble (vertical at left) */

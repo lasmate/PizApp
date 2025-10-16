@@ -23,3 +23,4 @@ function renderCheckout() {
             </div>
         </div>';
 }
+?>
