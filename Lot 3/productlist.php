@@ -9,6 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 include_once 'navbar.php';
 include_once 'productcard.php';
+include_once 'cart.php';
 
 renderNavbar('productlist');
 
@@ -24,7 +25,7 @@ $products = getSampleProducts();
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="slide-in-blurred-top">
-    <div class="HeroCard" style="overflow: hidden;">
+    <div class="HeroCard" style="overflow-y: scroll; overflow-x: hidden;">
         <div class="product-grid-sidebar-wrapper">
                <div class="LandingText">
             <h1>AppResto</h1>
@@ -53,41 +54,19 @@ $products = getSampleProducts();
             </div>
         </div>
         <!-- Cart Backdrop and Modal inside HeroCard -->
-        <div class="cart-backdrop" aria-hidden="true"></div>
-        <div class="cart-modal" role="dialog" aria-labelledby="cart-title" aria-modal="true">
-            <div class="cart-modal-header">
-                <h3 id="cart-title">Votre panier</h3>
-                <button class="cart-close" aria-label="Fermer">✕</button>
-            </div>
-            <div class="cart-modal-content">
-                <div class="cart-item">
-                    <span class="item-count">3</span>
-                    <span class="item-name">Pizza1</span>
-                    <span class="item-price">12.99€</span>
-                </div>
-                <div class="cart-item">
-                    <span class="item-count">2</span>
-                    <span class="item-name">Coca Cola</span>
-                    <span class="item-price">2.50€</span>
-                </div>
-                <div class="cart-item">
-                    <span class="item-count">1</span>
-                    <span class="item-name">Tiramisu</span>
-                    <span class="item-price">6.90€</span>
-                </div>
-            </div>
-            <div class="cart-modal-footer">
-                <button class="checkout-btn">Passer à la caisse</button>
-            </div>
+        <?php echo renderCart(); ?>
+        <!-- New Cart and Checkout toggles at top right edge -->
+        <div class="cart-checkout-toggles">
+            <button class="cart-toggle-semicircle" aria-label="Ouvrir le panier" title="Ouvrir le panier">🛒</button>
+            <button class="checkout-toggle-semicircle" aria-label="Passer à la caisse" title="Passer à la caisse">💳</button>
         </div>
 
-        <!-- Small toggle button inside HeroCard (bottom-right) -->
-        <button class="cart-toggle" aria-label="Basculer le panier" title="Ouvrir le panier">🛒</button>
 
    </div>
     <!-- Scripts -->
     <script src="scripts/main.js"></script>
     <script src="scripts/cart.js"></script>
+    <script src="scripts/checkout.js"></script>
     <script src="scripts/product-filters.js"></script>
 </body>
 </html>

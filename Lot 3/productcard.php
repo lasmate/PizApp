@@ -6,7 +6,9 @@
 
 function renderProductCard($title, $subhead, $image = null, $price = null, $productId = null) {
     $productId = $productId ?? uniqid(); // Generate unique ID if not provided
-    $price = $price ? number_format($price, 2) . '€' : '';
+        // Keep numeric price for data attributes and a separate formatted display string
+        $priceNumeric = isset($price) && $price !== '' ? (float)$price : null;
+        $priceDisplay = $priceNumeric !== null ? number_format($priceNumeric, 2) . '€' : '';
     
     // If no image provided, use emoji placeholder based on product type
     if (!$image) {
@@ -33,8 +35,13 @@ function renderProductCard($title, $subhead, $image = null, $price = null, $prod
                 '<img src="' . htmlspecialchars($image) . '" alt="' . htmlspecialchars($title) . '">' : 
                 '<span>' . $image . '</span>') . '
         </div>
-        ' . ($price ? '<div class="product-price">' . $price . '</div>' : '') . '
-        <button class="add-to-cart" data-product-id="' . htmlspecialchars($productId) . '">Ajouter Au Panier</button>
+            ' . ($priceDisplay ? '<div class="product-price">' . $priceDisplay . '</div>' : '') . '
+        <button class="add-to-cart" 
+                data-product-id="' . htmlspecialchars($productId) . '"
+                data-product-title="' . htmlspecialchars($title) . '"
+                    data-product-price="' . htmlspecialchars($priceNumeric !== null ? number_format($priceNumeric, 2, '.', '') : '0.00') . '">
+            Ajouter Au Panier
+        </button>
     </div>';
 }
 
@@ -50,13 +57,7 @@ function getSampleProducts() {
         error_log('Connexion DB non disponible.');
         return [];
     }
-
-    // Ensure UTF-8 for proper accents handling
-    if (!@mysqli_set_charset($conn, 'utf8mb4')) {
-        // Not fatal, but log it
-        error_log('Impossible de définir le charset MySQL en utf8mb4: ' . mysqli_error($conn));
-    }
-
+    
     $sql = 'SELECT idproduit, nomproduit, libproduit, prixproduit, imgproduit FROM produit ORDER BY idproduit ASC';
     $res = mysqli_query($conn, $sql);
     if ($res === false) {
