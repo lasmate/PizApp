@@ -31,7 +31,7 @@ $products = getSampleProducts();
             <h1>AppResto</h1>
             <h3>Votre premier stop pour un creux</h3>
             <div class="sidebar-bubble">
-                <button class="sidebar-btn active">Menu</button>
+                <button class="sidebar-btn active">Carte</button>
                 <button class="sidebar-btn">Pizza</button>
                 <button class="sidebar-btn">Boissons</button>
                 <button class="sidebar-btn">Desserts</button>
