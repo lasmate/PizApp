@@ -10,50 +10,30 @@
         --color-primary: #7c5fe6;
         --color-primary-hover: #5a3fcf;
         --color-danger: #ff4757;
-        --color-success: #2ecc71;
         --color-white: #fff;
         --color-dark-text: #4b3b7a;
         --color-secondary: #16363A;
 
         /* Background tints */
-        --bg-light-purple: #faf9ff;
         --bg-purple-light: #ece7f6;
-        --bg-purple-lighter: #f6f3fa;
-        --bg-purple-accent: #e0d6f3;
 
         /* Muted tints */
         --muted: rgba(0, 0, 0, 0.06);
 
         /* Sizing */
         --radius-sm: 6px;
-        --radius-md: 0.7rem;
         --radius-lg: 25px;
-        --radius-xl: 1.2rem;
-        --radius-2xl: 1.5rem;
-        --radius-3xl: 2rem;
         --radius-pill: 999px;
         --radius-circle: 50%;
         --gap-sm: .5rem;
-        --gap-md: .6rem;
-        --gap-lg: 2.5rem;
         --input-width: 180px;
         --btn-padding: .6rem 1.1rem;
 
         /* Shadows */
         --shadow-inset: inset 0 2px 8px rgba(0, 0, 0, 0.06);
-        --shadow-light: 0 1px 4px #d1cbe6;
-        --shadow-medium: 0 2px 8px #d1cbe6;
-        --shadow-card: 0 2px 12px #d1cbe6;
-        --shadow-heavy: 0 6px 18px rgba(0, 0, 0, 0.22);
-        --shadow-modal: 0 12px 40px rgba(0, 0, 0, 0.22);
-        --shadow-notification: 0 4px 12px rgba(0, 0, 0, 0.15);
-        --shadow-inset-purple: inset 0 1px 4px #e3dcf7;
 
         /* Transitions */
-        --transition-fast: 0.2s ease;
         --transition-smooth: 220ms ease;
-        --transition-bounce: 300ms cubic-bezier(.2, .7, .2, 1);
-        --transition-modal: 420ms cubic-bezier(.2, .7, .2, 1);
     }
 
     /* ==================================================
@@ -97,7 +77,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: var(--gap-lg);
+        gap: var(--gap-sm);
         padding: 2rem 1rem;
         box-sizing: border-box;
     }
@@ -122,16 +102,6 @@
     /* ==================================================
        Shared Button Styles
        -------------------------------------------------- */
-    /* Base button with circular icon */
-    .btn-with-icon {
-        display: inline-flex;
-        align-items: center;
-        gap: var(--gap-md);
-        border-radius: var(--radius-pill);
-        border: 0;
-        cursor: pointer;
-        transition: var(--transition-fast);
-    }
 
     /* Circular icon/badge shared style */
     .icon-circle,
@@ -148,7 +118,7 @@
         height: 1.6rem;
         background: var(--muted);
         font-size: .8rem;
-        transition: background-color var(--transition-fast), transform 0.1s ease;
+        transition: var(--transition-smooth);
     }
 
     .input-icon:hover {
@@ -167,11 +137,11 @@
         background: var(--color-primary);
         color: var(--color-white);
         border: none;
-        border-radius: var(--radius-md);
+        border-radius: var(--radius-lg);
         font-weight: 600;
         font-size: 1rem;
         cursor: pointer;
-        transition: background var(--transition-fast);
+        transition: var(--transition-smooth);
     }
 
     .primary-btn:hover,
@@ -187,7 +157,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1rem;
+        gap: var(--gap-sm);
     }
 
     .input-box {
@@ -222,7 +192,7 @@
        -------------------------------------------------- */
     nav {
         display: flex;
-        gap: 1.25rem;
+        gap: var(--gap-sm);
         align-items: center;
         padding: .75rem 1rem;
         background: var(--color-bg);
@@ -232,7 +202,7 @@
     .nav-item {
         display: inline-flex;
         align-items: center;
-        gap: var(--gap-md);
+        gap: var(--gap-sm);
         padding: .4rem .85rem;
         border-radius: var(--radius-pill);
         color: var(--color-text);
@@ -254,7 +224,7 @@
         display: flex;
         flex-direction: row;
         align-items: flex-start;
-        gap: 2.5rem;
+        gap: var(--gap-sm);
         width: 90%;
         justify-content: center;
         flex: 1; /* Allow wrapper to grow within HeroCard */
@@ -271,10 +241,10 @@
         /* Compact, fixed-width cards that wrap and stay moderate in size */
         grid-template-columns: repeat(auto-fill, minmax(200px, 240px));
         justify-content: center; /* center rows when last line has fewer columns */
-        gap: 1.25rem;
+        gap: var(--gap-sm);
         background: var(--bg-purple-light);
         padding: 1.25rem;
-        border-radius: var(--radius-2xl);
+        border-radius: var(--radius-lg);
         margin-top: 0; /* Remove margin-top since we have padding on HeroCard */
         max-width: 1100px; /* prevent cards from growing too large on wide screens */
         width: 100%;
@@ -282,9 +252,9 @@
     }
 
     .product-card {
-        background: var(--bg-purple-lighter);
-        border-radius: var(--radius-xl);
-        box-shadow: var(--shadow-medium);
+        background: var(--bg-purple-light);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-inset);
         padding: 0.9rem 0.85rem 1rem 0.85rem;
         display: flex;
         flex-direction: column;
@@ -318,14 +288,14 @@
     .product-image-placeholder {
         width: 48px;
         height: 48px;
-        background: var(--bg-purple-accent);
+        background: var(--bg-purple-light);
         border-radius: var(--radius-circle);
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 1.6rem;
         margin: 0.5rem 0 0.9rem 0;
-        box-shadow: var(--shadow-light);
+        box-shadow: var(--shadow-inset);
     }
 
     .product-price {
@@ -350,8 +320,8 @@
         min-width: 60px; /* Reduced from 120px to 60px (50% less) */
         max-width: 80px; /* Add max-width to keep it compact */
         background: var(--bg-purple-light);
-        border-radius: var(--radius-3xl);
-        box-shadow: var(--shadow-card);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-inset);
         padding: 1rem 0.5rem; /* Reduced padding */
         display: flex;
         flex-direction: column;
@@ -368,7 +338,7 @@
         border-radius: 1rem;
         padding: 0.5rem 0.8rem; /* Reduced padding */
         cursor: pointer;
-        transition: background var(--transition-fast), color var(--transition-fast);
+        transition: var(--transition-smooth);
         text-align: center;
         white-space: nowrap; /* Prevent text wrapping */
     }
@@ -483,7 +453,7 @@
         opacity: 0;
         pointer-events: none;
         border-radius: 32px;
-        box-shadow: var(--shadow-modal);
+        box-shadow: var(--shadow-inset);
         background: var(--color-white);
         transition: width 0.4s cubic-bezier(.2,.7,.2,1), height 0.4s cubic-bezier(.2,.7,.2,1), opacity 0.2s;
         overflow: hidden;
@@ -506,7 +476,7 @@
         align-items: center;
         justify-content: space-between;
         border-bottom: 1px solid var(--muted);
-        background: var(--bg-light-purple);
+        background: var(--bg-purple-light);
     }
 
     .cart-modal-content {
@@ -523,7 +493,7 @@
         align-items: center;
         justify-content: space-between;
         gap: 1rem;
-        background: var(--bg-light-purple);
+        background: var(--bg-purple-light);
     }
 
     .cart-close {
@@ -544,8 +514,8 @@
         justify-content: space-between;
         padding: .6rem .75rem;
         border-radius: var(--radius-sm);
-        background: var(--bg-purple-lighter);
-        box-shadow: var(--shadow-inset-purple);
+        background: var(--bg-purple-light);
+        box-shadow: var(--shadow-inset);
         margin-bottom: var(--gap-sm);
     }
 
@@ -574,9 +544,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: var(--shadow-heavy);
+        box-shadow: var(--shadow-inset);
         cursor: pointer;
-        transition: box-shadow 0.2s, background 0.2s;
+        transition: var(--transition-smooth);
         position: relative;
         margin-right: 8px;
     }
@@ -584,7 +554,7 @@
     .cart-toggle-semicircle:hover,
     .checkout-toggle-semicircle:hover {
         background: var(--color-primary-hover);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+        box-shadow: var(--shadow-inset);
     }
 
     /* Checkout pill, smaller and stacked */
@@ -597,10 +567,9 @@
         opacity: 0;
         pointer-events: none;
         border-radius: 24px;
-        box-shadow: var(--shadow-modal);
+        box-shadow: var(--shadow-inset);
         background: var(--color-primary);
-        /* We want: slide left (transform), then expand width, then expand height.
-           Use separate transitions with delays to stage the effect. */
+        
         transform: translateX(40px);
         transition: transform 0.22s cubic-bezier(.2,.7,.2,1),
                     width 0.32s cubic-bezier(.2,.7,.2,1) 0.22s,
@@ -621,15 +590,12 @@
         border-radius: 24px 24px 18px 18px / 24px 24px 18px 18px;
     }
 
-    /* Remove old cart-toggle styles */
-    .cart-toggle {
-        display: none !important;
-    }
+
 
     /* Cart item elements */
     .item-count {
-        background: #7c5fe6;
-        color: #fff;
+        background: var(--color-primary);
+        color: var(--color-white);
         border-radius: 50%;
         width: 32px;
         height: 32px;
@@ -651,41 +617,34 @@
     .item-price {
         font-weight: 700;
         font-size: 1rem;
-        color: #7c5fe6;
+        color: var(--color-primary);
         margin-right: 0.5rem;
     }
 
     .item-remove {
         background: transparent;
         border: none;
-        color: #999;
+        color: var(--muted);
         font-size: 1.5rem;
         cursor: pointer;
         padding: 0.25rem 0.5rem;
-        transition: color 0.2s;
+        transition: var(--transition-smooth);
         line-height: 1;
     }
 
     .item-remove:hover {
-        color: #ff4757;
+        color: var(--color-danger);
     }
 
     /* Empty cart message */
     .empty-cart-message {
         text-align: center;
-        color: #999;
+        color: var(--muted);
         padding: 2rem;
         font-style: italic;
     }
 
     /* Cart total in footer */
-    .cart-modal-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-    }
-
     .cart-total {
         font-size: 1.1rem;
     }
@@ -695,8 +654,8 @@
         position: absolute;
         top: -4px;
         right: -4px;
-        background: #ff4757;
-        color: #fff;
+        background: var(--color-danger);
+        color: var(--color-white);
         border-radius: 50%;
         width: 22px;
         height: 22px;
@@ -705,13 +664,5 @@
         justify-content: center;
         font-size: 11px;
         font-weight: bold;
-        border: 2px solid #fff;
+        border: 2px solid var(--color-white);
     }
-
-
-
-
-
-
-
-
