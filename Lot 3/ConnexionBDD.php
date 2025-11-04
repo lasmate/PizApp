@@ -1,7 +1,7 @@
 <?php
   $server = "localhost";
   $username = "root";
-  $password = ""; // Mets ici ton mot de passe si besoin
+  $password = ""; 
   $db = "db_pizapp";
   $conn = mysqli_connect($server, $username, $password, $db);
   if (!$conn) {
