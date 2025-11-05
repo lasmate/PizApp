@@ -48,24 +48,37 @@ DELIMITER ;
 A chaque ajout d'une ligne de commande, détermine la somme des "totaux ligne HT" de la
 commande liée, applique le taux de TVA et calcule le "total commande" TTC.
 
-DELIMITER |
+DELIMITER $$
+
 CREATE OR REPLACE TRIGGER after_ligne_insert
-AFTER INSERT ON commande
+AFTER INSERT ON ligne_de_commande
 FOR EACH ROW
 BEGIN
+    DECLARE v_total_ht DOUBLE DEFAULT 0;
+    DECLARE v_type_commande TINYINT DEFAULT 0;
+    DECLARE v_tva_rate DOUBLE DEFAULT 0.10;
 
-DECLARE v_total_prix_ht double
+    SELECT COALESCE(SUM(total_ht), 0)
+      INTO v_total_ht
+      FROM ligne_de_commande
+     WHERE idcommande = NEW.idcommande;
 
-Select COUNT(total_ht) INTO v_total_prix_ht
-FROM ligne_de_commande
-Where new.idcommande = idcommande
+    SELECT type_commande
+      INTO v_type_commande
+      FROM commande
+     WHERE idcommande = NEW.idcommande;
 
-IF new.typecommande = 1 THEN
-     SET (select montant_ttc from commande where new.idcommande = idcommande) = v_total_prix_ht * (5.5/100)
-     [ELSE SET (select montant_ttc from commande where new.idcommande = idcommande) = v_total_prix_ht * (10/100)]
-END IF;
+    IF v_type_commande = 1 THEN
+        SET v_tva_rate = 0.055;
+    ELSE
+        SET v_tva_rate = 0.10;
+    END IF;
 
-END |
+    UPDATE commande
+       SET montant_ttc = v_total_ht * (1 + v_tva_rate)
+     WHERE idcommande = NEW.idcommande;
+END $$
+
 DELIMITER ;
 
 3.4. after_ligne_update

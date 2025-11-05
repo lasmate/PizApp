@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 include_once 'navbar.php';
 include_once 'productcard.php';
-include_once 'cart.php';
+// include_once 'cart.php';
 
 renderNavbar('productlist');
 
@@ -28,13 +28,14 @@ $products = getSampleProducts();
     <div class="HeroCard" style="overflow-y: scroll; overflow-x: hidden;">
         <div class="product-grid-sidebar-wrapper">
                <div class="LandingText">
-            <h1>AppResto</h1>
-            <h3>Votre premier stop pour un creux</h3>
-            <div class="sidebar-bubble">
-                <button class="sidebar-btn active">Carte</button>
-                <button class="sidebar-btn">Pizza</button>
-                <button class="sidebar-btn">Boissons</button>
-                <button class="sidebar-btn">Desserts</button>
+                   <h1>AppResto</h1>
+                   <h3>Votre premier stop pour un creux</h3>
+               </div>
+               <div class="sidebar-bubble">
+                   <button class="sidebar-btn active">Carte</button>
+                   <button class="sidebar-btn">Pizza</button>
+                   <button class="sidebar-btn">Boissons</button>
+                   <button class="sidebar-btn">Desserts</button>
             </div>
                  
         </div>  
