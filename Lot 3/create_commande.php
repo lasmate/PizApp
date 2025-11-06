@@ -22,7 +22,16 @@ if (!$data || !isset($data['cart']) || !is_array($data['cart'])) {
 
 $cart = $data['cart'];
 
-// Calculate total by fetching product prices from DB to avoid trusting client-sent prices
+// Determine type_commande: 1 = à emporter (default), 0 = sur place
+$type_commande = 1;
+if (isset($data['type_commande'])) {
+    $tc = (int)$data['type_commande'];
+    if ($tc === 0 || $tc === 1) {
+        $type_commande = $tc;
+    }
+}
+
+// Calcule le montant total en prenant les prix de la base plutôt que ceux du côté client
 
 $ids = array_map(function($it){ return (int)$it['id']; }, $cart);
 $ids = array_values(array_unique($ids));
@@ -59,7 +68,7 @@ foreach ($cart as $it) {
 $userId = (int)$_SESSION['user_id'];
 $now = date('Y-m-d H:i:s');
 $idetat = 1; // En préparation
-$type_commande = 1; // arbitrary type
+// $type_commande already set from input (0 = sur place, 1 = à emporter)
 
 
 // To avoid potential foreign-key ordering problems in the DB schema, temporarily disable foreign key checks

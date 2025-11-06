@@ -170,22 +170,74 @@
     const clear = document.querySelector('#cart-clear');
     if(clear){ clear.addEventListener('click', clearCart); }
 
-    // Checkout via AJAX -> create_commande.php
+    // Open checkout overlay
     const checkout = document.querySelector('#cart-checkout');
     if(checkout){
-      checkout.addEventListener('click', async (e)=>{
+      checkout.addEventListener('click', (e)=>{
         e.preventDefault();
-        const cart = loadCart().map(({id, quantity}) => ({id, quantity}));
+        const cart = loadCart();
         if(cart.length === 0){ openPanel(); return; }
+        const pane = document.querySelector('.checkout-panel');
+        if(pane){ pane.classList.add('open'); pane.setAttribute('aria-hidden','false'); }
+      });
+    }
+
+    // Close checkout overlay
+    const closeCheckout = document.querySelector('.checkout-close');
+    if(closeCheckout){
+      closeCheckout.addEventListener('click', ()=>{
+        const pane = document.querySelector('.checkout-panel');
+        if(pane){ pane.classList.remove('open'); pane.setAttribute('aria-hidden','true'); }
+      });
+    }
+
+    // Back to cart from checkout
+    const backBtn = document.querySelector('#checkout-back');
+    if(backBtn){
+      backBtn.addEventListener('click', ()=>{
+        const pane = document.querySelector('.checkout-panel');
+        if(pane){ pane.classList.remove('open'); pane.setAttribute('aria-hidden','true'); }
+      });
+    }
+
+    // Toggle service type selection
+    const chips = $$('.service-chip');
+    if(chips.length){
+      chips.forEach(ch => ch.addEventListener('click', ()=>{
+        chips.forEach(c => c.classList.remove('active'));
+        ch.classList.add('active');
+      }));
+    }
+
+    // Confirm payment -> POST with type_commande
+    const confirmBtn = document.querySelector('#confirm-payment');
+    if(confirmBtn){
+      confirmBtn.addEventListener('click', async ()=>{
+        const cart = loadCart().map(({id, quantity}) => ({id, quantity}));
+        if(cart.length === 0){ return; }
+
+        // Get type_commande from active chip (default 1 takeout)
+        const activeChip = document.querySelector('.service-chip.active');
+        const type_commande = activeChip ? parseInt(activeChip.getAttribute('data-type'), 10) : 1;
+
+        // Minimal front validation - do not send card data to server
+        const name = (document.getElementById('card-name')||{}).value || '';
+        const number = (document.getElementById('card-number')||{}).value || '';
+        const exp = (document.getElementById('card-exp')||{}).value || '';
+        const cvv = (document.getElementById('card-cvv')||{}).value || '';
+        if(!name || !number || !exp || !cvv){
+          alert('Veuillez renseigner les informations de paiement.');
+          return;
+        }
+
         try{
           const res = await fetch('create_commande.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ cart })
+            body: JSON.stringify({ cart, type_commande })
           });
           const data = await res.json();
           if(data && data.success){
-            // clear then redirect
             clearCart();
             window.location.href = `commande_valide.php?id=${data.idcommande}`;
           } else {
