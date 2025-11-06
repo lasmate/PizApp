@@ -135,7 +135,9 @@ CREATE TABLE `ligne_de_commande` (
   `idproduit` int(25) NOT NULL COMMENT 'id du produit commandé',
   `quantite` int(255) DEFAULT NULL COMMENT 'quantité du produit commandé',
   `total_ht` int(255) DEFAULT NULL COMMENT 'total des produit HT ',
-  PRIMARY KEY (`idcommande`, `idproduit`)
+  -- PRIMARY KEY (`idcommande`, `idproduit`),
+  FOREIGN KEY (`idcommande`) REFERENCES `commande`(`idcommande`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`idproduit`) REFERENCES `produit`(`idproduit`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 COMMIT;

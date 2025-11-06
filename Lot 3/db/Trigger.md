@@ -54,15 +54,19 @@ AFTER INSERT ON commande
 FOR EACH ROW
 BEGIN
 
-DECLARE v_total_prix_ht double
+DECLARE v_total_prix_ht double;
+DECLARE v_montant_ttc double;
 
 Select COUNT(total_ht) INTO v_total_prix_ht
 FROM ligne_de_commande
-Where new.idcommande = idcommande
+Where new.idcommande = idcommande;
 
-IF new.typecommande = 1 THEN
-     SET (select montant_ttc from commande where new.idcommande = idcommande) = v_total_prix_ht * (5.5/100)
-     [ELSE SET (select montant_ttc from commande where new.idcommande = idcommande) = v_total_prix_ht * (10/100)]
+IF new.type_commande = 1 THEN
+    SET v_montant_ttc = v_total_prix_ht * (5.5/100);
+     SET v_montant_ttc = new.montant_ttc;
+ELSE 
+	 SET v_montant_ttc = v_total_prix_ht * (10/100);
+     SET v_montant_ttc = new.montant_ttc;
 END IF;
 
 END |
@@ -79,9 +83,19 @@ AFTER UPDATE ON commande
 FOR EACH ROW
 BEGIN
 
-IF new.typecommade = 1 THEN
-     SET (select montant_ttc from commande where new.idcommande = idcommande) = v_total_prix_ht * (5.5/100)
-     [ELSE SET (select montant_ttc from commande where new.idcommande = idcommande) = v_total_prix_ht * (10/100)]
+DECLARE v_total_prix_ht double;
+DECLARE v_montant_ttc double;
+
+Select COUNT(total_ht) INTO v_total_prix_ht
+FROM ligne_de_commande
+Where new.idcommande = idcommande;
+
+IF new.type_commande = 1 THEN
+    SET v_montant_ttc = v_total_prix_ht * (5.5/100);
+     SET v_montant_ttc = new.montant_ttc;
+ELSE 
+	 SET v_montant_ttc = v_total_prix_ht * (10/100);
+     SET v_montant_ttc = new.montant_ttc;
 END IF;
 
 END |
