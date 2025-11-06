@@ -1,26 +1,74 @@
 <?php
 /**
- * Render Cart Modal
- * The cart items will be populated dynamically from cookies via JavaScript
+ * Sliding Cart Panel Component
+ * - Toggle handle: small semicircle on the right side of the screen
+ * - Panel slides in from right and lists cart items
+ * - Each item: title, unit price, quantity controls (+/-), subtotal, remove button
  */
-function renderCart() {
-    return '
-        <div class="cart-backdrop" aria-hidden="true"></div>
-        <div class="cart-modal" role="dialog" aria-labelledby="cart-title" aria-modal="true">
-            <div class="cart-modal-header">
-                <h3 id="cart-title">Votre panier</h3>
-                <button class="cart-close" aria-label="Fermer">✕</button>
+
+function renderCartPanel() {
+    echo ' 
+    <div class="cart-toggle" aria-label="Ouvrir le panier" title="Panier">
+        <div class="cart-toggle-badge" id="cart-count-badge">0</div>
+        <div class="cart-toggle-icon">🧺</div>
+    </div>
+
+    <aside class="cart-panel" aria-hidden="true" aria-label="Panneau Panier">
+        <header class="cart-panel-header">
+            <h3>Votre panier</h3>
+            <button class="cart-close" aria-label="Fermer">✕</button>
+        </header>
+        <div class="cart-items" id="cart-items"></div>
+        <footer class="cart-panel-footer">
+            <div class="cart-total-row">
+                <span>Total</span>
+                <strong id="cart-total">0.00€</strong>
             </div>
-            <div class="cart-modal-content" id="cart-items-container">
-                <!-- Cart items will be dynamically inserted here from cookie -->
-                <p class="empty-cart-message">Votre panier est vide.</p>
+            <div class="cart-actions">
+                <button class="cart-clear" id="cart-clear">Vider</button>
+                <a class="checkout-btn" id="cart-checkout" href="#">Passer à la caisse</a>
             </div>
-            <div class="cart-modal-footer">
-                <div class="cart-total">
-                    <strong>Total: <span id="cart-total-price">0.00€</span></strong>
+        </footer>
+    </aside>
+
+    <!-- Secondary checkout panel overlaying the cart panel -->
+    <aside class="checkout-panel" aria-hidden="true" aria-label="Panneau Paiement">
+        <header class="cart-panel-header">
+            <h3>Paiement</h3>
+            <button class="checkout-close" aria-label="Fermer">✕</button>
+        </header>
+        <div class="checkout-content">
+            <div class="service-type">
+                <label class="service-chip active" data-type="1">A emporter</label>
+                <label class="service-chip" data-type="0">Sur place</label>
+            </div>
+            <form class="payment-form" id="payment-form" autocomplete="off">
+                <div class="form-row">
+                    <label for="card-name">Nom sur la carte</label>
+                    <input type="text" id="card-name" name="cardName" placeholder="Jean Dupont" required>
                 </div>
-                <button class="checkout-btn">Passer à la caisse</button>
+                <div class="form-row">
+                    <label for="card-number">Numéro de carte</label>
+                    <input type="text" id="card-number" name="cardNumber" inputmode="numeric" pattern="[0-9\s]{12,19}" placeholder="1234 5678 9012 3456" required>
+                </div>
+                <div class="form-row two-cols">
+                    <div>
+                        <label for="card-exp">Expiration</label>
+                        <input type="text" id="card-exp" name="cardExp" inputmode="numeric" placeholder="MM/AA" required>
+                    </div>
+                    <div>
+                        <label for="card-cvv">CVV</label>
+                        <input type="password" id="card-cvv" name="cardCvv" inputmode="numeric" maxlength="4" placeholder="***" required>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <footer class="cart-panel-footer">
+            <div class="cart-actions">
+                <button class="cart-clear" id="checkout-back">Retour</button>
+                <button class="checkout-btn" id="confirm-payment">Confirmer le paiement</button>
             </div>
-        </div>';
+        </footer>
+    </aside>';
 }
 ?>

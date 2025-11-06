@@ -24,11 +24,23 @@ function renderProductCard($title, $subhead, $image = null, $price = null, $prod
         }
     }
     
+    $subheadHtml = '';
+    $normalizedSubhead = str_replace('_', ' ', (string) $subhead);
+    $subheadParts = array_filter(array_map('trim', preg_split('/[,;\n]+/', $normalizedSubhead))); # Split by commas, semicolons, or new lines
+
+    if (!empty($subheadParts)) {
+        $subheadHtml .= '<ul class="product-subhead-list">';
+        foreach ($subheadParts as $part) {
+            $subheadHtml .= '<li>' . htmlspecialchars($part) . '</li>';
+        }
+        $subheadHtml .= '</ul>';
+    }
+
     return '
     <div class="product-card" data-product-id="' . htmlspecialchars($productId) . '">
         <div class="product-header">
             <span class="product-title">' . htmlspecialchars($title) . '</span>
-            <span class="product-subhead">' . htmlspecialchars($subhead) . '</span>
+            ' . $subheadHtml . '
         </div>
         <div class="product-image-placeholder">
             ' . (filter_var($image, FILTER_VALIDATE_URL) ? 

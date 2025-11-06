@@ -1,339 +1,262 @@
-/**
- * Cart Modal Management & Cookie Storage
- * - Hidden on load
- * - Small toggle button inside HeroCard bottom-right
- * - Stores cart items in cookies and dynamically renders them
- */
+(function(){
+  'use strict';
 
-(function () {
-	const hero = document.querySelector('.HeroCard');
-	const modal = document.querySelector('.cart-modal');
-	const backdrop = document.querySelector('.cart-backdrop');
-	const toggleBtn = document.querySelector('.cart-toggle');
-	const closeBtn = document.querySelector('.cart-close');
-	const cartItemsContainer = document.getElementById('cart-items-container');
-	const cartTotalPrice = document.getElementById('cart-total-price');
+  const STORAGE_KEY = 'pizapp_cart';
 
-	// New selectors for redesigned toggles and modals
-	const cartToggleSemi = document.querySelector('.cart-toggle-semicircle');
-	const checkoutToggleSemi = document.querySelector('.checkout-toggle-semicircle');
-	let checkoutModal = document.querySelector('.checkout-modal');
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
-	if (!hero || !modal || !backdrop || !toggleBtn) return;
+  function loadCart(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return [];
+      const arr = JSON.parse(raw);
+      if(Array.isArray(arr)) return arr;
+      return [];
+    }catch(e){
+      return [];
+    }
+  }
 
-	// Ensure closed on load
-	modal.classList.remove('open');
-	backdrop.classList.remove('open');
+  function saveCart(cart){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+    updateBadge(cart);
+  }
 
-	// Create checkout modal if not present - full structure (header, content, footer)
-	if (!checkoutModal) {
-		checkoutModal = document.createElement('div');
-		checkoutModal.className = 'checkout-modal';
-		checkoutModal.innerHTML = `
-			<div class="checkout-modal-header">
-				<h3 id="checkout-title">Paiement</h3>
-				<button class="checkout-close" aria-label="Fermer">✕</button>
-			</div>
-			<div class="checkout-modal-content">
-				<form id="checkout-form" class="checkout-form" novalidate>
-					<div class="input-box">
-						<input id="cardholder" name="cardholder" type="text" placeholder="Titulaire de la carte" required>
-						<span class="input-icon">✕</span>
-					</div>
-					<div class="input-box">
-						<input id="cardnumber" name="cardnumber" type="text" inputmode="numeric" placeholder="1111 2222 3333 4444" maxlength="19" required>
-						<span class="input-icon">✕</span>
-					</div>
-					<div style="display:flex;gap:0.5rem;">
-						<div class="input-box" style="flex:1">
-							<input id="expiry" name="expiry" type="text" placeholder="MM/AA" maxlength="5" required>
-							<span class="input-icon">✕</span>
-						</div>
-						<div class="input-box" style="width:100px;">
-							<input id="cvv" name="cvv" type="password" inputmode="numeric" placeholder="CVV" maxlength="4" required>
-							<span class="input-icon">✕</span>
-						</div>
-					</div>
-					<div id="checkout-summary" style="margin-top:1rem"></div>
-					<div style="display:flex;gap:0.5rem;margin-top:1rem;">
-						<button id="pay-btn" class="primary-btn" type="submit"><span class="btn-icon">●</span>Payer</button>
-						<button id="cancel-btn" class="secondary-btn" type="button">Annuler</button>
-						<div id="checkout-error" style="color:#c00;margin-left:1rem;display:none"></div>
-					</div>
-				</form>
-			</div>
-			<div class="checkout-modal-footer">
-				<div style="font-size:0.85rem;color:var(--bg-purple-lighter)">Paiement sécurisé (simulé)</div>
-			</div>
-		`;
-		document.body.appendChild(checkoutModal);
-	}
+  function addItem({id, title, price}){
+    const cart = loadCart();
+    const pid = parseInt(id, 10);
+    const p = parseFloat(price || '0') || 0;
+    const found = cart.find(it => it.id === pid);
+    if(found){
+      found.quantity += 1;
+    } else {
+      cart.push({ id: pid, title: title || 'Produit', price: p, quantity: 1 });
+    }
+    saveCart(cart);
+    renderCart();
+  }
 
-	// ========== COOKIE MANAGEMENT ==========
-	
-	/**
-	 * Set a cookie
-	 */
-	function setCookie(name, value, days = 7) {
-		const expires = new Date();
-		expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-		document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/`;
-	}
+  function removeItem(id){
+    const cart = loadCart().filter(it => it.id !== id);
+    saveCart(cart);
+    renderCart();
+  }
 
-	/**
-	 * Get a cookie value
-	 */
-	function getCookie(name) {
-		const nameEQ = name + '=';
-		const cookies = document.cookie.split(';');
-		for (let i = 0; i < cookies.length; i++) {
-			let cookie = cookies[i].trim();
-			if (cookie.indexOf(nameEQ) === 0) {
-				return decodeURIComponent(cookie.substring(nameEQ.length));
-			}
-		}
-		return null;
-	}
+  function changeQty(id, delta){
+    const cart = loadCart();
+    const it = cart.find(i=> i.id === id);
+    if(!it) return;
+    it.quantity = Math.max(1, it.quantity + delta);
+    saveCart(cart);
+    renderCart();
+  }
 
-	// ========== CART OPERATIONS ==========
+  function clearCart(){
+    saveCart([]);
+    renderCart();
+  }
 
-	/**
-	 * Get cart from cookie
-	 */
-	function getCart() {
-		const cartData = getCookie('shopping_cart');
-		if (!cartData) return [];
-		try {
-			return JSON.parse(cartData);
-		} catch (e) {
-			console.error('Error parsing cart cookie:', e);
-			return [];
-		}
-	}
+  function formatEuro(n){
+    const v = (typeof n === 'number' ? n : parseFloat(n||'0')||0);
+    return v.toFixed(2) + '€';
+  }
 
-	/**
-	 * Save cart to cookie
-	 */
-	function saveCart(cart) {
-		setCookie('shopping_cart', JSON.stringify(cart), 7);
-	}
+  function calcTotal(cart){
+    return cart.reduce((sum, it)=> sum + (it.price||0) * (it.quantity||1), 0);
+  }
 
-	/**
-	 * Add item to cart
-	 */
-	function addToCart(productId, title, price) {
-		const cart = getCart();
-		
-		// Check if item already exists
-		const existingItem = cart.find(item => item.id === productId);
-		
-		if (existingItem) {
-			existingItem.quantity += 1;
-		} else {
-			cart.push({
-				id: productId,
-				title: title,
-				price: parseFloat(price),
-				quantity: 1
-			});
-		}
-		
-		saveCart(cart);
-		updateCartDisplay();
-	}
+  function updateBadge(cart){
+    const badge = $('#cart-count-badge');
+    if(!badge) return;
+    const count = (cart||loadCart()).reduce((n, it)=> n + (it.quantity||1), 0);
+    badge.textContent = count;
+  }
 
-	/**
-	 * Update item quantity
-	 */
-	function updateQuantity(productId, newQuantity) {
-		let cart = getCart();
-		
-		if (newQuantity <= 0) {
-			// Remove item
-			cart = cart.filter(item => item.id !== productId);
-		} else {
-			const item = cart.find(item => item.id === productId);
-			if (item) {
-				item.quantity = newQuantity;
-			}
-		}
-		
-		saveCart(cart);
-		updateCartDisplay();
-	}
+  function renderCart(){// Render the cart items in the cart panel
+    const container = $('#cart-items');
+    const totalEl = $('#cart-total');
+    if(!container || !totalEl) return;
 
-	/**
-	 * Calculate cart total
-	 */
-	function calculateTotal(cart) {
-		return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-	}
+    const cart = loadCart();
+    container.innerHTML = '';
 
-	/**
-	 * Update cart display in modal using the specified structure
-	 */
-	function updateCartDisplay() {
-		const cart = getCart();
-		
-		if (!cartItemsContainer) return;
-		
-		if (cart.length === 0) {
-			cartItemsContainer.innerHTML = '<p class="empty-cart-message">Votre panier est vide.</p>';
-			if (cartTotalPrice) cartTotalPrice.textContent = '0.00€';
-			updateCartBadge(0);
-			return;
-		}
-		
-		// Build cart items HTML using the specified structure
-		let html = '';
-		cart.forEach(item => {
-			const itemTotal = (item.price * item.quantity).toFixed(2);
-			html += `
-				<div class="cart-item" data-product-id="${item.id}">
-					<span class="item-count">${item.quantity}</span>
-					<span class="item-name">${item.title}</span>
-					<span class="item-price">${itemTotal}€</span>
-					<button class="item-remove" data-product-id="${item.id}" aria-label="Retirer">×</button>
-				</div>
-			`;
-		});
-		
-		cartItemsContainer.innerHTML = html;
-		
-		// Update total price
-		const total = calculateTotal(cart);
-		if (cartTotalPrice) cartTotalPrice.textContent = total.toFixed(2) + '€';
-		
-		// Update cart badge
-		const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-		updateCartBadge(totalItems);
-		
-		// Attach event listeners to remove buttons
-		attachRemoveListeners();
-	}
+    if(cart.length === 0){
+      container.innerHTML = '<p class="empty-checkout-message">Votre panier est vide.</p>';
+      totalEl.textContent = '0.00€';
+      updateBadge(cart);
+      return;
+    }
 
-	/**
-	 * Attach event listeners to remove buttons
-	 */
-	function attachRemoveListeners() {
-		document.querySelectorAll('.item-remove').forEach(btn => {
-			btn.addEventListener('click', (e) => {
-				const productId = e.currentTarget.getAttribute('data-product-id');
-				updateQuantity(productId, 0);
-			});
-		});
-	}
+    cart.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'cart-item';
+      row.dataset.id = String(item.id);
+      row.innerHTML = `
+        <div class="cart-item-title">${escapeHtml(item.title)}</div>
+        <div class="item-subtotal">${formatEuro((item.price||0) * (item.quantity||1))}</div>
+        <div class="cart-item-actions">
+          <div class="cart-item-sub">${formatEuro(item.price)} / unité</div>
+          <div class="qty-controls" role="group" aria-label="Quantité">
+            <button class="qty-btn" data-action="dec" aria-label="Diminuer">-</button>
+            <span class="qty-value">${item.quantity}</span>
+            <button class="qty-btn" data-action="inc" aria-label="Augmenter">+</button>
+          </div>
+          <button class="item-remove" title="Retirer">Retirer</button>
+        </div>`;
+      container.appendChild(row);
+    });
 
-	/**
-	 * Update cart badge count
-	 */
-	function updateCartBadge(count) {
-		let badge = toggleBtn.querySelector('.cart-badge');
-		if (count > 0) {
-			if (!badge) {
-				badge = document.createElement('span');
-				badge.className = 'cart-badge';
-				toggleBtn.appendChild(badge);
-			}
-			badge.textContent = count;
-		} else {
-			if (badge) badge.remove();
-		}
-	}
+    totalEl.textContent = formatEuro(calcTotal(cart));
+    updateBadge(cart);
+  }
 
-	/**
-	 * Show notification
-	 */
-	function showNotification(message) {
-		let notif = document.querySelector('.cart-notification');
-		if (!notif) {
-			notif = document.createElement('div');
-			notif.className = 'cart-notification';
-			document.body.appendChild(notif);
-		}
-		
-		notif.textContent = message;
-		notif.classList.add('show');
-		
-		setTimeout(() => {
-			notif.classList.remove('show');
-		}, 2000);
-	}
+  function escapeHtml(str){//function to prevent cross-site scripting (XSS) attacks by escaping special HTML characters
+    return String(str||'').replace(/[&<>"]+/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
+  }
 
-	// ========== MODAL ANIMATIONS ==========
+  function openPanel(){
+    const panel = document.querySelector('.cart-panel');
+    if(panel){ panel.classList.add('open'); panel.setAttribute('aria-hidden','false'); }
+  }
+  function closePanel(){
+    const panel = document.querySelector('.cart-panel');
+    if(panel){ panel.classList.remove('open'); panel.setAttribute('aria-hidden','true'); }
+  }
+  function togglePanel(){
+    const panel = document.querySelector('.cart-panel');
+    if(!panel) return;
+    panel.classList.toggle('open');
+    panel.setAttribute('aria-hidden', panel.classList.contains('open') ? 'false' : 'true');
+  }
 
-	function openCart() {
-		// Trigger roll animation on the button
-		toggleBtn.classList.add('roll');
-		// Start states are already defined in CSS; just flip to open state
-		backdrop.classList.add('open');
-		modal.classList.add('open');
-		// Remove the roll class after animation ends
-		setTimeout(() => toggleBtn.classList.remove('roll'), 450);
-		
-		// Update cart display when opening
-		updateCartDisplay();
-	}
+  function attachEvents(){
+    // Toggle open from semicircle handle
+    const toggle = document.querySelector('.cart-toggle');
+    if(toggle){ toggle.addEventListener('click', togglePanel); }
 
-	function closeCart() {
-		backdrop.classList.remove('open');
-		modal.classList.remove('open');
-	}
+    // Close button in panel
+    const closeBtn = document.querySelector('.cart-close');
+    if(closeBtn){ closeBtn.addEventListener('click', closePanel); }
 
-	// ========== EVENT LISTENERS ==========
+    // Add to cart buttons in catalog
+    document.addEventListener('click', (e)=>{
+      const btn = e.target.closest('.add-to-cart');
+      if(!btn) return;
+      const id = btn.getAttribute('data-product-id');
+      const title = btn.getAttribute('data-product-title');
+      const price = btn.getAttribute('data-product-price');
+      addItem({id, title, price});
+    });
 
-	toggleBtn.addEventListener('click', () => {
-		const isOpen = modal.classList.contains('open');
-		if (isOpen) closeCart(); else openCart();
-	});
+    // Quantity and remove controls (event delegation)
+    const list = document.querySelector('#cart-items');
+    if(list){
+      list.addEventListener('click', (e)=>{
+        const row = e.target.closest('.cart-item');
+        if(!row) return;
+        const id = parseInt(row.dataset.id, 10);
+        const t = e.target;
+        if(t.matches('.qty-btn')){
+          const action = t.getAttribute('data-action');
+          changeQty(id, action === 'inc' ? 1 : -1);
+        } else if (t.matches('.item-remove')){
+          removeItem(id);
+        }
+      });
+    }
 
-	backdrop.addEventListener('click', closeCart);
-	if (closeBtn) closeBtn.addEventListener('click', closeCart);
+    // Clear cart
+    const clear = document.querySelector('#cart-clear');
+    if(clear){ clear.addEventListener('click', clearCart); }
 
-	// Add to cart buttons
-	document.querySelectorAll('.add-to-cart').forEach(btn => {
-		btn.addEventListener('click', (e) => {
-			const button = e.currentTarget;
-			const productId = button.getAttribute('data-product-id');
-			const productTitle = button.getAttribute('data-product-title');
-			const productPrice = button.getAttribute('data-product-price');
-			
-			addToCart(productId, productTitle, productPrice);
-			
-			// Add a little animation to the button
-			button.style.transform = 'scale(0.95)';
-			setTimeout(() => {
-				button.style.transform = 'scale(1)';
-			}, 150);
-		});
-	});
+    // Open checkout overlay
+    const checkout = document.querySelector('#cart-checkout');
+    if(checkout){
+      checkout.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const cart = loadCart();
+        if(cart.length === 0){ openPanel(); return; }
+        const pane = document.querySelector('.checkout-panel');
+        if(pane){ pane.classList.add('open'); pane.setAttribute('aria-hidden','false'); }
+      });
+    }
 
-	// Cart toggle event
-	if (cartToggleSemi && modal) {
-		cartToggleSemi.addEventListener('click', () => {
-			modal.classList.toggle('open');
-			// Close checkout if open
-			if (checkoutModal) checkoutModal.classList.remove('open');
-		});
-	}
+    // Close checkout overlay
+    const closeCheckout = document.querySelector('.checkout-close');
+    if(closeCheckout){
+      closeCheckout.addEventListener('click', ()=>{
+        const pane = document.querySelector('.checkout-panel');
+        if(pane){ pane.classList.remove('open'); pane.setAttribute('aria-hidden','true'); }
+      });
+    }
 
-	// Checkout toggle event
-	if (checkoutToggleSemi && checkoutModal) {
-		checkoutToggleSemi.addEventListener('click', () => {
-			checkoutModal.classList.toggle('open');
-			// Close cart if open
-			modal.classList.remove('open');
-		});
-	}
+    // Back to cart from checkout
+    const backBtn = document.querySelector('#checkout-back');
+    if(backBtn){
+      backBtn.addEventListener('click', ()=>{
+        const pane = document.querySelector('.checkout-panel');
+        if(pane){ pane.classList.remove('open'); pane.setAttribute('aria-hidden','true'); }
+      });
+    }
 
-	// Checkout close button
-	checkoutModal.addEventListener('click', function(e) {
-		if (e.target.classList.contains('checkout-close')) {
-			checkoutModal.classList.remove('open');
-		}
-	});
+    // Toggle service type selection
+    const chips = $$('.service-chip');
+    if(chips.length){
+      chips.forEach(ch => ch.addEventListener('click', ()=>{
+        chips.forEach(c => c.classList.remove('active'));
+        ch.classList.add('active');
+      }));
+    }
 
-	// Initialize cart display on page load
-	updateCartDisplay();
+    // Confirm payment -> POST with type_commande
+    const confirmBtn = document.querySelector('#confirm-payment');
+    if(confirmBtn){
+      confirmBtn.addEventListener('click', async ()=>{
+        const cart = loadCart().map(({id, quantity}) => ({id, quantity}));
+        if(cart.length === 0){ return; }
 
+        // Get type_commande from active chip (default 1 takeout)
+        const activeChip = document.querySelector('.service-chip.active');
+        const type_commande = activeChip ? parseInt(activeChip.getAttribute('data-type'), 10) : 1;
+
+        // Minimal front validation - do not send card data to server
+        const name = (document.getElementById('card-name')||{}).value || '';
+        const number = (document.getElementById('card-number')||{}).value || '';
+        const exp = (document.getElementById('card-exp')||{}).value || '';
+        const cvv = (document.getElementById('card-cvv')||{}).value || '';
+        if(!name || !number || !exp || !cvv){
+          alert('Veuillez renseigner les informations de paiement.');
+          return;
+        }
+
+        try{
+          const res = await fetch('create_commande.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cart, type_commande })
+          });
+          const data = await res.json();
+          if(data && data.success){
+            clearCart();
+            window.location.href = `commande_valide.php?id=${data.idcommande}`;
+          } else {
+            alert(data && data.message ? data.message : 'Erreur lors de la création de la commande');
+          }
+        }catch(err){
+          alert('Impossible de valider la commande.');
+        }
+      });
+    }
+
+    // Initialize from storage
+    updateBadge();
+    renderCart();
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', attachEvents);
+  } else {
+    attachEvents();
+  }
 })();
