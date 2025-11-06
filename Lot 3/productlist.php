@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 include_once 'navbar.php';
 include_once 'productcard.php';
-// include_once 'cart.php';
+include_once 'cart.php';
 
 renderNavbar('productlist');
 
@@ -50,10 +50,11 @@ $products = getSampleProducts();
             </div>
         </div>
         
-
-
+        <?php // Sliding cart panel + toggle ?>
+        <?php renderCartPanel(); ?>
    </div>
     <!-- Scripts -->
     <script src="scripts/main.js"></script>
+    <script src="scripts/cart.js"></script>
 </body>
 </html>
