@@ -344,7 +344,7 @@
         text-overflow: ellipsis;
     }
 
-    .product-image-placeholder {
+    .product-image {
         width: 48px;
         height: 48px;
         background: var(--bg-purple-light);

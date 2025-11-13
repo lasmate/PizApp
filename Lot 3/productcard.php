@@ -43,12 +43,7 @@ function renderProductCard($title, $subhead, $image = null, $price = null, $type
             ' . $subheadHtml . '
         </div>
         <div class="product-image-placeholder">
-            ' . ((filter_var($image, FILTER_VALIDATE_URL)
-            || preg_match('/^(\/|\.\/|\.\.\/).+\.(jpe?g|png|gif|webp|svg)(\?.*)?$/i', $image)// 
-            || preg_match('/.+\.(jpe?g|png|gif|webp|svg)$/i', $image))
-            ? '<img src="' . htmlspecialchars($image) . '" alt="' . htmlspecialchars($title) . '">'
-            : '<span>' . htmlspecialchars($image) . '</span>') . '
-        </div>
+           <img src="' . htmlspecialchars($image) . '" alt="' . htmlspecialchars($title) . '">
         </div>
             ' . ($priceDisplay ? '<div class="product-price">' . $priceDisplay . '</div>' : '') . '
         <button class="add-to-cart" 
