@@ -42,7 +42,7 @@ function getSampleProducts() {
         $useImage = null;
         if ($rawImage !== '' && $rawImage !== 'img/') {
             $isUrl = filter_var($rawImage, FILTER_VALIDATE_URL) !== false;
-            $looksLikeImagePath = preg_match('/\.(png|jpe?g|gif|svg|webp)$/i', $rawImage) === 1;
+            $looksLikeImagePath = preg_match('/\.(png|jpe?g|jpg|gif|svg|webp)$/i', $rawImage) === 1;
             if ($isUrl || $looksLikeImagePath) {
                 $useImage = $rawImage;
             }
