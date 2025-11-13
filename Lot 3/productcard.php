@@ -43,9 +43,9 @@ function renderProductCard($title, $subhead, $image = null, $price = null, $prod
             ' . $subheadHtml . '
         </div>
         <div class="product-image-placeholder">
-            ' . (filter_var($image, FILTER_VALIDATE_URL) ? 
-                '<img src="' . htmlspecialchars($image) . '" alt="' . htmlspecialchars($title) . '">' : 
-                '<span>' . $image . '</span>') . '
+            ' . (is_string($image) && preg_match('/\\.(png|jpe?g|jpg|gif|svg|webp)$/i', $image) ?
+    '<img src="' . htmlspecialchars($image) . '" alt="' . htmlspecialchars($title) . '">' :
+    '<span>' . $image . '</span>') . '
         </div>
             ' . ($priceDisplay ? '<div class="product-price">' . $priceDisplay . '</div>' : '') . '
         <button class="add-to-cart" 
