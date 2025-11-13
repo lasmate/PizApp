@@ -44,6 +44,7 @@ $products = getSampleProducts();
                         $product['subhead'],
                         $product['image'],
                         $product['price'],
+                        $product['type'],
                         $product['id']
                     );
                 }
@@ -57,5 +58,6 @@ $products = getSampleProducts();
     <!-- Scripts -->
     <script src="scripts/main.js"></script>
     <script src="scripts/cart.js"></script>
+    <script src="scripts/product-filters.js"></script>
 </body>
 </html>

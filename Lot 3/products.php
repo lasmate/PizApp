@@ -10,6 +10,7 @@
  *
  * Each product: [
  *   'id' => int,
+ *   'type' => string,
  *   'title' => string,
  *   'subhead' => string,
  *   'price' => float|null,
@@ -25,7 +26,7 @@ function getSampleProducts() {
         return [];
     }
 
-    $sql = 'SELECT idproduit, nomproduit, libproduit, prixproduit, imgproduit FROM produit ORDER BY idproduit ASC';
+    $sql = 'SELECT idproduit, typeproduit, nomproduit, libproduit, prixproduit, imgproduit FROM produit ORDER BY idproduit ASC';
     $res = mysqli_query($conn, $sql);
     if ($res === false) {
         error_log('Erreur SQL (produit): ' . mysqli_error($conn));
@@ -49,6 +50,7 @@ function getSampleProducts() {
 
         $products[] = [
             'id' => (int) $row['idproduit'],
+            'type' => (string) $row['typeproduit'],
             'title' => (string) $row['nomproduit'],
             'subhead' => (string) ($row['libproduit'] ?? ''),
             'price' => isset($row['prixproduit']) ? (float) $row['prixproduit'] : null,

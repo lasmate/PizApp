@@ -47,6 +47,7 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         position: relative;
+        overflow-x: hidden;
     }
 
     /* Simple landing text wrapper */
@@ -292,7 +293,7 @@
         max-height: fit-content; /* Allow natural height */
     }
 
-    .product-card {
+.product-card {
         background: var(--bg-purple-light);
         border-radius: var(--radius-lg);
         box-shadow: var(--shadow-inset);
