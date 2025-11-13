@@ -10,7 +10,7 @@ function renderProductCard($title, $subhead, $image = null, $price = null, $prod
         $priceNumeric = isset($price) && $price !== '' ? (float)$price : null;
         $priceDisplay = $priceNumeric !== null ? number_format($priceNumeric, 2) . '€' : '';
     
-    // If no image provided, use emoji placeholder based on product type
+    // fallback to emoji if no images provided
     if (!$image) {
         $lowerTitle = strtolower($title);
         if (strpos($lowerTitle, 'pizza') !== false) {
@@ -57,51 +57,5 @@ function renderProductCard($title, $subhead, $image = null, $price = null, $prod
     </div>';
 }
 
-/**
- * Get products from the database
- * Returns an array shaped for renderProductCard consumption
- */
-function getSampleProducts() {
-    // Use existing DB connection settings
-    require_once __DIR__ . '/ConnexionBDD.php';
-
-    if (!isset($conn) || !$conn) {
-        error_log('Connexion DB non disponible.');
-        return [];
-    }
-    
-    $sql = 'SELECT idproduit, nomproduit, libproduit, prixproduit, imgproduit FROM produit ORDER BY idproduit ASC';
-    $res = mysqli_query($conn, $sql);
-    if ($res === false) {
-        error_log('Erreur SQL (produit): ' . mysqli_error($conn));
-        return [];
-    }
-
-    $products = [];
-    while ($row = mysqli_fetch_assoc($res)) {
-        $rawImage = isset($row['imgproduit']) ? trim((string)$row['imgproduit']) : '';
-
-        // Only use DB image if it looks like an actual image path or URL.
-        // Otherwise, pass null to let renderProductCard choose a fitting emoji.
-        $useImage = null;
-        if ($rawImage !== '' && $rawImage !== 'img/') {
-            $isUrl = filter_var($rawImage, FILTER_VALIDATE_URL) !== false;
-            $looksLikeImagePath = preg_match('/\.(png|jpe?g|gif|svg|webp)$/i', $rawImage) === 1;
-            if ($isUrl || $looksLikeImagePath) {
-                $useImage = $rawImage;
-            }
-        }
-
-        $products[] = [
-            'id' => (int) $row['idproduit'],
-            'title' => (string) $row['nomproduit'],
-            'subhead' => (string) ($row['libproduit'] ?? ''),
-            'price' => isset($row['prixproduit']) ? (float) $row['prixproduit'] : null,
-            'image' => $useImage,
-        ];
-    }
-
-    mysqli_free_result($res);
-    return $products;
-}
+// Note: getSampleProducts() has been moved to products.php
 ?>

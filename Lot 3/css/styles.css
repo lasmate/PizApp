@@ -535,6 +535,7 @@
         box-shadow: -8px 0 24px rgba(0,0,0,.15);
         transform: translateX(100%);
         transition: transform var(--transition-smooth);
+        overflow: hidden;
         display: flex;
         flex-direction: column;
         z-index: 1100;
@@ -663,6 +664,7 @@
         box-shadow: -10px 0 28px rgba(0,0,0,.22);
         transform: translateX(100%);
         transition: transform var(--transition-smooth);
+        
         display: flex;
         flex-direction: column;
         z-index: 1200; /* over the cart panel */

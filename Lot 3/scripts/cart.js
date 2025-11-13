@@ -23,11 +23,13 @@
     updateBadge(cart);
   }
 
+
+// Add item or increase quantity if already in cart
   function addItem({id, title, price}){
     const cart = loadCart();
     const pid = parseInt(id, 10);
     const p = parseFloat(price || '0') || 0;
-    const found = cart.find(it => it.id === pid);
+    const found = cart.find(it => it.id === pid);//check if item already in cart
     if(found){
       found.quantity += 1;
     } else {
@@ -36,7 +38,7 @@
     saveCart(cart);
     renderCart();
   }
-
+//remove item from cart by id
   function removeItem(id){
     const cart = loadCart().filter(it => it.id !== id);
     saveCart(cart);
