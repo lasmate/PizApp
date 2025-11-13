@@ -9,6 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 include_once 'navbar.php';
 include_once 'productcard.php';
+include_once 'products.php';
 include_once 'cart.php';
 
 renderNavbar('productlist');

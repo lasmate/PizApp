@@ -22,9 +22,6 @@
 					}
 				}
 			});
-			
-			// Add cursor pointer to indicate clickability (fallback if CSS doesn't apply)
-			icon.style.cursor = 'pointer';
 		});
 	}
 
@@ -41,4 +38,4 @@
 	} else {
 		initFormHelpers();
 	}
-})();
+});
