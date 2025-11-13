@@ -344,7 +344,7 @@
         text-overflow: ellipsis;
     }
 
-    .product-image-placeholder {
+    .product-image {
         width: 48px;
         height: 48px;
         background: var(--bg-purple-light);
@@ -355,6 +355,12 @@
         font-size: 1.6rem;
         margin: 0.5rem 0 0.9rem 0;
         box-shadow: var(--shadow-inset);
+    }
+    .product-image img {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: var(--radius-circle);
+        object-fit: cover;
     }
 
     .product-price {

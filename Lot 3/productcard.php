@@ -42,14 +42,11 @@ function renderProductCard($title, $subhead, $image = null, $price = null, $type
             <span class="product-title">' . htmlspecialchars($title) . '</span>
             ' . $subheadHtml . '
         </div>
-        <div class="product-image-placeholder">
-            ' . ((filter_var($image, FILTER_VALIDATE_URL)
-            || preg_match('/^(\/|\.\/|\.\.\/).+\.(jpe?g|png|gif|webp|svg)(\?.*)?$/i', $image)// 
-            || preg_match('/.+\.(jpe?g|png|gif|webp|svg)$/i', $image))
-            ? '<img src="' . htmlspecialchars($image) . '" alt="' . htmlspecialchars($title) . '">'
-            : '<span>' . htmlspecialchars($image) . '</span>') . '
+        <div class="product-image">
+            <img src="' . htmlspecialchars($image) . '" alt="' . htmlspecialchars($title) . '">
+
         </div>
-        </div>
+
             ' . ($priceDisplay ? '<div class="product-price">' . $priceDisplay . '</div>' : '') . '
         <button class="add-to-cart" 
                 data-product-id="' . htmlspecialchars($productId) . '"
@@ -60,5 +57,4 @@ function renderProductCard($title, $subhead, $image = null, $price = null, $type
     </div>';
 }
 
-// Note: getSampleProducts() has been moved to products.php
 ?>
