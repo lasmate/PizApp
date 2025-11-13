@@ -42,9 +42,11 @@ function renderProductCard($title, $subhead, $image = null, $price = null, $type
             <span class="product-title">' . htmlspecialchars($title) . '</span>
             ' . $subheadHtml . '
         </div>
-        <div class="product-image-placeholder">
-           <img src="' . htmlspecialchars($image) . '" alt="' . htmlspecialchars($title) . '">
+        <div class="product-image">
+            <img src="' . htmlspecialchars($image) . '" alt="' . htmlspecialchars($title) . '">
+
         </div>
+
             ' . ($priceDisplay ? '<div class="product-price">' . $priceDisplay . '</div>' : '') . '
         <button class="add-to-cart" 
                 data-product-id="' . htmlspecialchars($productId) . '"
@@ -55,5 +57,4 @@ function renderProductCard($title, $subhead, $image = null, $price = null, $type
     </div>';
 }
 
-// Note: getSampleProducts() has been moved to products.php
 ?>
