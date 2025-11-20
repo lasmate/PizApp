@@ -20,7 +20,7 @@ include_once 'cart.php';
 
 renderNavbar('productlist');
 
-$
+
 // Récupère les données des produits
 $products = getSampleProducts();
 ?>
