@@ -1,6 +1,6 @@
 # AppResto — Manuel d'installation et jeu de test (Lot 3)
 
-> Ce README décrit l'installation locale, la configuration et le jeu de test pour la version PHP du projet (dossier `Lot 3`).
+> Ce README décrit l'installation locale, la configuration et le jeu de test du projet (dossier `Lot 3`).
 
 ## 1. Branches / releases
 - Branche à utiliser pour le développement : `main` (branche actuelle du dépôt).  
@@ -11,12 +11,6 @@
 2. Copier le dossier `PizApp/Lot 3` dans le répertoire public d'Apache (ex. `C:\xampp\htdocs\PizApp_Lot3`), ou placer l'ensemble du repo dans `C:\xampp\htdocs\` pour conserver la même structure.
 3. Vérifier que le répertoire est accessible depuis le navigateur :
 
-```powershell
-# Exemple (PowerShell) : ouvrir la page d'accueil
-# Ouvrez dans le navigateur : http://localhost/PizApp_Lot3/index.php
-```
-
-Remarque : si vous conservez la structure actuelle (chemin contenant espaces `Lot 3`), encodez l'URL (`Lot%203`) ou renommez le dossier en `Lot_3` pour simplifier l'accès.
 
 ## 3. Mise en place de la base de données
 Les scripts SQL sont fournis dans `Lot 3/db/` :
@@ -28,16 +22,7 @@ Les scripts SQL sont fournis dans `Lot 3/db/` :
 1. Démarrer MySQL via le panneau XAMPP.
 2. Ouvrir `phpMyAdmin` (http://localhost/phpmyadmin) ou utiliser la ligne de commande MySQL.
 3. Créer une base nommée `db_pizapp` (ou un autre nom, mais mettre à jour `ConnexionBDD.php`).
-4. Importer `db_pizapp.v4.sql` (préféré) : dans phpMyAdmin, sélectionnez la base puis `Importer` → choisir le fichier `Lot 3/db/db_pizapp.v4.sql` et exécuter.
-   - Si vous utilisez la ligne de commande :
-
-```powershell
-# PowerShell example (ajustez le chemin à votre installation)
-# Assure que le service MySQL est en cours et que `mysql` est dans le PATH
-# Importer via mysql client
-mysql -u root -p db_pizapp < "E:\xampp\htdocs\projets\ML2-PizApp\PizApp\Lot 3\db\db_pizapp.v4.sql"
-```
-
+4. Importer `db_pizapp.v4.sql` (préféré) : dans phpMyAdmin, sélectionnez la base puis `Importer` → choisir le fichier `Lot 3/db/db_pizapp.v4.sql` et exécuter.```
 5. (Optionnel) Créer les triggers décrits dans `Lot 3/db/Trigger.md` si votre dump ne les inclut pas automatiquement. Le fichier `Trigger.md` contient les définitions SQL à exécuter via phpMyAdmin > SQL.
 
 ## 4. Paramétrage de l'application
@@ -77,41 +62,17 @@ Comptes utilisateurs présents (dans `utilisateur`) :
 
 Remarque importante : les champs `mot_de_passe_utilisateur` stockent des hachages bcrypt (ex. `$2y$10$...`). Le dump n'expose pas les mots de passe en clair.
 
-Comment définir ou réinitialiser un mot de passe de test :
-1. Générer un hachage bcrypt avec PHP (depuis votre machine où `php.exe` est disponible) :
-
-```powershell
-# Exemple PowerShell (ajustez le chemin vers php.exe si nécessaire)
-& "C:\\xampp\\php\\php.exe" -r "echo password_hash('MotDePasseTest123', PASSWORD_DEFAULT).PHP_EOL;"
-```
-
-2. Copier la chaîne retournée et l'insérer dans la table `utilisateur` :
-
-```sql
-UPDATE utilisateur SET mot_de_passe_utilisateur = '<hachage_php>' WHERE login_utilisateur = 'lasv_lya';
-```
-
-3. Connectez-vous via `Connexion.php` avec `login_utilisateur` et le mot de passe en clair utilisé pour générer le hachage.
-
-Alternativement, pour créer un nouvel utilisateur de test depuis SQL (hachage généré au préalable) :
-
-```sql
-INSERT INTO utilisateur (login_utilisateur, email_utilisateur, mot_de_passe_utilisateur)
-VALUES ('test_user', 'test@example.com', '$2y$10$...');
-```
-
 ## 7. Tests fonctionnels rapides
 - Parcours de test recommandé :
   1. Importer la base.
-  2. Réinitialiser le mot de passe de `lasv_lya` comme indiqué ci‑dessus (ex. `MotDePasseTest123`).
-  3. Se connecter via `Connexion.php`.
-  4. Aller sur `productlist.php`, ajouter plusieurs produits au panier (interaction front `scripts/cart.js` stockant `pizapp_cart` dans `localStorage`).
-  5. Passer à la caisse et utiliser l'interface de paiement (les données de carte ne sont pas envoyées au serveur — la page envoie uniquement le `cart` et `type_commande` à `create_commande.php`).
-  6. Vérifier dans la base que `commande` et `ligne_de_commande` ont été créées.
+  2. Se connecter via `Connexion.php`.
+  3. Aller sur `productlist.php`, ajouter plusieurs produits au panier (interaction front `scripts/cart.js` stockant `pizapp_cart` dans `localStorage`).
+  4. Passer à la caisse et utiliser l'interface de paiement (les données de carte ne sont pas envoyées au serveur — la page envoie uniquement le `cart` et `type_commande` à `create_commande.php`).
+  5. Vérifier dans la base que `commande` et `ligne_de_commande` ont été créées.
 
 ## 8. Fichiers importants contenus dans `Lot 3/` (résumé)
 - `ConnexionBDD.php` — connexion MySQL (paramètres à modifier).  
-- `index.php`, `Connexion.php`, `CreateAccount.php`, `Deconnexion.php` — pages publiques/auth.
+- `index.php`, `Connexion.php`, `CreateAccount.php`, `Deconnexion.php` — pages publiques/authentification.
 - `navbar.php` — rendu de la barre de navigation (utilise `$_SESSION['user_id']`).
 - `productlist.php`, `productcard.php`, `products.php` — catalogue et rendu des produits; `products.php` utilise `ConnexionBDD.php`.
 - `create_commande.php` — API server-side pour créer une commande (attend JSON POST { cart, type_commande }).
