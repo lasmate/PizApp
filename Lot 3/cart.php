@@ -1,9 +1,9 @@
 <?php
 /**
- * Sliding Cart Panel Component
- * - Toggle handle: small semicircle on the right side of the screen
- * - Panel slides in from right and lists cart items
- * - Each item: title, unit price, quantity controls (+/-), subtotal, remove button
+ * Panneau panier coulissant
+ * - Poignée de bascule : petit demi-cercle sur le côté droit de l'écran
+ * - Le panneau glisse depuis la droite et liste les éléments du panier
+ * - Chaque ligne : titre, prix unitaire, contrôles de quantité (+/-), sous-total, bouton supprimer
  */
 
 function renderCartPanel() {
