@@ -24,12 +24,12 @@
   }
 
 
-// Add item or increase quantity if already in cart
+// Ajouter un article ou augmenter la quantité si déjà présent dans le panier
   function addItem({id, title, price}){
     const cart = loadCart();
     const pid = parseInt(id, 10);
     const p = parseFloat(price || '0') || 0;
-    const found = cart.find(it => it.id === pid);//check if item already in cart
+    const found = cart.find(it => it.id === pid);// vérifie si l'article est déjà dans le panier
     if(found){
       found.quantity += 1;
     } else {
@@ -38,7 +38,7 @@
     saveCart(cart);
     renderCart();
   }
-//remove item from cart by id
+// supprimer un article du panier par id
   function removeItem(id){
     const cart = loadCart().filter(it => it.id !== id);
     saveCart(cart);
@@ -75,7 +75,7 @@
     badge.textContent = count;
   }
 
-  function renderCart(){// Render the cart items in the cart panel
+  function renderCart(){// Rend les éléments du panier dans le panneau panier
     const container = $('#cart-items');
     const totalEl = $('#cart-total');
     if(!container || !totalEl) return;
@@ -113,7 +113,7 @@
     updateBadge(cart);
   }
 
-  function escapeHtml(str){//function to prevent cross-site scripting (XSS) attacks by escaping special HTML characters
+  function escapeHtml(str){// fonction pour prévenir les attaques XSS en échappant les caractères HTML spéciaux
     return String(str||'').replace(/[&<>"]+/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
   }
 
@@ -133,15 +133,15 @@
   }
 
   function attachEvents(){
-    // Toggle open from semicircle handle
+    // Bascule l'ouverture depuis la poignée demi-cercle
     const toggle = document.querySelector('.cart-toggle');
     if(toggle){ toggle.addEventListener('click', togglePanel); }
 
-    // Close button in panel
+    // Bouton de fermeture dans le panneau
     const closeBtn = document.querySelector('.cart-close');
     if(closeBtn){ closeBtn.addEventListener('click', closePanel); }
 
-    // Add to cart buttons in catalog
+    // Boutons 'Ajouter au panier' dans le catalogue
     document.addEventListener('click', (e)=>{
       const btn = e.target.closest('.add-to-cart');
       if(!btn) return;
@@ -151,7 +151,7 @@
       addItem({id, title, price});
     });
 
-    // Quantity and remove controls (event delegation)
+    // Contrôles de quantité et suppression (délégation d'événements)
     const list = document.querySelector('#cart-items');
     if(list){
       list.addEventListener('click', (e)=>{
@@ -168,11 +168,11 @@
       });
     }
 
-    // Clear cart
+    // Vider le panier
     const clear = document.querySelector('#cart-clear');
     if(clear){ clear.addEventListener('click', clearCart); }
 
-    // Open checkout overlay
+    // Ouvre la superposition de paiement
     const checkout = document.querySelector('#cart-checkout');
     if(checkout){
       checkout.addEventListener('click', (e)=>{
@@ -184,7 +184,7 @@
       });
     }
 
-    // Close checkout overlay
+    // Ferme la superposition de paiement
     const closeCheckout = document.querySelector('.checkout-close');
     if(closeCheckout){
       closeCheckout.addEventListener('click', ()=>{
@@ -193,7 +193,7 @@
       });
     }
 
-    // Back to cart from checkout
+    // Retour au panier depuis le paiement
     const backBtn = document.querySelector('#checkout-back');
     if(backBtn){
       backBtn.addEventListener('click', ()=>{
@@ -202,7 +202,7 @@
       });
     }
 
-    // Toggle service type selection
+    // Bascule la sélection du type de service
     const chips = $$('.service-chip');
     if(chips.length){
       chips.forEach(ch => ch.addEventListener('click', ()=>{
@@ -211,18 +211,18 @@
       }));
     }
 
-    // Confirm payment -> POST with type_commande
+    // Confirmer le paiement -> POST avec type_commande
     const confirmBtn = document.querySelector('#confirm-payment');
     if(confirmBtn){
       confirmBtn.addEventListener('click', async ()=>{
         const cart = loadCart().map(({id, quantity}) => ({id, quantity}));
         if(cart.length === 0){ return; }
 
-        // Get type_commande from active chip (default 1 takeout)
+        // Récupère type_commande depuis la puce active (par défaut 1 = à emporter)
         const activeChip = document.querySelector('.service-chip.active');
         const type_commande = activeChip ? parseInt(activeChip.getAttribute('data-type'), 10) : 1;
 
-        // Minimal front validation - do not send card data to server
+        // Validation minimale côté client - ne pas envoyer les données de carte au serveur
         const name = (document.getElementById('card-name')||{}).value || '';
         const number = (document.getElementById('card-number')||{}).value || '';
         const exp = (document.getElementById('card-exp')||{}).value || '';

@@ -1,13 +1,13 @@
 /**
- * Main Application Script
- * Central initialization and global utilities
+ * Script principal de l'application
+ * Initialisation centrale et utilitaires globaux
  */
 
 (function () {
 	'use strict';
 
 	/**
-	 * Global app configuration
+	 * Configuration globale de l'application
 	 */
 	const AppConfig = {
 		debug: false,
@@ -15,13 +15,13 @@
 	};
 
 	/**
-	 * Utility functions
+	 * Fonctions utilitaires
 	 */
 	const Utils = {
 		/**
-		 * Log messages when debug mode is enabled
-		 * @param {string} message - Message to log
-		 * @param {*} data - Optional data to log
+		 * Journalise les messages lorsque le mode debug est activé
+		 * @param {string} message - Message à logger
+		 * @param {*} data - Données optionnelles à afficher
 		 */
 		log: function(message, data) {
 			if (AppConfig.debug) {
@@ -30,8 +30,8 @@
 		},
 
 		/**
-		 * Check if element exists in DOM
-		 * @param {string} selector - CSS selector
+		 * Vérifie si un élément existe dans le DOM
+		 * @param {string} selector - Sélecteur CSS
 		 * @returns {boolean}
 		 */
 		elementExists: function(selector) {
@@ -39,8 +39,8 @@
 		},
 
 		/**
-		 * Safe DOM ready execution
-		 * @param {Function} callback - Function to execute
+		 * Exécution sûre au ready du DOM
+		 * @param {Function} callback - Fonction à exécuter
 		 */
 		ready: function(callback) {
 			if (document.readyState === 'loading') {
@@ -52,13 +52,13 @@
 	};
 
 	/**
-	 * Initialize the application
+	 * Initialise l'application
 	 */
 	function initApp() {
 		Utils.log('Application initialized');
 		
-		// Add any global event listeners or initializations here
-		// For example: error handling, analytics, etc.
+		// Ajoute ici des écouteurs globaux ou initialisations
+		// Par exemple : gestion des erreurs, analytics, etc.
 	}
 
 	// Make utilities available globally if needed

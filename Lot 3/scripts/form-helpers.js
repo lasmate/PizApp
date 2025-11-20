@@ -1,24 +1,24 @@
 /**
- * Form Helper Functions
- * Handles form input interactions and enhancements
+ * Fonctions d'aide aux formulaires
+ * Gère les interactions et améliorations des champs de formulaire
  */
 
 (function () {
 	/**
-	 * Make input icons clickable to clear their associated form fields
+	 * Rend les icônes des champs cliquables pour effacer le champ associé
 	 */
 	function initClearInputIcons() {
 		const inputIcons = document.querySelectorAll('.input-icon');
 		
 		inputIcons.forEach(icon => {
 			icon.addEventListener('click', function() {
-				// Find the associated input field (sibling in the same .input-box)
+				// Trouve le champ input associé (frère dans la même .input-box)
 				const inputBox = this.closest('.input-box');
 				if (inputBox) {
 					const inputField = inputBox.querySelector('input');
 					if (inputField) {
 						inputField.value = '';
-						inputField.focus(); // Optional: focus the field after clearing
+						inputField.focus(); // Optionnel : positionne le focus après effacement
 					}
 				}
 			});
@@ -26,7 +26,7 @@
 	}
 
 	/**
-	 * Initialize all form helpers when DOM is loaded
+	 * Initialise tous les helpers de formulaire lorsque le DOM est chargé
 	 */
 	function initFormHelpers() {
 		initClearInputIcons();

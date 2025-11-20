@@ -1,7 +1,7 @@
 <?php
 /**
- * Render Checkout Modal
- * populated from cookies via JavaScript
+ * Rend le modal de paiement
+ * peuplé depuis les cookies via JavaScript
  */
 function renderCheckout() {
     return '
