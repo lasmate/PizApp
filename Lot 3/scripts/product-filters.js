@@ -1,25 +1,25 @@
 /**
  * product-filters.js
- * Simple client-side filter for product cards using the sidebar buttons.
- * It toggles the CSS display property of `.product-card` elements based on their
- * `data-product-type` attribute.
+ * Filtre client simple pour les cartes produits depuis le menu latéral.
+ * Il bascule la propriété CSS `display` des éléments `.product-card` en fonction
+ * de l'attribut `data-product-type`.
  */
 
 document.addEventListener('DOMContentLoaded', function () {
     const buttons = Array.from(document.querySelectorAll('.sidebar-btn'));
 
-    if (!buttons.length) return; // nothing to do
+    if (!buttons.length) return; // rien à faire
 
     const cards = () => Array.from(document.querySelectorAll('.product-card'));
 
-    // Normalize text for simple matching (lowercase, remove diacritics)
+    // Normalise le texte pour une correspondance simple (minuscules, suppression des diacritiques)
     function normalize(text) {
         return (text || '').toString().toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '').trim();
     }
 
     function applyFilter(filter) {
         const normFilter = normalize(filter);
-        // Show all if filter indicates 'carte' or 'all' or empty
+        // Affiche tout si le filtre indique 'carte', 'all' ou est vide
         const showAll = normFilter === 'carte' || normFilter === 'all' || normFilter === '';
 
         cards().forEach(card => {
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             let visible = true;
             if (!showAll) {
-                // Match if the card's type contains the filter text or vice-versa.
+                // Correspond si le type de la carte contient le texte du filtre ou inversement.
                 visible = (type && (type.indexOf(normFilter) !== -1 || normFilter.indexOf(type) !== -1));
             }
 
@@ -35,20 +35,20 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Hook up buttons
+    // Connecte les boutons
     buttons.forEach(btn => {
         btn.addEventListener('click', function () {
-            // toggle active class
+            // bascule la classe active
             buttons.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
 
-            // Use data-filter if provided, otherwise button text
+            // Utilise data-filter si présent, sinon le texte du bouton
             const filter = this.dataset.filter ? this.dataset.filter : this.textContent;
             applyFilter(filter);
         });
     });
 
-    // Apply initial filter based on the button that already has .active
+    // Applique le filtre initial basé sur le bouton qui a déjà la classe .active
     const initial = buttons.find(b => b.classList.contains('active'));
     if (initial) {
         const filter = initial.dataset.filter ? initial.dataset.filter : initial.textContent;

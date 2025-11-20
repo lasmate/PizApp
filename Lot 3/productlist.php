@@ -1,7 +1,13 @@
 <?php
+/**
+ * Page Liste des Produits
+ * - Affiche une grille de produits récupérés depuis la base de données
+ * - Chaque produit est rendu via le composant productcard.php
+ * - Inclut le panneau coulissant du panier depuis cart.php
+ */
 session_start();
 
-// Check if user is logged in
+// Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header('Location: Connexion.php');
     exit();
@@ -14,7 +20,8 @@ include_once 'cart.php';
 
 renderNavbar('productlist');
 
-// Get products data
+$
+// Récupère les données des produits
 $products = getSampleProducts();
 ?>
 <!DOCTYPE html>
@@ -37,7 +44,7 @@ $products = getSampleProducts();
         
             <div class="product-grid">
                 <?php
-                // Display all products using the productcard component
+                // Affiche tous les produits en utilisant le composant productcard
                 foreach ($products as $product) {
                     echo renderProductCard(
                         $product['title'],
@@ -52,7 +59,7 @@ $products = getSampleProducts();
             </div>
         </div>
         
-        <?php // Sliding cart panel + toggle ?>
+        <?php // Panneau panier coulissant + bascule ?>
         <?php renderCartPanel(); ?>
    </div>
     <!-- Scripts -->

@@ -1,24 +1,19 @@
 <?php
 /**
- * products.php
- * Central place to fetch products from the database.
- */
-
-/**
- * Get products from the database
- * Returns an array shaped for renderProductCard consumption
+ * Récupère les produits depuis la base de données
+ * Renvoie un tableau formaté pour être utilisé par renderProductCard
  *
- * Each product: [
+ * Chaque produit : [
  *   'id' => int,
  *   'type' => string,
  *   'title' => string,
  *   'subhead' => string,
  *   'price' => float|null,
- *   'image' => string|null (URL or image path) 
+ *   'image' => string|null (URL ou chemin d'image)
  * ]
  */
 function getSampleProducts() {
-    // Use existing DB connection settings
+    // Utilise la configuration de connexion DB existante
     require_once __DIR__ . '/ConnexionBDD.php';
 
     if (!isset($conn) || !$conn) {
@@ -37,8 +32,8 @@ function getSampleProducts() {
     while ($row = mysqli_fetch_assoc($res)) {
         $rawImage = isset($row['imgproduit']) ? trim((string)$row['imgproduit']) : '';
 
-        // Only use DB image if it looks like an actual image path or URL.
-        // Otherwise, pass null to let renderProductCard choose a fitting emoji.
+        // N'utilise l'image de la BDD que si elle ressemble à un chemin ou une URL d'image.
+        // Sinon, passe null pour laisser renderProductCard choisir un emoji approprié.
         $useImage = null;
         if ($rawImage !== '' && $rawImage !== 'img/') {
             $isUrl = filter_var($rawImage, FILTER_VALIDATE_URL) !== false;

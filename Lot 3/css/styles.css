@@ -345,8 +345,8 @@
     }
 
     .product-image {
-        width: 20vw;
-        height: 20vh;
+        width: 100%;
+        height: 80%;
         background: var(--bg-purple-light);
         border-radius: var(--radius-lg);
         display: flex;
@@ -354,7 +354,7 @@
         align-items: center;
         justify-content: center;
         font-size: 1.6rem;
-        margin: 0.5rem 0 0.9rem 0;
+        
         box-shadow: var(--shadow-inset);
     }
     .product-image img {

@@ -1,16 +1,16 @@
 <?php
 /**
- * Product Card Component
- * Renders a product card with title, subtitle, image/icon and add to cart button
+ * Composant Carte Produit
+ * Génère une carte produit avec titre, sous-titre, image/emoji et bouton d'ajout au panier
  */
 
 function renderProductCard($title, $subhead, $image = null, $price = null, $type = null, $productId = null) {
-    $productId = $productId ?? uniqid(); // Generate unique ID if not provided
-        // Keep numeric price for data attributes and a separate formatted display string
+    $productId = $productId ?? uniqid(); // Génère un ID unique si non fourni
+        // Conserve le prix numérique pour les attributs data et une chaîne formatée pour l'affichage
         $priceNumeric = isset($price) && $price !== '' ? (float)$price : null;
         $priceDisplay = $priceNumeric !== null ? number_format($priceNumeric, 2) . '€' : '';
     
-    // fallback to emoji if no images provided
+    // valeur de secours (emoji) si aucune image fournie
     if (!$image) {
         $lowerTitle = strtolower($title);
         if (strpos($lowerTitle, 'pizza') !== false) {
@@ -26,7 +26,7 @@ function renderProductCard($title, $subhead, $image = null, $price = null, $type
     
     $subheadHtml = '';
     $normalizedSubhead = str_replace('_', ' ', (string) $subhead);
-    $subheadParts = array_filter(array_map('trim', preg_split('/[,;\n]+/', $normalizedSubhead))); # Split by commas, semicolons, or new lines
+    $subheadParts = array_filter(array_map('trim', preg_split('/[,;\n]+/', $normalizedSubhead))); // Sépare par virgules, points-virgules ou sauts de ligne
 
     if (!empty($subheadParts)) {
         $subheadHtml .= '<ul class="product-subhead-list">';
