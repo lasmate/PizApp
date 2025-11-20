@@ -1,4 +1,8 @@
 <?php
+/**
+ * navbar.php
+ * Composant barre de navigation réutilisable — affiche les liens selon l'état de connexion
+ */
 function renderNavbar($activePage) {
     if (session_status() === PHP_SESSION_NONE) session_start();
     $isConnected = isset($_SESSION['user_id']);

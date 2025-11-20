@@ -1,4 +1,8 @@
 <?php
+/**
+ * commande_valide.php
+ * Page de confirmation affichée après validation d'une commande
+ */
 session_start();
 require_once 'ConnexionBDD.php';
 include_once 'navbar.php';

@@ -57,8 +57,6 @@
 	function initApp() {
 		Utils.log('Application initialized');
 		
-		// Ajoute ici des écouteurs globaux ou initialisations
-		// Par exemple : gestion des erreurs, analytics, etc.
 	}
 
 	// Make utilities available globally if needed

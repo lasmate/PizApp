@@ -1,4 +1,8 @@
 <?php
+/**
+ * ConnexionBDD.php
+ * Configuration et initialisation de la connexion MySQL (mysqli)
+ */
   $server = "localhost";
   $username = "root";
   $password = ""; 

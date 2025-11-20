@@ -1,4 +1,8 @@
 <?php
+/**
+ * Deconnexion.php
+ * Déconnecte l'utilisateur et affiche une confirmation
+ */
 session_start();
 session_unset();
 session_destroy();
