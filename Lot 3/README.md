@@ -86,16 +86,10 @@ Remarque importante : les champs `mot_de_passe_utilisateur` stockent des hachage
 - `create_commande.php` recalcule les totaux côté serveur (bonne pratique) — conservez ce comportement lorsque vous modifiez la logique de création de commande.  
 - Si vous mettez en production, configurez un utilisateur MySQL avec un mot de passe fort et limitez les permissions.
 
----
-
-Si vous voulez, je peux :
-- Générer un script PowerShell pour automatiser l'import SQL et la réinitialisation d'un mot de passe de test.  
-- Ajouter un fichier `DEVELOPMENT.md` décrivant les workflows de développement (exécution locale, debugging, tests).  
-
 ## 10. Diagrammes et maquettes (Lot 1)
 
 Les livrables de conception sont fournis dans le dossier `Lot 1/` :
-- `Diagramme de cas d'utilisation (Projets appResto, Raphaël et Lya)` — diagramme Draw.io (XML) décrivant les acteurs et cas d'utilisation ; peut être ouvert dans https://app.diagrams.net/ (importer le fichier).
+- `Diagramme de cas d'utilisation (Projets appResto, Raphaël et Lya)` — diagramme Draw.io (XML) décrivant les acteurs et cas d'utilisation ; 
 - `Diagramme d'activité (Projets appResto, Raphaël et Lya)` — diagramme d'activité (format Draw.io).
 - `AP1.SLAM(MCD,Lot1).loo` et `AP1.SLAM(MLD,Lot1).loo` — sources de modélisation (format binaire fourni).
 - `Appresto(IHM).pdf` et `image.png` — maquettes d'interface (export Figma / PDF). Ouvrir le PDF pour visualiser les écrans.
@@ -172,16 +166,6 @@ Parcours utilisateur principal :
 - Voir `Lot 1/Appresto(IHM).pdf` pour la maquette complète (export PDF).  
 - Les sources de diagrammes et maquettes se trouvent dans `Lot 1/` (`.loo` et XML draw.io). Ouvrez-les avec draw.io, LibreOffice Draw, ou l'outil d'édition approprié.
 
----
-
-Mise à jour terminée : j'ai intégré la description des diagrammes, des modèles de données (conceptuel, logique, physique), la liste des valeurs possibles pour états et types de consommation, ainsi qu'un sitemap et les références aux maquettes dans `Lot 1/`.
-
-Souhaitez-vous que je :
-- Génére un export PNG/SVG du MCD/MLD et l'ajoute ici (nécessite import de la base pour phpMyAdmin Designer) ?
-- Écrive un script PowerShell qui importe `db_pizapp.v4.sql` et crée/réinitialise un utilisateur test (hachage du mot de passe) ?
-
-Dites-moi quelle option vous préférez et je l'implémente.
-
 ## 18. Manuel d'utilisation (Lot 3)
 
 Cette section décrit pas-à-pas les actions utilisateur courantes implémentées dans `Lot 3/`.
@@ -201,7 +185,7 @@ Cette section décrit pas-à-pas les actions utilisateur courantes implémentée
   1. Ouvrir `Connexion.php`.
   2. Saisir `login` et `mot de passe` puis soumettre.
   3. Si l'authentification réussit : `$_SESSION['user_id']` et `$_SESSION['user_login']` sont définis, puis redirection vers `productlist.php`.
-  4. Si échec : le code affiche une erreur ou renvoie à la page de connexion (selon l'implémentation actuelle).
+  4. Si échec : le code affiche une erreur et renvoie à la page de connexion.
 
 ### Commande (sélection et envoi)
 - Pages/composants impliqués : `productlist.php`, `productcard.php`, `cart.php`, `scripts/cart.js`, `create_commande.php`.
@@ -226,12 +210,9 @@ Cette section décrit pas-à-pas les actions utilisateur courantes implémentée
 ### Paiement (interface et notes)
 - Interface : panneau de paiement présent dans le DOM (rendu par `cart.php`) et contrôlé par `scripts/cart.js`.
 - Comportement actuel : paiement fictif — le formulaire collecte des champs de paiement (nom, numéro, expiry, CVV) mais NE transmet PAS ces données au serveur. Seule la commande (liste d'items + `type_commande`) est envoyée à `create_commande.php` pour créer la commande côté serveur.
-- Bonnes pratiques : pour une intégration réelle de paiement, utiliser un provider externe (Stripe, PayPal) et ne jamais envoyer ni stocker les données sensibles de carte sur votre serveur sans conformité PCI.
 
 Notes supplémentaires :
 - `create_commande.php` recalcule les montants côté serveur en utilisant les prix en base — le serveur ne fait pas confiance aux prix envoyés par le client.
 - Assurez-vous d'être connecté avant de passer la commande (sinon `productlist.php` redirige vers `Connexion.php`).
 
 ---
-
-Mise à jour : la section "Manuel d'utilisation" a été ajoutée. Je marque la tâche correspondante comme terminée.
