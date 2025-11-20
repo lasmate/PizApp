@@ -1,7 +1,11 @@
 <?php
+/**
+ * Connexion.php
+ * Page de connexion et authentification des utilisateurs
+ */
 include 'ConnexionBDD.php';
 session_start();
-$message = '';
+ $message = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = $_POST['password'];

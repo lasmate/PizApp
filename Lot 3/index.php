@@ -1,4 +1,8 @@
 <?php
+/**
+ * index.php
+ * Page d'accueil publique de l'application
+ */
 include_once 'navbar.php';
 renderNavbar('index');
 ?>

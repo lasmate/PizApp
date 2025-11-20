@@ -1,4 +1,8 @@
 <?php
+/**
+ * CreateAccount.php
+ * Page d'inscription et traitement de la création de compte
+ */
     include 'ConnexionBDD.php';
     $message = '';
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {

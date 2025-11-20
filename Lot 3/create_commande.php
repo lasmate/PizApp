@@ -1,4 +1,10 @@
 <?php
+/**
+ * create_commande.php
+ * API serveur pour créer une commande à partir d'un panier (JSON POST).
+ * Retourne JSON { success: bool, idcommande: int }
+ */
+
 header('Content-Type: application/json; charset=utf-8');
 session_start();
 require_once 'ConnexionBDD.php';
