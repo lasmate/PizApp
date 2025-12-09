@@ -1,6 +1,6 @@
 # AppResto — Manuel d'installation et jeu de test (Lot 3)
 
-> Ce README décrit l'installation locale, la configuration et le jeu de test du projet (dossier `Lot 3`).
+> Ce README décrit l'installation locale, la configuration et le jeu de test du projet.
 
 ## 1. Branches / releases
 - Branche à utiliser pour le développement : `main` (branche actuelle du dépôt).  
