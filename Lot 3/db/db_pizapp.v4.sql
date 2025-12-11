@@ -281,6 +281,105 @@ ALTER TABLE `commande`
 ALTER TABLE `ligne_de_commande`
   ADD CONSTRAINT `ligne_de_commande_ibfk_1` FOREIGN KEY (`idcommande`) REFERENCES `commande` (`idcommande`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `ligne_de_commande_ibfk_2` FOREIGN KEY (`idproduit`) REFERENCES `produit` (`idproduit`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- ========================================================
+-- Triggers
+-- ========================================================
+
+-- 3.1. before_ligne_insert
+-- A chaque ajout d'une ligne de commande, calcule le "total ligne HT"
+DROP TRIGGER IF EXISTS `before_ligne_insert`;
+DELIMITER $$
+CREATE TRIGGER `before_ligne_insert`
+BEFORE INSERT ON `ligne_de_commande`
+FOR EACH ROW
+BEGIN
+  DECLARE v_prix_ht DOUBLE DEFAULT 0;
+  SELECT `prixproduit` INTO v_prix_ht FROM `produit`
+  WHERE `idproduit` = NEW.`idproduit`;
+  SET NEW.`total_ht` = v_prix_ht * NEW.`quantite`;
+END$$
+DELIMITER ;
+
+-- 3.2. before_ligne_update
+-- A chaque modification d'une ligne de commande, met à jour le "total ligne HT"
+DROP TRIGGER IF EXISTS `before_ligne_update`;
+DELIMITER $$
+CREATE TRIGGER `before_ligne_update`
+BEFORE UPDATE ON `ligne_de_commande`
+FOR EACH ROW
+BEGIN
+  DECLARE v_prix_ht DOUBLE DEFAULT 0;
+  SELECT `prixproduit` INTO v_prix_ht FROM `produit`
+  WHERE `idproduit` = NEW.`idproduit`;
+  SET NEW.`total_ht` = v_prix_ht * NEW.`quantite`;
+END$$
+DELIMITER ;
+
+-- 3.3. after_ligne_insert
+-- A chaque ajout d'une ligne de commande, recalcule le montant TTC de la commande
+DROP TRIGGER IF EXISTS `after_ligne_insert`;
+DELIMITER $$
+CREATE TRIGGER `after_ligne_insert`
+AFTER INSERT ON `ligne_de_commande`
+FOR EACH ROW
+BEGIN
+  DECLARE v_total_prix_ht DOUBLE DEFAULT 0;
+  DECLARE v_type_commande INT DEFAULT 1;
+
+  SELECT SUM(`total_ht`) INTO v_total_prix_ht
+  FROM `ligne_de_commande`
+  WHERE `idcommande` = NEW.`idcommande`;
+
+  SELECT `type_commande` INTO v_type_commande
+  FROM `commande`
+  WHERE `idcommande` = NEW.`idcommande`
+  LIMIT 1;
+
+  IF v_type_commande = 1 THEN
+    UPDATE `commande`
+    SET `montant_ttc` = v_total_prix_ht * (1 + (5.5/100))
+    WHERE `idcommande` = NEW.`idcommande`;
+  ELSE
+    UPDATE `commande`
+    SET `montant_ttc` = v_total_prix_ht * (1 + (10/100))
+    WHERE `idcommande` = NEW.`idcommande`;
+  END IF;
+END$$
+DELIMITER ;
+
+-- 3.4. after_ligne_update
+-- A chaque modification d'une ligne de commande, recalcule le montant TTC de la commande
+DROP TRIGGER IF EXISTS `after_ligne_update`;
+DELIMITER $$
+CREATE TRIGGER `after_ligne_update`
+AFTER UPDATE ON `ligne_de_commande`
+FOR EACH ROW
+BEGIN
+  DECLARE v_total_prix_ht DOUBLE DEFAULT 0;
+  DECLARE v_type_commande INT DEFAULT 1;
+
+  SELECT SUM(`total_ht`) INTO v_total_prix_ht
+  FROM `ligne_de_commande`
+  WHERE `idcommande` = NEW.`idcommande`;
+
+  SELECT `type_commande` INTO v_type_commande
+  FROM `commande`
+  WHERE `idcommande` = NEW.`idcommande`
+  LIMIT 1;
+
+  IF v_type_commande = 1 THEN
+    UPDATE `commande`
+    SET `montant_ttc` = v_total_prix_ht * (1 + (5.5/100))
+    WHERE `idcommande` = NEW.`idcommande`;
+  ELSE
+    UPDATE `commande`
+    SET `montant_ttc` = v_total_prix_ht * (1 + (10/100))
+    WHERE `idcommande` = NEW.`idcommande`;
+  END IF;
+END$$
+DELIMITER ;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -61,12 +61,11 @@ DECLARE v_type_commande int;
 
 Select SUM(total_ht) INTO v_total_prix_ht
 FROM ligne_de_commande
-Where new.idcommande = idcommande;
+Where idcommande = new.idcommande;
 
 Select type_commande INTO v_type_commande
 FROM commande
-WHERE commande.idcommande = idcommande;
-
+WHERE commande.idcommande = new.idcommande;
 IF v_type_commande = 1 THEN
 	UPDATE commande SET montant_ttc = v_total_prix_ht * (1 + (5.5/100));
 ELSE 
