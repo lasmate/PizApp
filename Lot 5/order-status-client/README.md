@@ -6,6 +6,10 @@ Base de client desktop Java Swing pour le projet PizApp.
 - Afficher les commandes de la table `commande` (avec client + statut).
 - Mettre à jour le statut d'une commande depuis l'interface.
 
+## Interface
+- Onglet **Toutes les commandes** : liste complète + mise à jour manuelle via sélection de statut.
+- Onglet **Commandes en attente** : affiche uniquement `idetat = 4` avec actions en 1 clic.
+
 ## Pré-requis
 - Java 8+
 - Maven 3.9+
@@ -36,3 +40,8 @@ Le client propose ces transitions manuelles :
 - `8` : servie
 
 (Conforme aux valeurs de `etat` dans la base du projet.)
+
+### Mapping des boutons (onglet "Commandes en attente")
+- **Accepter** ⟶ `idetat = 4` (même mapping que `api/commande_accepter.php` actuel)
+- **Refuser** ⟶ `idetat = 5`
+- **Marquer prête** ⟶ `idetat = 7`
