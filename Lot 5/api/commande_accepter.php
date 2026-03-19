@@ -1,8 +1,9 @@
 <?php
+//example d'utilisation: localhost/PizApp/Lot%205/api/commande_accepter.php?id=1
 // requis pour api rest
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST"); // Ajuster en fonction de l'objectif du fichier (GET, POST, PUT, DELETE)
+header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
@@ -21,8 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Assainir l'entrée
         $id = mysqli_real_escape_string($conn, $data->id);
 
-        // Mettre à jour le statut à 'en préparation' (idetat = 6)
-        $query = "UPDATE commande SET idetat = 6 WHERE idcommande = '$id'";
+        // Mettre à jour le statut à 'en préparation' (idetat = 4)
+        $query = "UPDATE commande SET idetat = 4 WHERE idcommande = '$id'";
         
         if(mysqli_query($conn, $query)) {
             http_response_code(200);

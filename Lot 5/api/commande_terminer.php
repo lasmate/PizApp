@@ -1,4 +1,5 @@
 <?php
+//exemple d'utilisation: localhost/PizApp/Lot%205/api/commande_terminer.php?id=1
 // requis pour api rest
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
