@@ -20,8 +20,10 @@ include_once 'cart.php';
 
 renderNavbar('productlist');
 
-// Récupère les données des produits
-$products = getSampleProducts();
+// Récupère les produits via le repository orienté objet
+$repository = new ProductRepository();
+$products = $repository->findAll();
+$renderer = new ProductCardRenderer();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -45,14 +47,7 @@ $products = getSampleProducts();
                 <?php
                 // Affiche tous les produits en utilisant le composant productcard
                 foreach ($products as $product) {
-                    echo renderProductCard(
-                        $product['title'],
-                        $product['subhead'],
-                        $product['image'],
-                        $product['price'],
-                        $product['type'],
-                        $product['id']
-                    );
+                    echo $renderer->renderProduct($product);
                 }
                 ?>
             </div>

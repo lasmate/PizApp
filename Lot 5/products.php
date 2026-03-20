@@ -1,59 +1,139 @@
 <?php
 /**
- * Récupère les produits depuis la base de données
- * Renvoie un tableau formaté pour être utilisé par renderProductCard
- *
- * Chaque produit : [
- *   'id' => int,
- *   'type' => string,
- *   'title' => string,
- *   'subhead' => string,
- *   'price' => float|null,
- *   'image' => string|null (URL ou chemin d'image)
- * ]
+ * Modèle Produit orienté objet.
  */
-function getSampleProducts() {
-    // Utilise la configuration de connexion DB existante
-    require_once __DIR__ . '/ConnexionBDD.php';
+class Product {
+    private $id;
+    private $type;
+    private $title;
+    private $subhead;
+    private $price;
+    private $image;
 
-    if (!isset($conn) || !$conn) {
-        error_log('Connexion DB non disponible.');
-        return [];
+    public function __construct($id, $type, $title, $subhead = '', $price = null, $image = null) {
+        $this->id = (int) $id;
+        $this->type = (string) $type;
+        $this->title = (string) $title;
+        $this->subhead = (string) $subhead;
+        $this->price = $price !== null && $price !== '' ? (float) $price : null;
+        $this->image = $this->normalizeImage($image);
     }
 
-    $sql = 'SELECT idproduit, typeproduit, nomproduit, libproduit, prixproduit, imgproduit FROM produit ORDER BY idproduit ASC';
-    $res = mysqli_query($conn, $sql);
-    if ($res === false) {
-        error_log('Erreur SQL (produit): ' . mysqli_error($conn));
-        return [];
-    }
-
-    $products = [];
-    while ($row = mysqli_fetch_assoc($res)) {
-        $rawImage = isset($row['imgproduit']) ? trim((string)$row['imgproduit']) : '';
-
-        // N'utilise l'image de la BDD que si elle ressemble à un chemin ou une URL d'image.
-        // Sinon, passe null pour laisser renderProductCard choisir un emoji approprié.
-        $useImage = null;
-        if ($rawImage !== '' && $rawImage !== 'img/') {
-            $isUrl = filter_var($rawImage, FILTER_VALIDATE_URL) !== false;
-            $looksLikeImagePath = preg_match('/\.(png|jpe?g|jpg|gif|svg|webp)$/i', $rawImage) === 1;
-            if ($isUrl || $looksLikeImagePath) {
-                $useImage = $rawImage;
-            }
+    private function normalizeImage($image) {
+        $rawImage = isset($image) ? trim((string) $image) : '';
+        if ($rawImage === '' || $rawImage === 'img/') {
+            return null;
         }
 
-        $products[] = [
-            'id' => (int) $row['idproduit'],
-            'type' => (string) $row['typeproduit'],
-            'title' => (string) $row['nomproduit'],
-            'subhead' => (string) ($row['libproduit'] ?? ''),
-            'price' => isset($row['prixproduit']) ? (float) $row['prixproduit'] : null,
-            'image' => $useImage,
-        ];
+        $isUrl = filter_var($rawImage, FILTER_VALIDATE_URL) !== false;
+        $looksLikeImagePath = preg_match('/\.(png|jpe?g|jpg|gif|svg|webp)$/i', $rawImage) === 1;
+        if ($isUrl || $looksLikeImagePath) {
+            return $rawImage;
+        }
+
+        return null;
     }
 
-    mysqli_free_result($res);
-    return $products;
+    public static function fromDatabaseRow(array $row) {
+        return new self(
+            $row['idproduit'] ?? 0,
+            $row['typeproduit'] ?? '',
+            $row['nomproduit'] ?? '',
+            $row['libproduit'] ?? '',
+            $row['prixproduit'] ?? null,
+            $row['imgproduit'] ?? null
+        );
+    }
+
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getType() {
+        return $this->type;
+    }
+
+    public function getTitle() {
+        return $this->title;
+    }
+
+    public function getSubhead() {
+        return $this->subhead;
+    }
+
+    public function getPrice() {
+        return $this->price;
+    }
+
+    public function getImage() {
+        return $this->image;
+    }
+
+    public function toArray() {
+        return [
+            'id' => $this->id,
+            'type' => $this->type,
+            'title' => $this->title,
+            'subhead' => $this->subhead,
+            'price' => $this->price,
+            'image' => $this->image,
+        ];
+    }
+}
+
+/**
+ * Repository des produits.
+ */
+class ProductRepository {
+    private $conn;
+
+    public function __construct($conn = null) {
+        if ($conn) {
+            $this->conn = $conn;
+            return;
+        }
+
+        require __DIR__ . '/ConnexionBDD.php';
+        $this->conn = isset($conn) ? $conn : null;
+    }
+
+    public function findAll() {
+        if (!$this->conn) {
+            error_log('Connexion DB non disponible.');
+            return [];
+        }
+
+        $sql = 'SELECT idproduit, typeproduit, nomproduit, libproduit, prixproduit, imgproduit FROM produit ORDER BY idproduit ASC';
+        $res = mysqli_query($this->conn, $sql);
+        if ($res === false) {
+            error_log('Erreur SQL (produit): ' . mysqli_error($this->conn));
+            return [];
+        }
+
+        $products = [];
+        while ($row = mysqli_fetch_assoc($res)) {
+            $products[] = Product::fromDatabaseRow($row);
+        }
+
+        mysqli_free_result($res);
+        return $products;
+    }
+
+    public function findAllAsArray() {
+        $products = $this->findAll();
+        $result = [];
+        foreach ($products as $product) {
+            $result[] = $product->toArray();
+        }
+        return $result;
+    }
+}
+
+/**
+ * Fonction legacy conservée pour compatibilité.
+ */
+function getSampleProducts() {
+    $repository = new ProductRepository();
+    return $repository->findAllAsArray();
 }
 ?>
