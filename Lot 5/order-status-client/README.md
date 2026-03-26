@@ -8,7 +8,8 @@ Base de client desktop Java Swing pour le projet PizApp.
 
 ## Interface
 - Onglet **Toutes les commandes** : liste complète + mise à jour manuelle via sélection de statut.
-- Onglet **Commandes en attente** : affiche uniquement `idetat = 4` avec actions en 1 clic.
+- Quand une commande est sélectionnée dans le 1er onglet, l'application ouvre automatiquement le 2e onglet.
+- Onglet **Détail commande** : affiche les informations de la commande sélectionnée + ses lignes + actions en 1 clic.
 
 ## Pré-requis
 - Java 8+
@@ -41,7 +42,7 @@ Le client propose ces transitions manuelles :
 
 (Conforme aux valeurs de `etat` dans la base du projet.)
 
-### Mapping des boutons (onglet "Commandes en attente")
+### Mapping des boutons (onglet "Détail commande")
 - **Accepter** ⟶ `idetat = 4` (même mapping que `api/commande_accepter.php` actuel)
 - **Refuser** ⟶ `idetat = 5`
 - **Marquer prête** ⟶ `idetat = 7`

@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.pizapp.client.db.Database;
 import com.pizapp.client.model.Order;
+import com.pizapp.client.model.OrderLine;
 
 public class OrderRepository {
     private static final String SELECT_ORDERS_BASE =
@@ -37,6 +38,13 @@ public class OrderRepository {
 
     private static final String UPDATE_ORDER_STATUS =
         "UPDATE commande SET idetat = ? WHERE idcommande = ?";
+
+    private static final String SELECT_ORDER_LINES =
+        "SELECT p.nomproduit, l.quantite, l.total_ht " +
+            "FROM ligne_de_commande l " +
+            "JOIN produit p ON p.idproduit = l.idproduit " +
+            "WHERE l.idcommande = ? " +
+            "ORDER BY p.nomproduit ASC";
 
     private final Database database;
 
@@ -106,5 +114,26 @@ public class OrderRepository {
             statement.setInt(2, orderId);
             return statement.executeUpdate() == 1;
         }
+    }
+
+    public List<OrderLine> findOrderLines(int orderId) throws SQLException {
+        List<OrderLine> lines = new ArrayList<>();
+
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_ORDER_LINES)) {
+            statement.setInt(1, orderId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    lines.add(new OrderLine(
+                            resultSet.getString("nomproduit"),
+                            resultSet.getInt("quantite"),
+                            resultSet.getBigDecimal("total_ht")
+                    ));
+                }
+            }
+        }
+
+        return lines;
     }
 }
