@@ -3,7 +3,9 @@ package com.pizapp.client.ui;
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -11,20 +13,45 @@ import com.pizapp.client.model.Order;
 
 public class OrderTableModel extends AbstractTableModel {
     private static final String[] COLUMNS = {
-            "ID", "Date", "Montant TTC", "Client", "Statut"
+        "Sélection", "ID", "Date", "Montant TTC", "Client", "Statut"
     };
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     private List<Order> orders = new ArrayList<>();
+    private final Set<Integer> selectedOrderIds = new HashSet<>();
 
     public void setOrders(List<Order> orders) {
         this.orders = new ArrayList<>(orders);
+
+        Set<Integer> existingIds = new HashSet<>();
+        for (Order order : this.orders) {
+            existingIds.add(order.getId());
+        }
+        selectedOrderIds.retainAll(existingIds);
+
         fireTableDataChanged();
     }
 
     public Order getOrderAt(int rowIndex) {
         return orders.get(rowIndex);
+    }
+
+    public List<Order> getSelectedOrders() {
+        List<Order> selectedOrders = new ArrayList<>();
+
+        for (Order order : orders) {
+            if (selectedOrderIds.contains(order.getId())) {
+                selectedOrders.add(order);
+            }
+        }
+
+        return selectedOrders;
+    }
+
+    public void clearSelection() {
+        selectedOrderIds.clear();
+        fireTableDataChanged();
     }
 
     @Override
@@ -43,19 +70,52 @@ public class OrderTableModel extends AbstractTableModel {
     }
 
     @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        if (columnIndex == 0) {
+            return Boolean.class;
+        }
+        return String.class;
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return columnIndex == 0;
+    }
+
+    @Override
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        if (columnIndex != 0 || rowIndex < 0 || rowIndex >= orders.size()) {
+            return;
+        }
+
+        Order order = orders.get(rowIndex);
+        boolean selected = Boolean.TRUE.equals(value);
+
+        if (selected) {
+            selectedOrderIds.add(order.getId());
+        } else {
+            selectedOrderIds.remove(order.getId());
+        }
+
+        fireTableCellUpdated(rowIndex, columnIndex);
+    }
+
+    @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Order order = orders.get(rowIndex);
 
         switch (columnIndex) {
             case 0:
-                return order.getId();
+                return selectedOrderIds.contains(order.getId());
             case 1:
-                return order.getDateTime() == null ? "" : DATE_FORMATTER.format(order.getDateTime());
+                return String.valueOf(order.getId());
             case 2:
-                return formatAmount(order.getAmount());
+                return order.getDateTime() == null ? "" : DATE_FORMATTER.format(order.getDateTime());
             case 3:
-                return order.getCustomerLogin();
+                return formatAmount(order.getAmount());
             case 4:
+                return order.getCustomerLogin();
+            case 5:
                 return order.getStatusLabel() + " (" + order.getStatusId() + ")";
             default:
                 return "";
