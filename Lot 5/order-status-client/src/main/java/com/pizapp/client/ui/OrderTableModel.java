@@ -11,6 +11,7 @@ import javax.swing.table.AbstractTableModel;
 
 import com.pizapp.client.model.Order;
 
+// Table model with a checkbox column to track multi-selection by order ID.
 public class OrderTableModel extends AbstractTableModel {
     private static final String[] COLUMNS = {
         "Sélection", "ID", "Date", "Montant TTC", "Client", "Statut"
@@ -21,6 +22,7 @@ public class OrderTableModel extends AbstractTableModel {
     private List<Order> orders = new ArrayList<>();
     private final Set<Integer> selectedOrderIds = new HashSet<>();
 
+    // Replaces current data and keeps only valid checked IDs.
     public void setOrders(List<Order> orders) {
         this.orders = new ArrayList<>(orders);
 
@@ -37,6 +39,7 @@ public class OrderTableModel extends AbstractTableModel {
         return orders.get(rowIndex);
     }
 
+    // Returns checked orders in current table order.
     public List<Order> getSelectedOrders() {
         List<Order> selectedOrders = new ArrayList<>();
 

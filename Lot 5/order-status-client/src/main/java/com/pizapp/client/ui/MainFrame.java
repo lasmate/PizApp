@@ -36,6 +36,7 @@ import com.pizapp.client.model.OrderLine;
 import com.pizapp.client.model.OrderStatus;
 import com.pizapp.client.repository.OrderRepository;
 
+// Main application window: list orders, update status, open detail windows.
 public class MainFrame extends JFrame {
     private static final int DEFAULT_ROW_LIMIT = 100;
     private static final int DETAIL_ROW_LIMIT = 500;
@@ -90,6 +91,7 @@ public class MainFrame extends JFrame {
         add(buildAllOrdersPanel(), BorderLayout.CENTER);
     }
 
+    // Builds the single main screen (table + controls).
     private JPanel buildAllOrdersPanel() {
         JPanel panel = new JPanel(new BorderLayout(8, 8));
         panel.setBackground(BACKGROUND);
@@ -126,6 +128,7 @@ public class MainFrame extends JFrame {
         return panel;
     }
 
+    // Applies local visual tweaks on top of global dark theme defaults.
     private void applyMaterialStyling() {
         Font baseFont = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
         Font buttonFont = new Font(Font.SANS_SERIF, Font.BOLD, 16);
@@ -205,6 +208,7 @@ public class MainFrame extends JFrame {
         refreshAllOrders();
     }
 
+    // Uses checkbox selection first; falls back to current row selection.
     private List<Order> getOrdersForStatusUpdate() {
         List<Order> selectedOrders = new ArrayList<>(allOrdersTableModel.getSelectedOrders());
         if (!selectedOrders.isEmpty()) {
@@ -218,6 +222,7 @@ public class MainFrame extends JFrame {
         return selectedOrders;
     }
 
+    // Opens one detail window per checked order.
     private void onOpenSelectedDetails() {
         List<Order> selectedOrders = allOrdersTableModel.getSelectedOrders();
         if (selectedOrders.isEmpty()) {
@@ -230,6 +235,7 @@ public class MainFrame extends JFrame {
         }
     }
 
+    // Reloads table data from database and keeps UI responsive.
     private void refreshAllOrders() {
         refreshAllButton.setEnabled(false);
 
@@ -245,6 +251,7 @@ public class MainFrame extends JFrame {
         });
     }
 
+    // Creates a standalone detail window for one order.
     private void openOrderDetailsWindow(Order order) {
         JFrame detailsFrame = new JFrame("Commande #" + order.getId());
         detailsFrame.setSize(760, 540);
@@ -327,6 +334,7 @@ public class MainFrame extends JFrame {
         detailsFrame.add(centerPanel, BorderLayout.CENTER);
         detailsFrame.add(controlsPanel, BorderLayout.SOUTH);
 
+        // Re-fetch current state of this order and refresh labels/lines.
         Runnable reloadDetails = () -> {
             try {
                 Order refreshedOrder = reloadOrderById(order.getId());
@@ -436,6 +444,7 @@ public class MainFrame extends JFrame {
         JOptionPane.showMessageDialog(this, message, "Erreur", JOptionPane.ERROR_MESSAGE);
     }
 
+    // Simple pill-shaped button used across the UI.
     private static class PillButton extends JButton {
         private final Color backgroundColor;
         private final Color hoverColor;
