@@ -8,6 +8,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
 
+// Global dark theme defaults shared by Swing components.
 public final class MaterialDarkTheme {
     private static final Color BACKGROUND = new Color(0x12, 0x14, 0x1A);
     private static final Color SURFACE = new Color(0x1E, 0x22, 0x2B);
@@ -19,6 +20,7 @@ public final class MaterialDarkTheme {
     private MaterialDarkTheme() {
     }
 
+    // Applies look-and-feel + app-wide UI defaults.
     public static void apply() {
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
