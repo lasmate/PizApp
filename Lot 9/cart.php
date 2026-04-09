@@ -58,7 +58,7 @@ function renderCartPanel() {
                     </div>
                     <div>
                         <label for="card-cvv">CVV</label>
-                        <input type="password" id="card-cvv" name="cardCvv" inputmode="numeric" maxlength="4" placeholder="***" required>
+                        <input type="password" id="card-cvv" name="cardCvv" inputmode="numeric" maxlength="3" placeholder="***" required>
                     </div>
                 </div>
             </form>
