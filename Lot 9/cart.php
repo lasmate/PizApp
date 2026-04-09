@@ -49,12 +49,12 @@ function renderCartPanel() {
                 </div>
                 <div class="form-row">
                     <label for="card-number">Numéro de carte</label>
-                    <input type="text" id="card-number" name="cardNumber" inputmode="numeric" pattern="[0-9\s]{12,19}" placeholder="1234 5678 9012 3456" required>
+                    <input type="text" id="card-number" name="cardNumber" inputmode="numeric" pattern="[0-9\s]{19}" maxlength="19" placeholder="1234 5678 9012 3456" required>
                 </div>
                 <div class="form-row two-cols">
                     <div>
                         <label for="card-exp">Expiration</label>
-                        <input type="text" id="card-exp" name="cardExp" inputmode="numeric" placeholder="MM/AA" required>
+                        <input type="text" id="card-exp" name="cardExp" inputmode="numeric" pattern="(0[1-9]|1[0-2])\/[0-9]{2}" maxlength="5" placeholder="MM/AA" required>
                     </div>
                     <div>
                         <label for="card-cvv">CVV</label>

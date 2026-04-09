@@ -211,6 +211,50 @@
       }));
     }
 
+    // Formatage automatique du numéro de carte bancaire
+    const cardNumberInput = document.getElementById('card-number');
+    if(cardNumberInput){
+      // Force le maxlength à 19 pour libérer de la place pour les espaces
+      cardNumberInput.setAttribute('maxlength', '19');
+      
+      cardNumberInput.addEventListener('input', function(e) {
+        // Enlève tout ce qui n'est pas un chiffre
+        let value = e.target.value.replace(/\D/g, '');
+        // Limite à 16 chiffres purs
+        value = value.substring(0, 16);
+        
+        // Découpe en blocs de 4 et rejoint avec un espace
+        let formattedValue = '';
+        if (value.length > 0) {
+          formattedValue = value.match(/.{1,4}/g).join(' ');
+        }
+        
+        e.target.value = formattedValue;
+      });
+    }
+
+    // Formatage automatique du champ d'Expiration (MM/AA)
+    const cardExpInput = document.getElementById('card-exp');
+    if(cardExpInput){
+      cardExpInput.setAttribute('maxlength', '5'); // Limite à 5 caractères (ex: 12/26)
+      cardExpInput.addEventListener('input', function(e) {
+        // Enlève tout ce qui n'est pas un chiffre
+        let value = e.target.value.replace(/\D/g, '');
+        // Limite à 4 chiffres purs
+        value = value.substring(0, 4);
+        
+        let formattedValue = '';
+        if (value.length > 2) {
+          // Ajoute un slash après le 2ème chiffre
+          formattedValue = value.substring(0, 2) + '/' + value.substring(2);
+        } else {
+          formattedValue = value;
+        }
+        
+        e.target.value = formattedValue;
+      });
+    }
+
     // Confirmer le paiement -> POST avec type_commande
     const confirmBtn = document.querySelector('#confirm-payment');
     if(confirmBtn){
