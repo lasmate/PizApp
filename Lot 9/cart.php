@@ -21,7 +21,7 @@ function renderCartPanel() {
         <div class="cart-items" id="cart-items"></div>
         <footer class="cart-panel-footer">
             <div class="cart-total-row">
-                <span>Total</span>
+                <span>Total TTC estimé</span>
                 <strong id="cart-total">0.00€</strong>
             </div>
             <div class="cart-actions">
@@ -64,6 +64,20 @@ function renderCartPanel() {
             </form>
         </div>
         <footer class="cart-panel-footer">
+            <div class="checkout-summary" aria-live="polite">
+                <div class="checkout-summary-row">
+                    <span>Sous-total</span>
+                    <strong id="checkout-subtotal">0.00€</strong>
+                </div>
+                <div class="checkout-summary-row">
+                    <span>Remise automatique pour panier > 100€</span>
+                    <strong id="checkout-discount">-0.00€</strong>
+                </div>
+                <div class="checkout-summary-row checkout-summary-total">
+                    <span>Total TTC</span>
+                    <strong id="checkout-total-price">0.00€</strong>
+                </div>
+            </div>
             <div class="cart-actions">
                 <button class="cart-clear" id="checkout-back">Retour</button>
                 <button class="checkout-btn" id="confirm-payment">Confirmer le paiement</button>

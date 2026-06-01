@@ -2,6 +2,10 @@
   'use strict';
 
   const STORAGE_KEY = 'pizapp_cart';
+  const REMISE_PLATEAU = 100;
+  const REMISE_MONTANT = 0.05;
+  const TAX_RATE_TAKEAWAY = 0.055;
+  const TAX_RATE_ONSITE = 0.10;
 
   const $ = (sel, root=document) => root.querySelector(sel);
   const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
@@ -63,9 +67,62 @@
     const v = (typeof n === 'number' ? n : parseFloat(n||'0')||0);
     return v.toFixed(2) + '€';
   }
+ // arrondit  pour eviter pb d'affichage genre 0,33333
+  function roundMoney(n){
+    return Math.round((Number(n) || 0) * 100) / 100;
+  }
 
   function calcTotal(cart){
     return cart.reduce((sum, it)=> sum + (it.price||0) * (it.quantity||1), 0);
+  }
+
+  function getSelectedServiceType(){
+    const activeChip = document.querySelector('.service-chip.active');
+    const type = activeChip ? parseInt(activeChip.getAttribute('data-type'), 10) : 1;
+    return type === 0 ? 0 : 1;
+  }
+
+  function getRemiseSpEm(typeCommmande){
+    return typeCommmande === 0 ? TAX_RATE_ONSITE : TAX_RATE_TAKEAWAY;
+  }
+
+  function calcOrderSummary(cart, typeCommmande){
+    const subtotal = calcTotal(cart);
+    const discount = subtotal > REMISE_PLATEAU ? subtotal * REMISE_MONTANT : 0;// si le total dépasse 100€, appliquer une remise de 5%
+    const taxableBase = Math.max(0, subtotal - discount);
+    const taxRate = getRemiseSpEm(typeCommmande);
+    const total = taxableBase * (1 + taxRate);
+
+    return {
+      subtotal: roundMoney(subtotal),
+      discount: roundMoney(discount),
+      taxableBase: roundMoney(taxableBase),
+      taxRate,
+      total: roundMoney(total)
+    };
+  }
+
+  function updateSummaryDisplays(cart){
+    const summary = calcOrderSummary(cart, getSelectedServiceType());
+    const cartTotalEl = $('#cart-total');
+    const checkoutSubtotalEl = $('#checkout-subtotal');
+    const checkoutDiscountEl = $('#checkout-discount');
+    const checkoutTotalEl = $('#checkout-total-price');
+
+    if(cartTotalEl){
+      cartTotalEl.textContent = formatEuro(summary.total);
+    }
+    if(checkoutSubtotalEl){
+      checkoutSubtotalEl.textContent = formatEuro(summary.subtotal);
+    }
+    if(checkoutDiscountEl){
+      checkoutDiscountEl.textContent = `-${formatEuro(summary.discount)}`;
+    }
+    if(checkoutTotalEl){
+      checkoutTotalEl.textContent = formatEuro(summary.total);
+    }
+
+    return summary;
   }
 
   function updateBadge(cart){
@@ -85,7 +142,7 @@
 
     if(cart.length === 0){
       container.innerHTML = '<p class="empty-checkout-message">Votre panier est vide.</p>';
-      totalEl.textContent = '0.00€';
+      updateSummaryDisplays(cart);
       updateBadge(cart);
       return;
     }
@@ -109,7 +166,7 @@
       container.appendChild(row);
     });
 
-    totalEl.textContent = formatEuro(calcTotal(cart));
+    updateSummaryDisplays(cart);
     updateBadge(cart);
   }
 
@@ -208,6 +265,7 @@
       chips.forEach(ch => ch.addEventListener('click', ()=>{
         chips.forEach(c => c.classList.remove('active'));
         ch.classList.add('active');
+        updateSummaryDisplays(loadCart());
       }));
     }
 
@@ -232,11 +290,13 @@
           return;
         }
 
+        const summary = calcOrderSummary(loadCart(), type_commande);
+
         try{
           const res = await fetch('create_commande.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ cart, type_commande })
+            body: JSON.stringify({ cart, type_commande, expected_total: summary.total })
           });
           const data = await res.json();
           if(data && data.success){
