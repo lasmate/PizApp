@@ -1,11 +1,13 @@
- 1 = a emporter = 5.5%
- 0 = sur place = 10%
+# Triggers SQL
 
-3.1. before_ligne_insert
+1 = a emporter = 5.5%
+0 = sur place = 10%
 
-A chaque ajout d'une ligne de commande, calcule le "total ligne HT" en multipliant la quantité par le
-prix HT du produit. Le prix HT du produit provient de la table "produit".
+## 3.1. before_ligne_insert
 
+A chaque ajout d'une ligne de commande, calcule le "total ligne HT" en multipliant la quantité par le prix HT du produit. Le prix HT du produit provient de la table "produit".
+
+```sql
 DELIMITER |
 CREATE OR REPLACE TRIGGER before_ligne_insert
 BEFORE INSERT ON ligne_de_commande
@@ -14,19 +16,21 @@ BEGIN
 
 DECLARE v_prix_ht double;
 
-Select prixproduit INTO v_prix_ht from produit 
+Select prixproduit INTO v_prix_ht from produit
 where new.idproduit = idproduit;
 
 SET new.total_ht = v_prix_ht * new.quantite ;
 
 END |
 DELIMITER ;
+```
 
-3.2. before_ligne_update
 
-A chaque modification d'une ligne de commande, met à jour le "total ligne HT" en multipliant la
-quantité par le prix HT du produit. Le prix HT du produit provient de la table "produit".
+## 3.2. before_ligne_update
 
+A chaque modification d'une ligne de commande, met à jour le "total ligne HT" en multipliant la quantité par le prix HT du produit. Le prix HT du produit provient de la table "produit".
+
+```sql
 DELIMITER |
 CREATE OR REPLACE TRIGGER before_ligne_update
 BEFORE UPDATE ON ligne_de_commande
@@ -35,19 +39,20 @@ BEGIN
 
 DECLARE v_prix_ht double;
 
-Select prixproduit INTO v_prix_ht from produit 
+Select prixproduit INTO v_prix_ht from produit
 where new.idproduit = idproduit;
 
 SET new.total_ht = v_prix_ht * new.quantite ;
 
 END |
 DELIMITER ;
+```
 
-3.3. after_ligne_insert
+## 3.3. after_ligne_insert
 
-A chaque ajout d'une ligne de commande, détermine la somme des "totaux ligne HT" de la
-commande liée, applique le taux de TVA et calcule le "total commande" TTC.
+A chaque ajout d'une ligne de commande, détermine la somme des "totaux ligne HT" de la commande liée, applique une remise automatique de 5% au-delà de 100€ puis le taux de TVA et calcule le "total commande" TTC.
 
+```sql
 DELIMITER |
 
 CREATE OR REPLACE TRIGGER after_ligne_insert
@@ -58,27 +63,34 @@ BEGIN
 DECLARE v_total_prix_ht double;
 DECLARE v_montant_ttc double;
 DECLARE v_type_commande int;
+DECLARE v_remise double;
 
 Select SUM(total_ht) INTO v_total_prix_ht
 FROM ligne_de_commande
 Where idcommande = new.idcommande;
 
+set v_remise = 0;
+If v_total_prix_ht > 100 then
+    set v_remise = v_total_prix_ht * 5 / 100;
+end if;
+
 Select type_commande INTO v_type_commande
 FROM commande
 WHERE commande.idcommande = new.idcommande;
 IF v_type_commande = 1 THEN
-	UPDATE commande SET montant_ttc = v_total_prix_ht * (1 + (5.5/100));
-ELSE 
-	 UPDATE commande SET montant_ttc = v_total_prix_ht * (1 + (10/100));
+    UPDATE commande SET montant_post_remise = v_total_prix_ht - v_remise, montant_ttc = (v_total_prix_ht - v_remise) * (1 + (5.5/100));
+ELSE
+    UPDATE commande SET montant_post_remise = v_total_prix_ht - v_remise, montant_ttc = (v_total_prix_ht - v_remise) * (1 + (10/100));
 END IF;
 END |
 DELIMITER ;
+```
 
-3.4. after_ligne_update
+## 3.4. after_ligne_update
 
-A chaque modification d'une ligne de commande, détermine la somme des "totaux ligne HT" de la
-commande liée, applique le taux de TVA et calcule le "total commande" TTC.
+A chaque modification d'une ligne de commande, détermine la somme des "totaux ligne HT" de la commande liée, applique une remise automatique de 5% au-delà de 100€ puis le taux de TVA et calcule le "total commande" TTC.
 
+```sql
 DELIMITER |
 CREATE OR REPLACE TRIGGER after_ligne_update
 AFTER UPDATE ON commande
@@ -88,20 +100,28 @@ BEGIN
 DECLARE v_total_prix_ht double;
 DECLARE v_montant_ttc double;
 DECLARE v_type_commande int;
+DECLARE v_remise double;
 
 Select SUM(total_ht) INTO v_total_prix_ht
 FROM ligne_de_commande
 Where new.idcommande = idcommande;
+
+set v_remise = 0;
+If v_total_prix_ht > 100 then
+    set v_remise = v_total_prix_ht * 5 / 100;
+end if;
 
 Select type_commande INTO v_type_commande
 FROM commande
 WHERE commande.idcommande = idcommande;
 
 IF v_type_commande = 1 THEN
-	UPDATE commande SET montant_ttc = v_total_prix_ht * (1 + (5.5/100));
-ELSE 
-	 UPDATE commande SET montant_ttc = v_total_prix_ht * (1 + (10/100));
+    UPDATE commande SET montant_post_remise = v_total_prix_ht - v_remise, montant_ttc = (v_total_prix_ht - v_remise) * (1 + (5.5/100));
+ELSE
+    UPDATE commande SET montant_post_remise = v_total_prix_ht - v_remise, montant_ttc = (v_total_prix_ht - v_remise) * (1 + (10/100));
 END IF;
+
 
 END |
 DELIMITER ;
+```

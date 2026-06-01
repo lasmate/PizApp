@@ -648,6 +648,32 @@
         font-size: 1.05rem;
     }
 
+    .checkout-summary {
+        display: grid;
+        gap: .45rem;
+        margin-bottom: .85rem;
+        padding: .75rem .85rem;
+        border-radius: 12px;
+        background: #faf7ff;
+        border: 1px solid rgba(0,0,0,.06);
+    }
+
+    .checkout-summary-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .75rem;
+        font-size: .96rem;
+    }
+
+    .checkout-summary-total {
+        padding-top: .45rem;
+        margin-top: .15rem;
+        border-top: 1px solid rgba(0,0,0,.08);
+        font-size: 1.06rem;
+        font-weight: 700;
+    }
+
     .cart-actions {
         display: flex;
         align-items: center;

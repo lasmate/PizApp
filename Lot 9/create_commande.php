@@ -70,9 +70,11 @@ foreach ($cart as $it) {
     $php_subtotal += $price * $qty;
 }
 
-// applique la surcharge côté PHP comme vérification (les triggers DB sont la source de vérité)
+
+$php_discount = ($php_subtotal > 100.0) ? ($php_subtotal * 0.05) : 0.0;// 5% au-delà de 100€
+$php_tax_base = max(0.0, $php_subtotal - $php_discount);
 $surcharge_rate = ($type_commande === 1) ? 0.055 : 0.10; // 5.5% pour à emporter (1), 10% pour sur place (0)
-$php_expected_total = round($php_subtotal * (1 + $surcharge_rate), 2);
+$php_expected_total = round($php_tax_base * (1 + $surcharge_rate), 2);
 
 // Insère dans la table `commande`
 $userId = (int)$_SESSION['user_id'];
@@ -85,7 +87,7 @@ $now = date('Y-m-d H:i:s');
 mysqli_begin_transaction($conn);
 
 // Insère la commande avec montant provisoire (les triggers DB recalculeront le montant réel)
-$insertCmd = "INSERT INTO commande (date_heure_commande, montant_ttc, type_commande, iduser, idetat) VALUES (?, ?, ?, ?, ?)";
+$insertCmd = "INSERT INTO commande (date_heure_commande, montant_ttc, montant_post_remise, type_commande, iduser, idetat) VALUES (?, ?, ?, ?, ?, ?)";
 $stmt2 = mysqli_prepare($conn, $insertCmd);
 if ($stmt2 === false) {
     mysqli_rollback($conn);
@@ -94,7 +96,8 @@ if ($stmt2 === false) {
 }
 // montant_ttc = 0.00 placeholder; triggers after insert/update will set the real total
 $placeholderMontant = 0.00;
-mysqli_stmt_bind_param($stmt2, 'sdiii', $now, $placeholderMontant, $type_commande, $userId, $idetat);
+$placeholderMontantPostRemise = 0.00;
+mysqli_stmt_bind_param($stmt2, 'sddiii', $now, $placeholderMontant, $placeholderMontantPostRemise, $type_commande, $userId, $idetat);
 $ok = mysqli_stmt_execute($stmt2);
 if (!$ok) {
     mysqli_rollback($conn);
@@ -146,9 +149,13 @@ if ($db_total !== null) {
 }
 
 // Retourne l'ID commande et, si nécessaire, la note de divergence
+// Inclut aussi les totaux calculés côté PHP pour faciliter le debug côté client
+//
 $resp = ['success' => true, 'idcommande' => $orderId];
 if ($db_total !== null) $resp['db_total'] = number_format($db_total, 2, '.', '');
 if (isset($php_expected_total)) $resp['php_expected_total'] = number_format($php_expected_total, 2, '.', '');
+if (isset($php_tax_base)) $resp['montant_post_remise'] = number_format($php_tax_base, 2, '.', '');
+if ($php_subtotal > 100.0) $resp['discount_applied'] = number_format($php_discount, 2, '.', '');
 if ($note) $resp['warning'] = $note;
 
 echo json_encode($resp);

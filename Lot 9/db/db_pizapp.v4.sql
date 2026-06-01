@@ -31,6 +31,7 @@ CREATE TABLE `commande` (
   `idcommande` int(25) NOT NULL COMMENT 'id de la commande',
   `date_heure_commande` datetime(6) DEFAULT NULL COMMENT 'date et heure de la commande',
   `montant_ttc` decimal(5,2) DEFAULT NULL COMMENT 'montant tout taxe comprise de la commande',
+  `montant_post_remise` decimal(5,2) DEFAULT NULL COMMENT 'Montant apres avoir appliquer la remise automatique de 5% pour commande au dessus de 100eu',
   `type_commande` tinyint(1) DEFAULT NULL COMMENT 'le type de la commande',
   `iduser` int(25) NOT NULL COMMENT 'id de l''utilisateur',
   `idetat` int(25) NOT NULL COMMENT 'id de l''état'
@@ -40,8 +41,8 @@ CREATE TABLE `commande` (
 -- Déchargement des données de la table `commande`
 --
 
-INSERT INTO `commande` (`idcommande`, `date_heure_commande`, `montant_ttc`, `type_commande`, `iduser`, `idetat`) VALUES
-(1, '2025-11-01 08:50:04.000000', 238.70, 0, 1, 4);
+INSERT INTO `commande` (`idcommande`, `date_heure_commande`, `montant_ttc`, `montant_post_remise`, `type_commande`, `iduser`, `idetat`) VALUES
+(1, '2025-11-01 08:50:04.000000', 238.70, NULL, 0, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -318,6 +319,7 @@ DELIMITER ;
 
 -- 3.3. after_ligne_insert
 -- A chaque ajout d'une ligne de commande, recalcule le montant TTC de la commande
+-- Remise automatique : 5% si le sous-total dépasse 100 euros
 DROP TRIGGER IF EXISTS `after_ligne_insert`;
 DELIMITER $$
 CREATE TRIGGER `after_ligne_insert`
@@ -326,10 +328,17 @@ FOR EACH ROW
 BEGIN
   DECLARE v_total_prix_ht DOUBLE DEFAULT 0;
   DECLARE v_type_commande INT DEFAULT 1;
+  DECLARE v_remise DOUBLE DEFAULT 0;
+  DECLARE v_post_remise DOUBLE DEFAULT 0;
 
   SELECT SUM(`total_ht`) INTO v_total_prix_ht
   FROM `ligne_de_commande`
   WHERE `idcommande` = NEW.`idcommande`;
+
+  IF v_total_prix_ht > 100 THEN
+    SET v_remise = v_total_prix_ht * 0.05;
+  END IF;
+  SET v_post_remise = v_total_prix_ht - v_remise;
 
   SELECT `type_commande` INTO v_type_commande
   FROM `commande`
@@ -338,11 +347,13 @@ BEGIN
 
   IF v_type_commande = 1 THEN
     UPDATE `commande`
-    SET `montant_ttc` = v_total_prix_ht * (1 + (5.5/100))
+    SET `montant_post_remise` = v_post_remise,
+        `montant_ttc` = v_post_remise * (1 + (5.5/100))
     WHERE `idcommande` = NEW.`idcommande`;
   ELSE
     UPDATE `commande`
-    SET `montant_ttc` = v_total_prix_ht * (1 + (10/100))
+    SET `montant_post_remise` = v_post_remise,
+        `montant_ttc` = v_post_remise * (1 + (10/100))
     WHERE `idcommande` = NEW.`idcommande`;
   END IF;
 END$$
@@ -358,10 +369,17 @@ FOR EACH ROW
 BEGIN
   DECLARE v_total_prix_ht DOUBLE DEFAULT 0;
   DECLARE v_type_commande INT DEFAULT 1;
+  DECLARE v_remise DOUBLE DEFAULT 0;
+  DECLARE v_post_remise DOUBLE DEFAULT 0;
 
   SELECT SUM(`total_ht`) INTO v_total_prix_ht
   FROM `ligne_de_commande`
   WHERE `idcommande` = NEW.`idcommande`;
+
+  IF v_total_prix_ht > 100 THEN
+    SET v_remise = v_total_prix_ht * 0.05;
+  END IF;
+  SET v_post_remise = v_total_prix_ht - v_remise;
 
   SELECT `type_commande` INTO v_type_commande
   FROM `commande`
@@ -370,11 +388,13 @@ BEGIN
 
   IF v_type_commande = 1 THEN
     UPDATE `commande`
-    SET `montant_ttc` = v_total_prix_ht * (1 + (5.5/100))
+    SET `montant_post_remise` = v_post_remise,
+        `montant_ttc` = v_post_remise * (1 + (5.5/100))
     WHERE `idcommande` = NEW.`idcommande`;
   ELSE
     UPDATE `commande`
-    SET `montant_ttc` = v_total_prix_ht * (1 + (10/100))
+    SET `montant_post_remise` = v_post_remise,
+        `montant_ttc` = v_post_remise * (1 + (10/100))
     WHERE `idcommande` = NEW.`idcommande`;
   END IF;
 END$$
